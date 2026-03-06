@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lifecycle — GX Documentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="guide.css" />
+</head>
+<body>
+<div id="progress" style="width:0%"></div>
+
+<nav class="topnav">
+  <div class="nav-left">
+    <a href="index.html" class="logo-link"><div class="logo-mark">GX</div><span class="logo-name">gx</span></a>
+    <div class="nav-sep"></div><span class="nav-title">Documentation</span>
+  </div>
+  <div class="nav-right">
+    <a href="quickstart.html" class="nav-link">Quickstart</a>
+    <a href="plugins.html" class="nav-link">Plugins</a>
+    <a href="testing.html" class="nav-link">Testing</a>
+    <a href="https://github.com/s-anzie/gx" target="_blank" rel="noopener" class="nav-github">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+      GitHub
+    </a>
+  </div>
+</nav>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-group">
+      <span class="sidebar-label">Introduction</span>
+      <a href="overview.html" class="sidebar-link"><span class="dot"></span>Overview</a>
+      <a href="quickstart.html" class="sidebar-link"><span class="dot"></span>Quickstart <span class="sidebar-badge">Start here</span></a>
+      <a href="installation.html" class="sidebar-link"><span class="dot"></span>Installation</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Core</span>
+      <a href="routing.html" class="sidebar-link"><span class="dot"></span>Routing</a>
+      <a href="context.html" class="sidebar-link"><span class="dot"></span>Context &amp; Request</a>
+      <a href="responses.html" class="sidebar-link"><span class="dot"></span>Responses</a>
+      <a href="middleware.html" class="sidebar-link"><span class="dot"></span>Middleware</a>
+      <a href="errors.html" class="sidebar-link"><span class="dot"></span>Error Handling</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Features</span>
+      <a href="validation.html" class="sidebar-link"><span class="dot"></span>Validation</a>
+      <a href="cookies.html" class="sidebar-link"><span class="dot"></span>Cookies</a>
+      <a href="uploads.html" class="sidebar-link"><span class="dot"></span>File Uploads</a>
+      <a href="static.html" class="sidebar-link"><span class="dot"></span>Static Files</a>
+      <a href="negotiate.html" class="sidebar-link"><span class="dot"></span>Content Negotiation</a>
+      <a href="goroutines.html" class="sidebar-link"><span class="dot"></span>Safe Goroutines</a>
+      <a href="early-hints.html" class="sidebar-link"><span class="dot"></span>Early Hints</a>
+      <a href="https-redirect.html" class="sidebar-link"><span class="dot"></span>HTTPS Redirect</a>
+      <a href="config.html" class="sidebar-link"><span class="dot"></span>Config from Env</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Plugins</span>
+      <a href="plugins.html" class="sidebar-link"><span class="dot"></span>Plugin System</a>
+      <a href="plugin-auth.html" class="sidebar-link"><span class="dot"></span>Auth (JWT)</a>
+      <a href="plugin-cors.html" class="sidebar-link"><span class="dot"></span>CORS</a>
+      <a href="plugin-compress.html" class="sidebar-link"><span class="dot"></span>Compress</a>
+      <a href="plugin-cache.html" class="sidebar-link"><span class="dot"></span>Cache</a>
+      <a href="plugin-ratelimit.html" class="sidebar-link"><span class="dot"></span>Rate Limit</a>
+      <a href="plugin-openapi.html" class="sidebar-link"><span class="dot"></span>OpenAPI</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Testing</span>
+      <a href="testing.html" class="sidebar-link"><span class="dot"></span>gxtest Package</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Advanced</span>
+      <a href="http3.html" class="sidebar-link"><span class="dot"></span>HTTP/2 &amp; HTTP/3</a>
+      <a href="lifecycle.html" class="sidebar-link active"><span class="dot"></span>Lifecycle Hooks</a>
+      <a href="observability.html" class="sidebar-link"><span class="dot"></span>Observability</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="content">
+
+      <section class="doc-section" id="overview">
+        <div class="section-eyebrow">Tooling</div>
+        <h1 class="doc-h1">Lifecycle</h1>
+        <p class="doc-lead">GX provides boot and shutdown hooks so you can run custom logic when the application starts or stops — for example, connecting to a database, warming caches, or gracefully draining connections.</p>
+      </section>
+
+      <section class="doc-section" id="boot">
+        <h2 class="doc-h2">Boot Hooks</h2>
+        <p>Boot hooks run after all plugins are initialised but before the server starts accepting requests.</p>
+
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
+          <pre><span class="cm">// type BootHook = func(ctx context.Context) error</span>
+
+<span class="pkg">app</span>.<span class="fn">OnBoot</span>(<span class="kw">func</span>(ctx <span class="pkg">context</span>.<span class="ty">Context</span>) <span class="ty">error</span> {
+    <span class="kw">return</span> <span class="pkg">db</span>.<span class="fn">Connect</span>(ctx)
+})
+
+<span class="pkg">app</span>.<span class="fn">OnBoot</span>(<span class="kw">func</span>(ctx <span class="pkg">context</span>.<span class="ty">Context</span>) <span class="ty">error</span> {
+    <span class="pkg">log</span>.<span class="fn">Println</span>(<span class="str">"server starting..."</span>)
+    <span class="kw">return</span> <span class="kw">nil</span>
+})</pre>
+        </div>
+
+        <p>If any boot hook returns an error, the application start is aborted.</p>
+      </section>
+
+      <section class="doc-section" id="shutdown">
+        <h2 class="doc-h2">Shutdown Hooks</h2>
+        <p>Shutdown hooks run when the server receives a termination signal (SIGINT / SIGTERM) or when <code>ListenWithGracefulShutdown</code> returns. They receive a context with a deadline — respect cancellation so the process exits cleanly.</p>
+
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
+          <pre><span class="cm">// type ShutdownHook = func(ctx context.Context) error</span>
+
+<span class="pkg">app</span>.<span class="fn">OnShutdown</span>(<span class="kw">func</span>(ctx <span class="pkg">context</span>.<span class="ty">Context</span>) <span class="ty">error</span> {
+    <span class="kw">return</span> <span class="pkg">db</span>.<span class="fn">Close</span>()
+})
+
+<span class="pkg">app</span>.<span class="fn">OnShutdown</span>(<span class="kw">func</span>(ctx <span class="pkg">context</span>.<span class="ty">Context</span>) <span class="ty">error</span> {
+    <span class="kw">return</span> <span class="pkg">cache</span>.<span class="fn">Flush</span>(ctx)
+})</pre>
+        </div>
+      </section>
+
+      <section class="doc-section" id="boot-method">
+        <h2 class="doc-h2"><code>app.Boot(ctx)</code></h2>
+        <p><code>Boot</code> runs all boot hooks and initialises plugins without starting a TCP listener. This is useful in tests or when you need fine-grained control over startup.</p>
+
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
+          <pre>ctx <span class="op">:=</span> <span class="pkg">context</span>.<span class="fn">Background</span>()
+<span class="kw">if</span> err <span class="op">:=</span> <span class="pkg">app</span>.<span class="fn">Boot</span>(ctx); err <span class="op">!=</span> <span class="kw">nil</span> {
+    <span class="pkg">log</span>.<span class="fn">Fatalf</span>(<span class="str">"boot failed: %v"</span>, err)
+}
+
+<span class="cm">// Now safe to use the app as an http.Handler</span>
+<span class="pkg">http</span>.<span class="fn">ListenAndServe</span>(<span class="str">":8080"</span>, app)</pre>
+        </div>
+      </section>
+
+      <section class="doc-section" id="graceful">
+        <h2 class="doc-h2">Graceful Shutdown Flow</h2>
+        <p>When <code>ListenWithGracefulShutdown</code> is used, GX handles the full boot-to-shutdown sequence automatically:</p>
+
+        <ol class="doc-list">
+          <li>Calls <code>app.Boot(ctx)</code> → runs all <code>OnBoot</code> hooks and plugin <code>OnBoot</code> methods.</li>
+          <li>Starts the HTTP server.</li>
+          <li>Blocks until <code>SIGINT</code> or <code>SIGTERM</code>.</li>
+          <li>Calls <code>http.Server.Shutdown(ctx)</code> — drains in-flight requests.</li>
+          <li>Runs all <code>OnShutdown</code> hooks and plugin <code>OnShutdown</code> methods.</li>
+        </ol>
+
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
+          <pre>app <span class="op">:=</span> <span class="pkg">gx</span>.<span class="fn">New</span>()
+
+<span class="pkg">app</span>.<span class="fn">OnBoot</span>(<span class="kw">func</span>(ctx <span class="pkg">context</span>.<span class="ty">Context</span>) <span class="ty">error</span> {
+    <span class="kw">return</span> <span class="pkg">db</span>.<span class="fn">Connect</span>(ctx)
+})
+
+<span class="pkg">app</span>.<span class="fn">OnShutdown</span>(<span class="kw">func</span>(ctx <span class="pkg">context</span>.<span class="ty">Context</span>) <span class="ty">error</span> {
+    <span class="kw">return</span> <span class="pkg">db</span>.<span class="fn">Close</span>()
+})
+
+<span class="pkg">app</span>.<span class="fn">GET</span>(<span class="str">"/"</span>, handler)
+
+<span class="cm">// Handles boot, run, and graceful shutdown automatically</span>
+<span class="pkg">app</span>.<span class="fn">ListenWithGracefulShutdown</span>(<span class="str">":8080"</span>)</pre>
+        </div>
+      </section>
+
+      <section class="doc-section" id="health">
+        <h2 class="doc-h2">Health Endpoints</h2>
+        <p>Register named dependency health checks and expose standard health endpoints.</p>
+
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
+          <pre><span class="pkg">app</span>.<span class="fn">Health</span>(<span class="str">"database"</span>, <span class="kw">func</span>(ctx <span class="pkg">context</span>.<span class="ty">Context</span>) <span class="ty">error</span> {
+    <span class="kw">return</span> <span class="pkg">db</span>.<span class="fn">PingContext</span>(ctx)
+})
+
+<span class="pkg">app</span>.<span class="fn">Health</span>(<span class="str">"redis"</span>, <span class="kw">func</span>(ctx <span class="pkg">context</span>.<span class="ty">Context</span>) <span class="ty">error</span> {
+    <span class="kw">return</span> <span class="pkg">redisClient</span>.<span class="fn">Ping</span>(ctx).<span class="fn">Err</span>()
+}, <span class="pkg">gx</span>.<span class="fn">HealthInterval</span>(15<span class="op">*</span><span class="pkg">time</span>.<span class="ty">Second</span>),
+   <span class="pkg">gx</span>.<span class="fn">HealthCritical</span>(<span class="kw">true</span>))
+
+<span class="cm">// Registers: GET /health, GET /health/live, GET /health/ready</span>
+<span class="pkg">app</span>.<span class="fn">RegisterHealthEndpoints</span>()
+
+<span class="cm">// Start background health checks (call from OnBoot)</span>
+<span class="pkg">app</span>.<span class="fn">OnBoot</span>(<span class="kw">func</span>(ctx <span class="pkg">context</span>.<span class="ty">Context</span>) <span class="ty">error</span> {
+    <span class="pkg">app</span>.<span class="fn">StartHealthChecks</span>(ctx)
+    <span class="kw">return</span> <span class="kw">nil</span>
+})</pre>
+        </div>
+
+        <table class="doc-table">
+          <thead><tr><th>Endpoint</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>GET /health</code></td><td>All checks + overall status</td></tr>
+            <tr><td><code>GET /health/live</code></td><td>Liveness — always 200 if process is running</td></tr>
+            <tr><td><code>GET /health/ready</code></td><td>Readiness — 200 only if all critical checks pass</td></tr>
+          </tbody>
+        </table>
+
+        <h3 class="doc-h3">Health Check Options</h3>
+        <table class="doc-table">
+          <thead><tr><th>Option</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>gx.HealthInterval(d)</code></td><td><code>30s</code></td><td>How often to run the check</td></tr>
+            <tr><td><code>gx.HealthTimeout(d)</code></td><td><code>5s</code></td><td>Per-check deadline</td></tr>
+            <tr><td><code>gx.HealthCritical(b)</code></td><td><code>true</code></td><td>If false, a failure won't affect <code>/health/ready</code></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <nav class="doc-nav">
+        <a href="http3.html" class="doc-nav-link prev">
+          <span class="doc-nav-label">Previous</span>
+          <span class="doc-nav-title">HTTP/3</span>
+        </a>
+        <a href="observability.html" class="doc-nav-link next">
+          <span class="doc-nav-label">Next</span>
+          <span class="doc-nav-title">Observability</span>
+        </a>
+      </nav>
+
+    </div>
+  </main>
+
+  <aside class="toc-aside">
+    <div class="toc-label">On this page</div>
+    <nav class="toc-nav">
+      <a class="toc-link" href="#overview">Overview</a>
+      <a class="toc-link" href="#boot">Boot Hooks</a>
+      <a class="toc-link" href="#shutdown">Shutdown Hooks</a>
+      <a class="toc-link" href="#boot-method">app.Boot(ctx)</a>
+      <a class="toc-link" href="#graceful">Graceful Shutdown Flow</a>
+      <a class="toc-link" href="#health">Health Endpoints</a>
+    </nav>
+  </aside>
+</div>
+
+<script src="guide.js"></script>
+</body>
+</html>

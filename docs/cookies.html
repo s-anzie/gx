@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cookies — GX Documentation</title>
+  <meta name="description" content="Reading and writing HTTP cookies in GX: c.Cookie, c.SetCookie, core.WithCookie, core.WithClearCookie and the Cookie struct." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="guide.css" />
+</head>
+<body>
+<div id="progress" style="width:0%"></div>
+<nav class="topnav">
+  <div class="nav-left">
+    <a href="index.html" class="logo-link"><div class="logo-mark">GX</div><span class="logo-name">gx</span></a>
+    <div class="nav-sep"></div><span class="nav-title">Documentation</span>
+  </div>
+  <div class="nav-right">
+    <a href="quickstart.html" class="nav-link">Quickstart</a>
+    <a href="plugins.html" class="nav-link">Plugins</a>
+    <a href="testing.html" class="nav-link">Testing</a>
+    <a href="https://github.com/s-anzie/gx" target="_blank" rel="noopener" class="nav-github">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+      GitHub
+    </a>
+  </div>
+</nav>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-group">
+      <span class="sidebar-label">Introduction</span>
+      <a href="overview.html" class="sidebar-link"><span class="dot"></span>Overview</a>
+      <a href="quickstart.html" class="sidebar-link"><span class="dot"></span>Quickstart <span class="sidebar-badge">Start here</span></a>
+      <a href="installation.html" class="sidebar-link"><span class="dot"></span>Installation</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Core</span>
+      <a href="routing.html" class="sidebar-link"><span class="dot"></span>Routing</a>
+      <a href="context.html" class="sidebar-link"><span class="dot"></span>Context &amp; Request</a>
+      <a href="responses.html" class="sidebar-link"><span class="dot"></span>Responses</a>
+      <a href="middleware.html" class="sidebar-link"><span class="dot"></span>Middleware</a>
+      <a href="errors.html" class="sidebar-link"><span class="dot"></span>Error Handling</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Features</span>
+      <a href="validation.html" class="sidebar-link"><span class="dot"></span>Validation</a>
+      <a href="cookies.html" class="sidebar-link"><span class="dot"></span>Cookies</a>
+      <a href="uploads.html" class="sidebar-link"><span class="dot"></span>File Uploads</a>
+      <a href="static.html" class="sidebar-link"><span class="dot"></span>Static Files</a>
+      <a href="negotiate.html" class="sidebar-link"><span class="dot"></span>Content Negotiation</a>
+      <a href="goroutines.html" class="sidebar-link"><span class="dot"></span>Safe Goroutines</a>
+      <a href="early-hints.html" class="sidebar-link"><span class="dot"></span>Early Hints</a>
+      <a href="https-redirect.html" class="sidebar-link"><span class="dot"></span>HTTPS Redirect</a>
+      <a href="config.html" class="sidebar-link"><span class="dot"></span>Config from Env</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Plugins</span>
+      <a href="plugins.html" class="sidebar-link"><span class="dot"></span>Plugin System</a>
+      <a href="plugin-auth.html" class="sidebar-link"><span class="dot"></span>Auth (JWT)</a>
+      <a href="plugin-cors.html" class="sidebar-link"><span class="dot"></span>CORS</a>
+      <a href="plugin-compress.html" class="sidebar-link"><span class="dot"></span>Compress</a>
+      <a href="plugin-cache.html" class="sidebar-link"><span class="dot"></span>Cache</a>
+      <a href="plugin-ratelimit.html" class="sidebar-link"><span class="dot"></span>Rate Limit</a>
+      <a href="plugin-openapi.html" class="sidebar-link"><span class="dot"></span>OpenAPI</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Testing</span>
+      <a href="testing.html" class="sidebar-link"><span class="dot"></span>gxtest Package</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Advanced</span>
+      <a href="http3.html" class="sidebar-link"><span class="dot"></span>HTTP/2 &amp; HTTP/3</a>
+      <a href="lifecycle.html" class="sidebar-link"><span class="dot"></span>Lifecycle Hooks</a>
+      <a href="observability.html" class="sidebar-link"><span class="dot"></span>Observability</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="content">
+
+      <section class="doc-section" id="cookies">
+        <div class="section-eyebrow">Features</div>
+        <h1 class="doc-h1">Cookies</h1>
+        <p class="doc-lead">
+          GX provides context methods for reading cookies and both an inline
+          setter and a response-chain approach for writing them.
+        </p>
+
+        <h2 class="doc-h2" id="reading">Reading cookies</h2>
+        <div class="doc-table-wrap">
+          <table>
+            <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>c.Cookie(name)</td><td>(string, error)</td><td>Value of named cookie; error if absent</td></tr>
+              <tr><td>c.CookieDefault(name, def)</td><td>string</td><td>Value or <code>def</code> if absent / error</td></tr>
+              <tr><td>c.RawCookie(name)</td><td>(*http.Cookie, error)</td><td>Full <code>*http.Cookie</code> for all fields</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">read.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="cm">// Value or error</span>
+token, err <span class="op">:=</span> c.<span class="fn">Cookie</span>(<span class="str">"session_token"</span>)
+
+<span class="cm">// Value with a fallback</span>
+lang <span class="op">:=</span> c.<span class="fn">CookieDefault</span>(<span class="str">"lang"</span>, <span class="str">"en"</span>)
+
+<span class="cm">// Full http.Cookie for Path, Domain, Expires …</span>
+raw, err <span class="op">:=</span> c.<span class="fn">RawCookie</span>(<span class="str">"pref"</span>)</pre>
+        </div>
+
+        <h2 class="doc-h2" id="writing-inline">Writing cookies inline</h2>
+        <p class="doc-p">
+          <code>c.SetCookie(name, value)</code> writes the cookie directly onto the response
+          writer using secure defaults (HttpOnly, SameSite=Lax). Use this when you don't
+          need to chain it with response modifiers.
+        </p>
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">write_inline.go</span><span class="code-lang">go</span>
+          </div>
+          <pre>c.<span class="fn">SetCookie</span>(<span class="str">"session_token"</span>, token)
+<span class="kw">return</span> c.<span class="fn">JSON</span>(<span class="pkg">http</span>.<span class="ty">StatusOK</span>, payload)</pre>
+        </div>
+
+        <h2 class="doc-h2" id="writing-response">Writing cookies via response chain</h2>
+        <p class="doc-p">
+          When building responses functionally, use <code>core.WithCookie</code> to attach
+          a <code>core.Cookie</code> to any response. Full control over every attribute.
+        </p>
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">write_response.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="kw">import</span> <span class="str">"github.com/s-anzie/gx/core"</span>
+
+resp <span class="op">:=</span> <span class="pkg">core</span>.<span class="fn">WithCookie</span>(
+    c.<span class="fn">JSON</span>(payload),
+    <span class="pkg">core</span>.<span class="ty">Cookie</span>{
+        Name:     <span class="str">"session_token"</span>,
+        Value:    token,
+        MaxAge:   <span class="num">3600</span>,          <span class="cm">// 1 hour</span>
+        HttpOnly: <span class="kw">true</span>,
+        Secure:   <span class="kw">true</span>,
+        SameSite: <span class="pkg">http</span>.<span class="ty">SameSiteStrictMode</span>,
+    },
+)
+<span class="kw">return</span> resp</pre>
+        </div>
+
+        <h2 class="doc-h2" id="clearing">Clearing cookies</h2>
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">clear.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="kw">return</span> <span class="pkg">core</span>.<span class="fn">WithClearCookie</span>(c.<span class="fn">JSON</span>(payload), <span class="str">"session_token"</span>)</pre>
+        </div>
+        <p class="doc-p">
+          <code>WithClearCookie</code> sets <code>Max-Age=0</code> and <code>Expires</code> in
+          the past, instructing the browser to delete the cookie immediately.
+        </p>
+
+        <h2 class="doc-h2" id="cookie-struct">Cookie struct reference</h2>
+        <div class="doc-table-wrap">
+          <table>
+            <thead><tr><th>Field</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>Name</td><td>string</td><td>—</td><td>Cookie name</td></tr>
+              <tr><td>Value</td><td>string</td><td>—</td><td>Cookie value</td></tr>
+              <tr><td>Path</td><td>string</td><td>"/"</td><td>Scope path (default applied if empty)</td></tr>
+              <tr><td>Domain</td><td>string</td><td>—</td><td>Scope domain</td></tr>
+              <tr><td>MaxAge</td><td>int</td><td>0</td><td>Seconds until expiry; 0 = session; -1 = delete</td></tr>
+              <tr><td>Expires</td><td>time.Time</td><td>zero</td><td>Absolute expiry time</td></tr>
+              <tr><td>Secure</td><td>bool</td><td>false</td><td>HTTPS only</td></tr>
+              <tr><td>HttpOnly</td><td>bool</td><td>false</td><td>Block JS access</td></tr>
+              <tr><td>SameSite</td><td>http.SameSite</td><td>Lax (if zero)</td><td>CSRF protection mode</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <nav class="doc-nav">
+        <a href="validation.html" class="doc-nav-link prev">
+          <span class="doc-nav-label">Previous</span>
+          <span class="doc-nav-title">Validation</span>
+        </a>
+        <a href="uploads.html" class="doc-nav-link next">
+          <span class="doc-nav-label">Next</span>
+          <span class="doc-nav-title">File Uploads</span>
+        </a>
+      </nav>
+
+    </div>
+  </main>
+
+  <aside class="toc-aside">
+    <div class="toc-title">On this page</div>
+    <a href="#cookies" class="toc-link">Cookies</a>
+    <a href="#reading" class="toc-link">Reading cookies</a>
+    <a href="#writing-inline" class="toc-link">Writing inline</a>
+    <a href="#writing-response" class="toc-link">Writing via response chain</a>
+    <a href="#clearing" class="toc-link">Clearing cookies</a>
+    <a href="#cookie-struct" class="toc-link">Cookie struct</a>
+  </aside>
+</div>
+<script src="guide.js"></script>
+</body>
+</html>

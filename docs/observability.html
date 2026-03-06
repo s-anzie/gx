@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Observability — GX Documentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="guide.css" />
+</head>
+<body>
+<div id="progress" style="width:0%"></div>
+
+<nav class="topnav">
+  <div class="nav-left">
+    <a href="index.html" class="logo-link"><div class="logo-mark">GX</div><span class="logo-name">gx</span></a>
+    <div class="nav-sep"></div><span class="nav-title">Documentation</span>
+  </div>
+  <div class="nav-right">
+    <a href="quickstart.html" class="nav-link">Quickstart</a>
+    <a href="plugins.html" class="nav-link">Plugins</a>
+    <a href="testing.html" class="nav-link">Testing</a>
+    <a href="https://github.com/s-anzie/gx" target="_blank" rel="noopener" class="nav-github">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+      GitHub
+    </a>
+  </div>
+</nav>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-group">
+      <span class="sidebar-label">Introduction</span>
+      <a href="overview.html" class="sidebar-link"><span class="dot"></span>Overview</a>
+      <a href="quickstart.html" class="sidebar-link"><span class="dot"></span>Quickstart <span class="sidebar-badge">Start here</span></a>
+      <a href="installation.html" class="sidebar-link"><span class="dot"></span>Installation</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Core</span>
+      <a href="routing.html" class="sidebar-link"><span class="dot"></span>Routing</a>
+      <a href="context.html" class="sidebar-link"><span class="dot"></span>Context &amp; Request</a>
+      <a href="responses.html" class="sidebar-link"><span class="dot"></span>Responses</a>
+      <a href="middleware.html" class="sidebar-link"><span class="dot"></span>Middleware</a>
+      <a href="errors.html" class="sidebar-link"><span class="dot"></span>Error Handling</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Features</span>
+      <a href="validation.html" class="sidebar-link"><span class="dot"></span>Validation</a>
+      <a href="cookies.html" class="sidebar-link"><span class="dot"></span>Cookies</a>
+      <a href="uploads.html" class="sidebar-link"><span class="dot"></span>File Uploads</a>
+      <a href="static.html" class="sidebar-link"><span class="dot"></span>Static Files</a>
+      <a href="negotiate.html" class="sidebar-link"><span class="dot"></span>Content Negotiation</a>
+      <a href="goroutines.html" class="sidebar-link"><span class="dot"></span>Safe Goroutines</a>
+      <a href="early-hints.html" class="sidebar-link"><span class="dot"></span>Early Hints</a>
+      <a href="https-redirect.html" class="sidebar-link"><span class="dot"></span>HTTPS Redirect</a>
+      <a href="config.html" class="sidebar-link"><span class="dot"></span>Config from Env</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Plugins</span>
+      <a href="plugins.html" class="sidebar-link"><span class="dot"></span>Plugin System</a>
+      <a href="plugin-auth.html" class="sidebar-link"><span class="dot"></span>Auth (JWT)</a>
+      <a href="plugin-cors.html" class="sidebar-link"><span class="dot"></span>CORS</a>
+      <a href="plugin-compress.html" class="sidebar-link"><span class="dot"></span>Compress</a>
+      <a href="plugin-cache.html" class="sidebar-link"><span class="dot"></span>Cache</a>
+      <a href="plugin-ratelimit.html" class="sidebar-link"><span class="dot"></span>Rate Limit</a>
+      <a href="plugin-openapi.html" class="sidebar-link"><span class="dot"></span>OpenAPI</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Testing</span>
+      <a href="testing.html" class="sidebar-link"><span class="dot"></span>gxtest Package</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Advanced</span>
+      <a href="http3.html" class="sidebar-link"><span class="dot"></span>HTTP/2 &amp; HTTP/3</a>
+      <a href="lifecycle.html" class="sidebar-link"><span class="dot"></span>Lifecycle Hooks</a>
+      <a href="observability.html" class="sidebar-link active"><span class="dot"></span>Observability</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="content">
+
+      <section class="doc-section" id="overview">
+        <div class="section-eyebrow">Tooling</div>
+        <h1 class="doc-h1">Observability</h1>
+        <p class="doc-lead">GX ships with built-in support for distributed tracing, metrics, and structured logging. Each pillar is configured with <code>gx.New()</code> options and uses no-op implementations by default so you can add observability gradually.</p>
+      </section>
+
+      <section class="doc-section" id="tracing">
+        <h2 class="doc-h2">Tracing</h2>
+        <p>Enable OpenTelemetry tracing by passing <code>gx.WithTracing</code> to <code>gx.New()</code>.</p>
+
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
+          <pre>app <span class="op">:=</span> <span class="pkg">gx</span>.<span class="fn">New</span>(
+    <span class="pkg">gx</span>.<span class="fn">WithTracing</span>(<span class="str">"my-service"</span>,
+        <span class="pkg">gx</span>.<span class="fn">OTELExporter</span>(<span class="str">"http://localhost:4318"</span>), <span class="cm">// OTLP/HTTP collector endpoint</span>
+        <span class="pkg">gx</span>.<span class="fn">TracingSampler</span>(0.1),                   <span class="cm">// 10% sample rate</span>
+    ),
+)</pre>
+        </div>
+
+        <h3 class="doc-h3">Tracing Options</h3>
+        <table class="doc-table">
+          <thead><tr><th>Option</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>gx.OTELExporter(endpoint string)</code></td><td>OTLP exporter endpoint (e.g. Jaeger, Tempo, Honeycomb)</td></tr>
+            <tr><td><code>gx.TracingSampler(rate float64)</code></td><td>Sampling rate 0.0–1.0 (default: 1.0 = 100%)</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="doc-section" id="metrics">
+        <h2 class="doc-h2">Metrics</h2>
+        <p>Enable Prometheus metrics by passing <code>gx.WithMetrics</code> to <code>gx.New()</code>.</p>
+
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
+          <pre>app <span class="op">:=</span> <span class="pkg">gx</span>.<span class="fn">New</span>(
+    <span class="pkg">gx</span>.<span class="fn">WithMetrics</span>(
+        <span class="pkg">gx</span>.<span class="fn">PrometheusExporter</span>(<span class="str">":9090"</span>), <span class="cm">// Expose /metrics on a separate port</span>
+        <span class="pkg">gx</span>.<span class="fn">MetricsBuckets</span>([]<span class="ty">float64</span>{0.005, 0.01, 0.025, 0.05, 0.1, 0.5, 1}),
+    ),
+)</pre>
+        </div>
+
+        <h3 class="doc-h3">Metrics Options</h3>
+        <table class="doc-table">
+          <thead><tr><th>Option</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>gx.PrometheusExporter(addr string)</code></td><td>Bind address for the Prometheus <code>/metrics</code> HTTP endpoint</td></tr>
+            <tr><td><code>gx.MetricsBuckets(buckets []float64)</code></td><td>Custom histogram bucket boundaries for request duration</td></tr>
+          </tbody>
+        </table>
+
+        <h3 class="doc-h3">Automatic HTTP Metrics</h3>
+        <p>When metrics are enabled, GX automatically records the following for every request:</p>
+
+        <table class="doc-table">
+          <thead><tr><th>Metric</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>http_requests_total</code></td><td>Counter</td><td>Total requests, labelled by method, route, status, protocol</td></tr>
+            <tr><td><code>http_request_duration_seconds</code></td><td>Histogram</td><td>Request duration in seconds</td></tr>
+            <tr><td><code>http_request_size_bytes</code></td><td>Histogram</td><td>Request body size in bytes</td></tr>
+            <tr><td><code>http_response_size_bytes</code></td><td>Histogram</td><td>Response body size in bytes</td></tr>
+            <tr><td><code>http_active_requests</code></td><td>Gauge</td><td>Number of in-flight requests</td></tr>
+          </tbody>
+        </table>
+
+        <h3 class="doc-h3">Custom Metrics</h3>
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
+          <pre>m <span class="op">:=</span> <span class="pkg">app</span>.<span class="fn">Metrics</span>()
+
+<span class="cm">// Counter</span>
+signups <span class="op">:=</span> <span class="pkg">m</span>.<span class="fn">Counter</span>(<span class="str">"user_signups_total"</span>, <span class="str">"Total user registrations"</span>, <span class="str">"plan"</span>)
+
+<span class="pkg">app</span>.<span class="fn">POST</span>(<span class="str">"/register"</span>, <span class="kw">func</span>(c <span class="op">*</span><span class="pkg">core</span>.<span class="ty">Context</span>) <span class="pkg">core</span>.<span class="ty">Response</span> {
+    <span class="cm">// ... create user</span>
+    <span class="pkg">signups</span>.<span class="fn">With</span>(<span class="str">"plan"</span>, <span class="pkg">user</span>.<span class="ty">Plan</span>).<span class="fn">Inc</span>()
+    <span class="kw">return</span> c.<span class="fn">JSON</span>(user)
+})
+
+<span class="cm">// Histogram</span>
+queryDuration <span class="op">:=</span> <span class="pkg">m</span>.<span class="fn">Histogram</span>(<span class="str">"db_query_duration_seconds"</span>, <span class="str">"Database query duration"</span>)
+
+<span class="cm">// Gauge</span>
+activeConn <span class="op">:=</span> <span class="pkg">m</span>.<span class="fn">Gauge</span>(<span class="str">"db_active_connections"</span>, <span class="str">"Active database connections"</span>)
+<span class="pkg">activeConn</span>.<span class="fn">Set</span>(<span class="ty">float64</span>(<span class="pkg">pool</span>.<span class="fn">Stats</span>().<span class="ty">InUse</span>))</pre>
+        </div>
+      </section>
+
+      <section class="doc-section" id="logging">
+        <h2 class="doc-h2">Structured Logging</h2>
+        <p>Enable structured logging with <code>gx.WithStructuredLogs</code>. GX uses Go's standard <code>log/slog</code> package.</p>
+
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
+          <pre><span class="kw">import</span> <span class="str">"log/slog"</span>
+
+app <span class="op">:=</span> <span class="pkg">gx</span>.<span class="fn">New</span>(
+    <span class="pkg">gx</span>.<span class="fn">WithStructuredLogs</span>(
+        <span class="pkg">gx</span>.<span class="fn">LogLevel</span>(<span class="pkg">slog</span>.<span class="pl">LevelDebug</span>),
+        <span class="pkg">gx</span>.<span class="fn">WithLogFormat</span>(<span class="pkg">gx</span>.<span class="pl">LogJSON</span>),  <span class="cm">// text (default) or json</span>
+        <span class="pkg">gx</span>.<span class="fn">LogOutput</span>(<span class="pkg">os</span>.<span class="pl">Stderr</span>),
+    ),
+)</pre>
+        </div>
+
+        <h3 class="doc-h3">Logging Options</h3>
+        <table class="doc-table">
+          <thead><tr><th>Option</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>gx.LogLevel(level slog.Level)</code></td><td>Minimum level: <code>slog.LevelDebug</code>, <code>LevelInfo</code>, <code>LevelWarn</code>, <code>LevelError</code></td></tr>
+            <tr><td><code>gx.WithLogFormat(gx.LogText | gx.LogJSON)</code></td><td>Output format: <code>LogText</code> (default) or <code>LogJSON</code></td></tr>
+            <tr><td><code>gx.LogOutput(f *os.File)</code></td><td>Write destination, e.g. <code>os.Stderr</code>, a log file</td></tr>
+          </tbody>
+        </table>
+
+        <h3 class="doc-h3">Using the Logger in Handlers</h3>
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
+          <pre><span class="cm">// Per-request logger (includes request ID, method, path)</span>
+<span class="pkg">app</span>.<span class="fn">GET</span>(<span class="str">"/users"</span>, <span class="kw">func</span>(c <span class="op">*</span><span class="pkg">core</span>.<span class="ty">Context</span>) <span class="pkg">core</span>.<span class="ty">Response</span> {
+    c.<span class="fn">Log</span>().<span class="fn">Info</span>(<span class="str">"listing users"</span>, <span class="str">"page"</span>, c.<span class="fn">Query</span>(<span class="str">"page"</span>))
+    <span class="cm">// ...</span>
+})
+
+<span class="cm">// App-level logger</span>
+<span class="pkg">app</span>.<span class="fn">Logger</span>().<span class="fn">Info</span>(<span class="str">"worker started"</span>, <span class="str">"queue"</span>, <span class="str">"emails"</span>)</pre>
+        </div>
+      </section>
+
+      <section class="doc-section" id="combined">
+        <h2 class="doc-h2">All Three Together</h2>
+
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
+          <pre><span class="kw">import</span> <span class="str">"log/slog"</span>
+
+app <span class="op">:=</span> <span class="pkg">gx</span>.<span class="fn">New</span>(
+    <span class="pkg">gx</span>.<span class="fn">WithTracing</span>(<span class="str">"my-api"</span>,
+        <span class="pkg">gx</span>.<span class="fn">OTELExporter</span>(<span class="str">"http://otel-collector:4318"</span>),
+        <span class="pkg">gx</span>.<span class="fn">TracingSampler</span>(1.0),
+    ),
+    <span class="pkg">gx</span>.<span class="fn">WithMetrics</span>(
+        <span class="pkg">gx</span>.<span class="fn">PrometheusExporter</span>(<span class="str">":9090"</span>),
+    ),
+    <span class="pkg">gx</span>.<span class="fn">WithStructuredLogs</span>(
+        <span class="pkg">gx</span>.<span class="fn">WithLogFormat</span>(<span class="pkg">gx</span>.<span class="pl">LogJSON</span>),
+        <span class="pkg">gx</span>.<span class="fn">LogLevel</span>(<span class="pkg">slog</span>.<span class="pl">LevelInfo</span>),
+    ),
+)
+
+<span class="pkg">app</span>.<span class="fn">ListenWithGracefulShutdown</span>(<span class="str">":8080"</span>)</pre>
+        </div>
+      </section>
+
+      <nav class="doc-nav">
+        <a href="lifecycle.html" class="doc-nav-link prev">
+          <span class="doc-nav-label">Previous</span>
+          <span class="doc-nav-title">Lifecycle</span>
+        </a>
+      </nav>
+
+    </div>
+  </main>
+
+  <aside class="toc-aside">
+    <div class="toc-label">On this page</div>
+    <nav class="toc-nav">
+      <a class="toc-link" href="#overview">Overview</a>
+      <a class="toc-link" href="#tracing">Tracing</a>
+      <a class="toc-link" href="#metrics">Metrics</a>
+      <a class="toc-link" href="#logging">Structured Logging</a>
+      <a class="toc-link" href="#combined">All Three Together</a>
+    </nav>
+  </aside>
+</div>
+
+<script src="guide.js"></script>
+</body>
+</html>

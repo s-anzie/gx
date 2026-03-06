@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CORS — GX Documentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="guide.css" />
+</head>
+<body>
+<div id="progress" style="width:0%"></div>
+
+<nav class="topnav">
+  <div class="nav-left">
+    <a href="index.html" class="logo-link"><div class="logo-mark">GX</div><span class="logo-name">gx</span></a>
+    <div class="nav-sep"></div><span class="nav-title">Documentation</span>
+  </div>
+  <div class="nav-right">
+    <a href="quickstart.html" class="nav-link">Quickstart</a>
+    <a href="plugins.html" class="nav-link">Plugins</a>
+    <a href="testing.html" class="nav-link">Testing</a>
+    <a href="https://github.com/s-anzie/gx" target="_blank" rel="noopener" class="nav-github">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+      GitHub
+    </a>
+  </div>
+</nav>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-group">
+      <span class="sidebar-label">Introduction</span>
+      <a href="overview.html" class="sidebar-link"><span class="dot"></span>Overview</a>
+      <a href="quickstart.html" class="sidebar-link"><span class="dot"></span>Quickstart <span class="sidebar-badge">Start here</span></a>
+      <a href="installation.html" class="sidebar-link"><span class="dot"></span>Installation</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Core</span>
+      <a href="routing.html" class="sidebar-link"><span class="dot"></span>Routing</a>
+      <a href="context.html" class="sidebar-link"><span class="dot"></span>Context &amp; Request</a>
+      <a href="responses.html" class="sidebar-link"><span class="dot"></span>Responses</a>
+      <a href="middleware.html" class="sidebar-link"><span class="dot"></span>Middleware</a>
+      <a href="errors.html" class="sidebar-link"><span class="dot"></span>Error Handling</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Features</span>
+      <a href="validation.html" class="sidebar-link"><span class="dot"></span>Validation</a>
+      <a href="cookies.html" class="sidebar-link"><span class="dot"></span>Cookies</a>
+      <a href="uploads.html" class="sidebar-link"><span class="dot"></span>File Uploads</a>
+      <a href="static.html" class="sidebar-link"><span class="dot"></span>Static Files</a>
+      <a href="negotiate.html" class="sidebar-link"><span class="dot"></span>Content Negotiation</a>
+      <a href="goroutines.html" class="sidebar-link"><span class="dot"></span>Safe Goroutines</a>
+      <a href="early-hints.html" class="sidebar-link"><span class="dot"></span>Early Hints</a>
+      <a href="https-redirect.html" class="sidebar-link"><span class="dot"></span>HTTPS Redirect</a>
+      <a href="config.html" class="sidebar-link"><span class="dot"></span>Config from Env</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Plugins</span>
+      <a href="plugins.html" class="sidebar-link"><span class="dot"></span>Plugin System</a>
+      <a href="plugin-auth.html" class="sidebar-link"><span class="dot"></span>Auth (JWT)</a>
+      <a href="plugin-cors.html" class="sidebar-link active"><span class="dot"></span>CORS</a>
+      <a href="plugin-compress.html" class="sidebar-link"><span class="dot"></span>Compress</a>
+      <a href="plugin-cache.html" class="sidebar-link"><span class="dot"></span>Cache</a>
+      <a href="plugin-ratelimit.html" class="sidebar-link"><span class="dot"></span>Rate Limit</a>
+      <a href="plugin-openapi.html" class="sidebar-link"><span class="dot"></span>OpenAPI</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Testing</span>
+      <a href="testing.html" class="sidebar-link"><span class="dot"></span>gxtest Package</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Advanced</span>
+      <a href="http3.html" class="sidebar-link"><span class="dot"></span>HTTP/2 &amp; HTTP/3</a>
+      <a href="lifecycle.html" class="sidebar-link"><span class="dot"></span>Lifecycle Hooks</a>
+      <a href="observability.html" class="sidebar-link"><span class="dot"></span>Observability</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="content">
+
+      <section class="doc-section" id="overview">
+        <div class="section-eyebrow">Plugins</div>
+        <h1 class="doc-h1">CORS</h1>
+        <p class="doc-lead">The CORS plugin handles Cross-Origin Resource Sharing headers and responds to preflight <code>OPTIONS</code> requests automatically.</p>
+
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">terminal</span></div>
+          <pre>go get github.com/s-anzie/gx/plugins/cors</pre>
+        </div>
+      </section>
+
+      <section class="doc-section" id="basic">
+        <h2 class="doc-h2">Basic Usage</h2>
+
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
+          <pre><span class="kw">import</span> (
+    <span class="str">"github.com/s-anzie/gx"</span>
+    <span class="str">"github.com/s-anzie/gx/plugins/cors"</span>
+)
+
+app <span class="op">:=</span> <span class="pkg">gx</span>.<span class="fn">New</span>()
+
+<span class="cm">// Use defaults (allow all origins)</span>
+<span class="pkg">app</span>.<span class="fn">Install</span>(<span class="pkg">cors</span>.<span class="fn">New</span>(<span class="pkg">cors</span>.<span class="fn">DefaultConfig</span>()))
+
+<span class="cm">// Or provide a custom config</span>
+<span class="pkg">app</span>.<span class="fn">Install</span>(<span class="pkg">cors</span>.<span class="fn">New</span>(<span class="pkg">cors</span>.<span class="ty">Config</span>{
+    Origins:     []<span class="ty">string</span>{<span class="str">"https://app.example.com"</span>},
+    Methods:     []<span class="ty">string</span>{<span class="str">"GET"</span>, <span class="str">"POST"</span>, <span class="str">"PUT"</span>, <span class="str">"DELETE"</span>},
+    Headers:     []<span class="ty">string</span>{<span class="str">"Authorization"</span>, <span class="str">"Content-Type"</span>},
+    Credentials: <span class="kw">true</span>,
+    MaxAge:      12 <span class="op">*</span> <span class="pkg">time</span>.<span class="ty">Hour</span>,
+}))</pre>
+        </div>
+      </section>
+
+      <section class="doc-section" id="config">
+        <h2 class="doc-h2">Config Fields</h2>
+
+        <table class="doc-table">
+          <thead><tr><th>Field</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>Origins</code></td><td><code>[]string</code></td><td><code>["*"]</code></td><td>Allowed origins. Use <code>"*"</code> to allow any origin.</td></tr>
+            <tr><td><code>Methods</code></td><td><code>[]string</code></td><td>GET, POST, PUT, PATCH, DELETE, OPTIONS</td><td>Allowed HTTP methods</td></tr>
+            <tr><td><code>Headers</code></td><td><code>[]string</code></td><td>Origin, Content-Type, Accept, Authorization</td><td>Allowed request headers</td></tr>
+            <tr><td><code>ExposeHeaders</code></td><td><code>[]string</code></td><td><code>nil</code></td><td>Headers exposed to the browser</td></tr>
+            <tr><td><code>Credentials</code></td><td><code>bool</code></td><td><code>false</code></td><td>Allow cookies / authorization headers with credentials</td></tr>
+            <tr><td><code>MaxAge</code></td><td><code>time.Duration</code></td><td><code>12h</code></td><td>How long preflight results may be cached</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="doc-section" id="defaults">
+        <h2 class="doc-h2">Default Config</h2>
+        <p><code>cors.DefaultConfig()</code> returns a permissive configuration suitable for development.</p>
+
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
+          <pre><span class="pkg">cors</span>.<span class="fn">DefaultConfig</span>()
+<span class="cm">// Config{</span>
+<span class="cm">//     Origins:     []string{"*"},</span>
+<span class="cm">//     Methods:     []string{"GET","POST","PUT","PATCH","DELETE","OPTIONS"},</span>
+<span class="cm">//     Headers:     []string{"Origin","Content-Type","Accept","Authorization"},</span>
+<span class="cm">//     Credentials: false,</span>
+<span class="cm">//     MaxAge:      12 * time.Hour,</span>
+<span class="cm">// }</span></pre>
+        </div>
+      </section>
+
+      <section class="doc-section" id="credentials">
+        <h2 class="doc-h2">Credentials &amp; Specific Origins</h2>
+        <p>When <code>Credentials: true</code>, the <code>Origins</code> list must contain explicit origins — you cannot use <code>"*"</code>.</p>
+
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
+          <pre><span class="pkg">app</span>.<span class="fn">Install</span>(<span class="pkg">cors</span>.<span class="fn">New</span>(<span class="pkg">cors</span>.<span class="ty">Config</span>{
+    Origins:     []<span class="ty">string</span>{<span class="str">"https://app.example.com"</span>, <span class="str">"https://admin.example.com"</span>},
+    Methods:     []<span class="ty">string</span>{<span class="str">"GET"</span>, <span class="str">"POST"</span>, <span class="str">"PUT"</span>, <span class="str">"DELETE"</span>, <span class="str">"OPTIONS"</span>},
+    Headers:     []<span class="ty">string</span>{<span class="str">"Authorization"</span>, <span class="str">"Content-Type"</span>, <span class="str">"X-Request-ID"</span>},
+    ExposeHeaders: []<span class="ty">string</span>{<span class="str">"X-Request-ID"</span>},
+    Credentials: <span class="kw">true</span>,
+    MaxAge:      6 <span class="op">*</span> <span class="pkg">time</span>.<span class="ty">Hour</span>,
+}))</pre>
+        </div>
+      </section>
+
+      <nav class="doc-nav">
+        <a href="plugin-auth.html" class="doc-nav-link prev">
+          <span class="doc-nav-label">Previous</span>
+          <span class="doc-nav-title">Auth (JWT)</span>
+        </a>
+        <a href="plugin-compress.html" class="doc-nav-link next">
+          <span class="doc-nav-label">Next</span>
+          <span class="doc-nav-title">Compression</span>
+        </a>
+      </nav>
+
+    </div>
+  </main>
+
+  <aside class="toc-aside">
+    <div class="toc-label">On this page</div>
+    <nav class="toc-nav">
+      <a class="toc-link" href="#overview">Overview</a>
+      <a class="toc-link" href="#basic">Basic Usage</a>
+      <a class="toc-link" href="#config">Config Fields</a>
+      <a class="toc-link" href="#defaults">Default Config</a>
+      <a class="toc-link" href="#credentials">Credentials &amp; Specific Origins</a>
+    </nav>
+  </aside>
+</div>
+
+<script src="guide.js"></script>
+</body>
+</html>

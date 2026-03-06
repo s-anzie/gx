@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpenAPI — GX Documentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="guide.css" />
+</head>
+<body>
+<div id="progress" style="width:0%"></div>
+
+<nav class="topnav">
+  <div class="nav-left">
+    <a href="index.html" class="logo-link"><div class="logo-mark">GX</div><span class="logo-name">gx</span></a>
+    <div class="nav-sep"></div><span class="nav-title">Documentation</span>
+  </div>
+  <div class="nav-right">
+    <a href="quickstart.html" class="nav-link">Quickstart</a>
+    <a href="plugins.html" class="nav-link">Plugins</a>
+    <a href="testing.html" class="nav-link">Testing</a>
+    <a href="https://github.com/s-anzie/gx" target="_blank" rel="noopener" class="nav-github">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+      GitHub
+    </a>
+  </div>
+</nav>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-group">
+      <span class="sidebar-label">Introduction</span>
+      <a href="overview.html" class="sidebar-link"><span class="dot"></span>Overview</a>
+      <a href="quickstart.html" class="sidebar-link"><span class="dot"></span>Quickstart <span class="sidebar-badge">Start here</span></a>
+      <a href="installation.html" class="sidebar-link"><span class="dot"></span>Installation</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Core</span>
+      <a href="routing.html" class="sidebar-link"><span class="dot"></span>Routing</a>
+      <a href="context.html" class="sidebar-link"><span class="dot"></span>Context &amp; Request</a>
+      <a href="responses.html" class="sidebar-link"><span class="dot"></span>Responses</a>
+      <a href="middleware.html" class="sidebar-link"><span class="dot"></span>Middleware</a>
+      <a href="errors.html" class="sidebar-link"><span class="dot"></span>Error Handling</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Features</span>
+      <a href="validation.html" class="sidebar-link"><span class="dot"></span>Validation</a>
+      <a href="cookies.html" class="sidebar-link"><span class="dot"></span>Cookies</a>
+      <a href="uploads.html" class="sidebar-link"><span class="dot"></span>File Uploads</a>
+      <a href="static.html" class="sidebar-link"><span class="dot"></span>Static Files</a>
+      <a href="negotiate.html" class="sidebar-link"><span class="dot"></span>Content Negotiation</a>
+      <a href="goroutines.html" class="sidebar-link"><span class="dot"></span>Safe Goroutines</a>
+      <a href="early-hints.html" class="sidebar-link"><span class="dot"></span>Early Hints</a>
+      <a href="https-redirect.html" class="sidebar-link"><span class="dot"></span>HTTPS Redirect</a>
+      <a href="config.html" class="sidebar-link"><span class="dot"></span>Config from Env</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Plugins</span>
+      <a href="plugins.html" class="sidebar-link"><span class="dot"></span>Plugin System</a>
+      <a href="plugin-auth.html" class="sidebar-link"><span class="dot"></span>Auth (JWT)</a>
+      <a href="plugin-cors.html" class="sidebar-link"><span class="dot"></span>CORS</a>
+      <a href="plugin-compress.html" class="sidebar-link"><span class="dot"></span>Compress</a>
+      <a href="plugin-cache.html" class="sidebar-link"><span class="dot"></span>Cache</a>
+      <a href="plugin-ratelimit.html" class="sidebar-link"><span class="dot"></span>Rate Limit</a>
+      <a href="plugin-openapi.html" class="sidebar-link active"><span class="dot"></span>OpenAPI</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Testing</span>
+      <a href="testing.html" class="sidebar-link"><span class="dot"></span>gxtest Package</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Advanced</span>
+      <a href="http3.html" class="sidebar-link"><span class="dot"></span>HTTP/2 &amp; HTTP/3</a>
+      <a href="lifecycle.html" class="sidebar-link"><span class="dot"></span>Lifecycle Hooks</a>
+      <a href="observability.html" class="sidebar-link"><span class="dot"></span>Observability</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="content">
+
+      <section class="doc-section" id="overview">
+        <div class="section-eyebrow">Plugins</div>
+        <h1 class="doc-h1">OpenAPI</h1>
+        <p class="doc-lead">The OpenAPI plugin generates an OpenAPI 3.1 specification from route contracts and serves an interactive docs UI. It supports Scalar (default), Swagger UI, and Redoc.</p>
+
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">terminal</span></div>
+          <pre>go get github.com/s-anzie/gx/plugins/openapi</pre>
+        </div>
+      </section>
+
+      <section class="doc-section" id="basic">
+        <h2 class="doc-h2">Basic Setup</h2>
+
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
+          <pre><span class="kw">import</span> (
+    <span class="str">"github.com/s-anzie/gx"</span>
+    <span class="str">"github.com/s-anzie/gx/plugins/openapi"</span>
+)
+
+app <span class="op">:=</span> <span class="pkg">gx</span>.<span class="fn">New</span>()
+
+<span class="pkg">app</span>.<span class="fn">Install</span>(<span class="pkg">openapi</span>.<span class="fn">New</span>(
+    <span class="pkg">openapi</span>.<span class="fn">Title</span>(<span class="str">"My API"</span>),
+    <span class="pkg">openapi</span>.<span class="fn">Version</span>(<span class="str">"1.0.0"</span>),
+    <span class="pkg">openapi</span>.<span class="fn">Description</span>(<span class="str">"REST API powered by GX"</span>),
+))
+
+<span class="cm">// Spec available at:  GET /openapi.json</span>
+<span class="cm">// Docs UI available at: GET /docs</span></pre>
+        </div>
+      </section>
+
+      <section class="doc-section" id="options">
+        <h2 class="doc-h2">Options</h2>
+
+        <table class="doc-table">
+          <thead><tr><th>Option</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>openapi.Title(s string)</code></td><td><code>"API Documentation"</code></td><td>API title</td></tr>
+            <tr><td><code>openapi.Version(s string)</code></td><td><code>"1.0.0"</code></td><td>API version</td></tr>
+            <tr><td><code>openapi.Description(s string)</code></td><td><code>""</code></td><td>API description</td></tr>
+            <tr><td><code>openapi.DocsPath(s string)</code></td><td><code>"/docs"</code></td><td>URL path to the HTML docs UI</td></tr>
+            <tr><td><code>openapi.SpecPath(s string)</code></td><td><code>"/openapi.json"</code></td><td>URL path to the JSON spec</td></tr>
+            <tr><td><code>openapi.UI(t UIType)</code></td><td><code>openapi.Scalar</code></td><td>UI renderer: <code>Scalar</code>, <code>Swagger</code>, or <code>Redoc</code></td></tr>
+            <tr><td><code>openapi.AddServer(url, desc string)</code></td><td>localhost:8080</td><td>Add a server entry to the spec</td></tr>
+            <tr><td><code>openapi.DisableInProduction(app)</code></td><td>—</td><td>Disable docs when <code>GX_ENV=production</code></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="doc-section" id="contracts">
+        <h2 class="doc-h2">Documenting Routes with Contracts</h2>
+        <p>The spec is built from <strong>contracts</strong> attached to routes. A contract describes the summary, tags, input schemas, output schema, and possible errors for a route.</p>
+
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
+          <pre><span class="kw">type</span> <span class="ty">CreateUserBody</span> <span class="kw">struct</span> {
+    Name  <span class="ty">string</span> `json:<span class="str">"name"</span>  validate:<span class="str">"required"</span>`
+    Email <span class="ty">string</span> `json:<span class="str">"email"</span> validate:<span class="str">"required,email"</span>`
+}
+
+<span class="kw">type</span> <span class="ty">UserResponse</span> <span class="kw">struct</span> {
+    ID    <span class="ty">string</span> `json:<span class="str">"id"</span>`
+    Name  <span class="ty">string</span> `json:<span class="str">"name"</span>`
+    Email <span class="ty">string</span> `json:<span class="str">"email"</span>`
+}
+
+<span class="kw">var</span> createUserContract <span class="op">=</span> <span class="pkg">gx</span>.<span class="ty">Contract</span>{
+    Summary:     <span class="str">"Create a user"</span>,
+    Description: <span class="str">"Creates a new user account."</span>,
+    Tags:        []<span class="ty">string</span>{<span class="str">"Users"</span>},
+    Body:        <span class="pkg">gx</span>.<span class="fn">Schema</span>[<span class="ty">CreateUserBody</span>](),
+    Output:      <span class="pkg">gx</span>.<span class="fn">Schema</span>[<span class="ty">UserResponse</span>](),
+    Errors:      []<span class="pkg">gx</span>.<span class="ty">AppError</span>{<span class="pkg">gx</span>.<span class="pl">ErrValidation</span>, <span class="pkg">gx</span>.<span class="pl">ErrConflict</span>},
+}
+
+<span class="pkg">app</span>.<span class="fn">POST</span>(<span class="str">"/users"</span>, createUserContract, <span class="kw">func</span>(c <span class="op">*</span><span class="pkg">core</span>.<span class="ty">Context</span>) <span class="pkg">core</span>.<span class="ty">Response</span> {
+    <span class="kw">var</span> body <span class="ty">CreateUserBody</span>
+    <span class="kw">if</span> resp <span class="op">:=</span> <span class="pkg">gx</span>.<span class="fn">ValidateOrFail</span>(c, <span class="op">&amp;</span>body); resp <span class="op">!=</span> <span class="kw">nil</span> {
+        <span class="kw">return</span> resp
+    }
+    <span class="cm">// ... create user</span>
+    <span class="kw">return</span> c.<span class="fn">JSON</span>(<span class="ty">UserResponse</span>{ID: <span class="str">"1"</span>, Name: body.Name, Email: body.Email})
+})</pre>
+        </div>
+      </section>
+
+      <section class="doc-section" id="contract-fields">
+        <h2 class="doc-h2">Contract Fields</h2>
+
+        <table class="doc-table">
+          <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>Summary</code></td><td><code>string</code></td><td>Short description shown in the operation list</td></tr>
+            <tr><td><code>Description</code></td><td><code>string</code></td><td>Longer Markdown description</td></tr>
+            <tr><td><code>Tags</code></td><td><code>[]string</code></td><td>Groups the operation in the UI</td></tr>
+            <tr><td><code>Deprecated</code></td><td><code>bool</code></td><td>Mark the endpoint as deprecated</td></tr>
+            <tr><td><code>Params</code></td><td><code>gx.SchemaRef</code></td><td>Path parameter struct (<code>gx.Schema[T]()</code>)</td></tr>
+            <tr><td><code>Query</code></td><td><code>gx.SchemaRef</code></td><td>Query string struct</td></tr>
+            <tr><td><code>Body</code></td><td><code>gx.SchemaRef</code></td><td>Request body struct</td></tr>
+            <tr><td><code>Output</code></td><td><code>gx.SchemaRef</code></td><td>Success response struct</td></tr>
+            <tr><td><code>Errors</code></td><td><code>[]gx.AppError</code></td><td>Possible error responses</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="doc-section" id="ui">
+        <h2 class="doc-h2">Choosing a UI</h2>
+
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
+          <pre><span class="cm">// Scalar (default) — modern, clean</span>
+<span class="pkg">app</span>.<span class="fn">Install</span>(<span class="pkg">openapi</span>.<span class="fn">New</span>(<span class="pkg">openapi</span>.<span class="fn">UI</span>(<span class="pkg">openapi</span>.<span class="pl">Scalar</span>)))
+
+<span class="cm">// Swagger UI — familiar</span>
+<span class="pkg">app</span>.<span class="fn">Install</span>(<span class="pkg">openapi</span>.<span class="fn">New</span>(<span class="pkg">openapi</span>.<span class="fn">UI</span>(<span class="pkg">openapi</span>.<span class="pl">Swagger</span>)))
+
+<span class="cm">// Redoc — documentation-focused</span>
+<span class="pkg">app</span>.<span class="fn">Install</span>(<span class="pkg">openapi</span>.<span class="fn">New</span>(<span class="pkg">openapi</span>.<span class="fn">UI</span>(<span class="pkg">openapi</span>.<span class="pl">Redoc</span>)))</pre>
+        </div>
+      </section>
+
+      <section class="doc-section" id="servers">
+        <h2 class="doc-h2">Multiple Servers</h2>
+
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
+          <pre><span class="pkg">app</span>.<span class="fn">Install</span>(<span class="pkg">openapi</span>.<span class="fn">New</span>(
+    <span class="pkg">openapi</span>.<span class="fn">Title</span>(<span class="str">"My API"</span>),
+    <span class="pkg">openapi</span>.<span class="fn">Version</span>(<span class="str">"2.0.0"</span>),
+    <span class="pkg">openapi</span>.<span class="fn">AddServer</span>(<span class="str">"https://api.example.com"</span>, <span class="str">"Production"</span>),
+    <span class="pkg">openapi</span>.<span class="fn">AddServer</span>(<span class="str">"https://staging-api.example.com"</span>, <span class="str">"Staging"</span>),
+    <span class="pkg">openapi</span>.<span class="fn">AddServer</span>(<span class="str">"http://localhost:8080"</span>, <span class="str">"Development"</span>),
+))</pre>
+        </div>
+      </section>
+
+      <section class="doc-section" id="production">
+        <h2 class="doc-h2">Disabling in Production</h2>
+
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
+          <pre><span class="pkg">app</span>.<span class="fn">Install</span>(<span class="pkg">openapi</span>.<span class="fn">New</span>(
+    <span class="pkg">openapi</span>.<span class="fn">Title</span>(<span class="str">"My API"</span>),
+    <span class="pkg">openapi</span>.<span class="fn">DisableInProduction</span>(app), <span class="cm">// disabled when GX_ENV=production</span>
+))</pre>
+        </div>
+      </section>
+
+      <nav class="doc-nav">
+        <a href="plugin-ratelimit.html" class="doc-nav-link prev">
+          <span class="doc-nav-label">Previous</span>
+          <span class="doc-nav-title">Rate Limiting</span>
+        </a>
+        <a href="testing.html" class="doc-nav-link next">
+          <span class="doc-nav-label">Next</span>
+          <span class="doc-nav-title">Testing</span>
+        </a>
+      </nav>
+
+    </div>
+  </main>
+
+  <aside class="toc-aside">
+    <div class="toc-label">On this page</div>
+    <nav class="toc-nav">
+      <a class="toc-link" href="#overview">Overview</a>
+      <a class="toc-link" href="#basic">Basic Setup</a>
+      <a class="toc-link" href="#options">Options</a>
+      <a class="toc-link" href="#contracts">Documenting Routes</a>
+      <a class="toc-link" href="#contract-fields">Contract Fields</a>
+      <a class="toc-link" href="#ui">Choosing a UI</a>
+      <a class="toc-link" href="#servers">Multiple Servers</a>
+      <a class="toc-link" href="#production">Disabling in Production</a>
+    </nav>
+  </aside>
+</div>
+
+<script src="guide.js"></script>
+</body>
+</html>

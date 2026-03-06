@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Testing — GX Documentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="guide.css" />
+</head>
+<body>
+<div id="progress" style="width:0%"></div>
+
+<nav class="topnav">
+  <div class="nav-left">
+    <a href="index.html" class="logo-link"><div class="logo-mark">GX</div><span class="logo-name">gx</span></a>
+    <div class="nav-sep"></div><span class="nav-title">Documentation</span>
+  </div>
+  <div class="nav-right">
+    <a href="quickstart.html" class="nav-link">Quickstart</a>
+    <a href="plugins.html" class="nav-link">Plugins</a>
+    <a href="testing.html" class="nav-link">Testing</a>
+    <a href="https://github.com/s-anzie/gx" target="_blank" rel="noopener" class="nav-github">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+      GitHub
+    </a>
+  </div>
+</nav>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-group">
+      <span class="sidebar-label">Introduction</span>
+      <a href="overview.html" class="sidebar-link"><span class="dot"></span>Overview</a>
+      <a href="quickstart.html" class="sidebar-link"><span class="dot"></span>Quickstart <span class="sidebar-badge">Start here</span></a>
+      <a href="installation.html" class="sidebar-link"><span class="dot"></span>Installation</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Core</span>
+      <a href="routing.html" class="sidebar-link"><span class="dot"></span>Routing</a>
+      <a href="context.html" class="sidebar-link"><span class="dot"></span>Context &amp; Request</a>
+      <a href="responses.html" class="sidebar-link"><span class="dot"></span>Responses</a>
+      <a href="middleware.html" class="sidebar-link"><span class="dot"></span>Middleware</a>
+      <a href="errors.html" class="sidebar-link"><span class="dot"></span>Error Handling</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Features</span>
+      <a href="validation.html" class="sidebar-link"><span class="dot"></span>Validation</a>
+      <a href="cookies.html" class="sidebar-link"><span class="dot"></span>Cookies</a>
+      <a href="uploads.html" class="sidebar-link"><span class="dot"></span>File Uploads</a>
+      <a href="static.html" class="sidebar-link"><span class="dot"></span>Static Files</a>
+      <a href="negotiate.html" class="sidebar-link"><span class="dot"></span>Content Negotiation</a>
+      <a href="goroutines.html" class="sidebar-link"><span class="dot"></span>Safe Goroutines</a>
+      <a href="early-hints.html" class="sidebar-link"><span class="dot"></span>Early Hints</a>
+      <a href="https-redirect.html" class="sidebar-link"><span class="dot"></span>HTTPS Redirect</a>
+      <a href="config.html" class="sidebar-link"><span class="dot"></span>Config from Env</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Plugins</span>
+      <a href="plugins.html" class="sidebar-link"><span class="dot"></span>Plugin System</a>
+      <a href="plugin-auth.html" class="sidebar-link"><span class="dot"></span>Auth (JWT)</a>
+      <a href="plugin-cors.html" class="sidebar-link"><span class="dot"></span>CORS</a>
+      <a href="plugin-compress.html" class="sidebar-link"><span class="dot"></span>Compress</a>
+      <a href="plugin-cache.html" class="sidebar-link"><span class="dot"></span>Cache</a>
+      <a href="plugin-ratelimit.html" class="sidebar-link"><span class="dot"></span>Rate Limit</a>
+      <a href="plugin-openapi.html" class="sidebar-link"><span class="dot"></span>OpenAPI</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Testing</span>
+      <a href="testing.html" class="sidebar-link active"><span class="dot"></span>gxtest Package</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Advanced</span>
+      <a href="http3.html" class="sidebar-link"><span class="dot"></span>HTTP/2 &amp; HTTP/3</a>
+      <a href="lifecycle.html" class="sidebar-link"><span class="dot"></span>Lifecycle Hooks</a>
+      <a href="observability.html" class="sidebar-link"><span class="dot"></span>Observability</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="content">
+
+      <section class="doc-section" id="overview">
+        <div class="section-eyebrow">Tooling</div>
+        <h1 class="doc-h1">Testing</h1>
+        <p class="doc-lead">The <code>gxtest</code> package lets you test GX handlers, routers, and full apps without starting a real HTTP server. It wraps <code>net/http/httptest</code> with a fluent API and rich assertion helpers.</p>
+
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
+          <pre><span class="kw">import</span> <span class="str">"github.com/s-anzie/gx/gxtest"</span></pre>
+        </div>
+      </section>
+
+      <section class="doc-section" id="targets">
+        <h2 class="doc-h2">Supported Targets</h2>
+        <p><code>gxtest</code> accepts any of these as the first argument to request builders:</p>
+
+        <table class="doc-table">
+          <thead><tr><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>*gx.App</code> / <code>http.Handler</code></td><td>Full application with all middleware and plugins</td></tr>
+            <tr><td><code>*core.Router</code></td><td>A router group</td></tr>
+            <tr><td><code>core.Handler</code></td><td>A single handler function</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="doc-section" id="request-builder">
+        <h2 class="doc-h2">Building Requests</h2>
+        <p>Each method builder returns a <code>*RequestBuilder</code> with a fluent configuration API.</p>
+
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
+          <pre><span class="cm">// Available builders</span>
+<span class="pkg">gxtest</span>.<span class="fn">GET</span>(target, path)
+<span class="pkg">gxtest</span>.<span class="fn">POST</span>(target, path)
+<span class="pkg">gxtest</span>.<span class="fn">PUT</span>(target, path)
+<span class="pkg">gxtest</span>.<span class="fn">PATCH</span>(target, path)
+<span class="pkg">gxtest</span>.<span class="fn">DELETE</span>(target, path)
+
+<span class="cm">// Fluent configuration</span>
+builder.
+    <span class="fn">Header</span>(<span class="str">"Authorization"</span>, <span class="str">"Bearer token"</span>). <span class="cm">// Add request header</span>
+    <span class="fn">Cookie</span>(<span class="str">"session"</span>, <span class="str">"abc123"</span>).             <span class="cm">// Add cookie</span>
+    <span class="fn">Query</span>(<span class="str">"page"</span>, <span class="str">"2"</span>).                      <span class="cm">// Add query param</span>
+    <span class="fn">JSON</span>(body).                              <span class="cm">// Set JSON body + Content-Type</span>
+    <span class="fn">XML</span>(body).                               <span class="cm">// Set XML body + Content-Type</span>
+    <span class="fn">Body</span>(reader, <span class="str">"text/plain"</span>).              <span class="cm">// Set raw body + Content-Type</span>
+    <span class="fn">BodyString</span>(<span class="str">"raw text"</span>, <span class="str">"text/plain"</span>).    <span class="cm">// Set string body</span>
+    .<span class="fn">Do</span>(t)                                    <span class="cm">// Execute — returns *RecordedResponse</span></pre>
+        </div>
+      </section>
+
+      <section class="doc-section" id="assertions">
+        <h2 class="doc-h2">Assertions</h2>
+        <p><code>*RecordedResponse</code> provides accessor methods and assertion helpers that call <code>t.Error</code> on failure.</p>
+
+        <table class="doc-table">
+          <thead><tr><th>Method</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>.Status() int</code></td><td>Returns the HTTP status code</td></tr>
+            <tr><td><code>.Body() string</code></td><td>Returns the response body as a string</td></tr>
+            <tr><td><code>.Header(key) string</code></td><td>Returns a response header value</td></tr>
+            <tr><td><code>.AssertStatus(t, n)</code></td><td>Asserts status code == n</td></tr>
+            <tr><td><code>.AssertHeader(t, key, val)</code></td><td>Asserts header equals value</td></tr>
+            <tr><td><code>.AssertHeaderContains(t, key, sub)</code></td><td>Asserts header contains substring</td></tr>
+            <tr><td><code>.AssertBodyContains(t, sub)</code></td><td>Asserts body contains substring</td></tr>
+            <tr><td><code>.AssertBodyEquals(t, s)</code></td><td>Asserts body equals string exactly</td></tr>
+            <tr><td><code>.AssertJSON(t, &amp;out, fn)</code></td><td>Unmarshals body into out, then runs fn for assertions</td></tr>
+            <tr><td><code>.AssertError(t, code)</code></td><td>Asserts GX structured error with the given <code>code</code></td></tr>
+            <tr><td><code>.AssertErrorStatus(t, code, status)</code></td><td>Asserts both error code and status code</td></tr>
+            <tr><td><code>.AssertCookie(t, name)</code></td><td>Asserts a cookie with the given name is set</td></tr>
+            <tr><td><code>.AssertNoCookie(t, name)</code></td><td>Asserts no cookie with the given name is set</td></tr>
+            <tr><td><code>.AssertContentType(t, ct)</code></td><td>Asserts Content-Type contains ct</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="doc-section" id="examples">
+        <h2 class="doc-h2">Examples</h2>
+
+        <h3 class="doc-h3">Testing a handler directly</h3>
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
+          <pre><span class="kw">func</span> <span class="fn">TestGetUser</span>(t <span class="op">*</span><span class="pkg">testing</span>.<span class="ty">T</span>) {
+    handler <span class="op">:=</span> <span class="kw">func</span>(c <span class="op">*</span><span class="pkg">core</span>.<span class="ty">Context</span>) <span class="pkg">core</span>.<span class="ty">Response</span> {
+        <span class="kw">return</span> c.<span class="fn">JSON</span>(<span class="pkg">map</span>[<span class="ty">string</span>]<span class="ty">string</span>{<span class="str">"id"</span>: c.<span class="fn">Param</span>(<span class="str">"id"</span>)})
+    }
+
+    res <span class="op">:=</span> <span class="pkg">gxtest</span>.<span class="fn">GET</span>(handler, <span class="str">"/users/42"</span>).<span class="fn">Do</span>(t)
+
+    <span class="pkg">res</span>.<span class="fn">AssertStatus</span>(t, 200)
+    <span class="pkg">res</span>.<span class="fn">AssertContentType</span>(t, <span class="str">"application/json"</span>)
+    <span class="pkg">res</span>.<span class="fn">AssertBodyContains</span>(t, <span class="str">"42"</span>)
+}</pre>
+        </div>
+
+        <h3 class="doc-h3">Testing a full app</h3>
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
+          <pre><span class="kw">func</span> <span class="fn">TestCreateUser</span>(t <span class="op">*</span><span class="pkg">testing</span>.<span class="ty">T</span>) {
+    app <span class="op">:=</span> <span class="pkg">gx</span>.<span class="fn">New</span>()
+    <span class="pkg">app</span>.<span class="fn">POST</span>(<span class="str">"/users"</span>, <span class="kw">func</span>(c <span class="op">*</span><span class="pkg">core</span>.<span class="ty">Context</span>) <span class="pkg">core</span>.<span class="ty">Response</span> {
+        <span class="kw">var</span> body <span class="kw">struct</span> {
+            Name <span class="ty">string</span> `json:<span class="str">"name"</span>`
+        }
+        <span class="kw">if</span> resp <span class="op">:=</span> <span class="pkg">gx</span>.<span class="fn">ValidateOrFail</span>(c, <span class="op">&amp;</span>body); resp <span class="op">!=</span> <span class="kw">nil</span> {
+            <span class="kw">return</span> resp
+        }
+        <span class="kw">return</span> <span class="pkg">core</span>.<span class="fn">WithStatus</span>(c.<span class="fn">JSON</span>(body), 201)
+    })
+
+    res <span class="op">:=</span> <span class="pkg">gxtest</span>.<span class="fn">POST</span>(app, <span class="str">"/users"</span>).
+        <span class="fn">JSON</span>(<span class="pkg">map</span>[<span class="ty">string</span>]<span class="ty">string</span>{<span class="str">"name"</span>: <span class="str">"Alice"</span>}).
+        <span class="fn">Do</span>(t)
+
+    <span class="pkg">res</span>.<span class="fn">AssertStatus</span>(t, 201)
+
+    <span class="kw">var</span> got <span class="kw">struct</span>{ Name <span class="ty">string</span> }
+    <span class="pkg">res</span>.<span class="fn">AssertJSON</span>(t, <span class="op">&amp;</span>got, <span class="kw">func</span>() {
+        <span class="kw">if</span> got.Name <span class="op">!=</span> <span class="str">"Alice"</span> {
+            t.<span class="fn">Errorf</span>(<span class="str">"expected Alice, got %s"</span>, got.Name)
+        }
+    })
+}</pre>
+        </div>
+
+        <h3 class="doc-h3">Testing an error response</h3>
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
+          <pre><span class="kw">func</span> <span class="fn">TestNotFound</span>(t <span class="op">*</span><span class="pkg">testing</span>.<span class="ty">T</span>) {
+    app <span class="op">:=</span> <span class="pkg">gx</span>.<span class="fn">New</span>()
+    <span class="pkg">app</span>.<span class="fn">GET</span>(<span class="str">"/users/:id"</span>, <span class="kw">func</span>(c <span class="op">*</span><span class="pkg">core</span>.<span class="ty">Context</span>) <span class="pkg">core</span>.<span class="ty">Response</span> {
+        <span class="kw">return</span> c.<span class="fn">Fail</span>(<span class="pkg">gx</span>.<span class="pl">ErrNotFound</span>)
+    })
+
+    res <span class="op">:=</span> <span class="pkg">gxtest</span>.<span class="fn">GET</span>(app, <span class="str">"/users/999"</span>).<span class="fn">Do</span>(t)
+
+    <span class="pkg">res</span>.<span class="fn">AssertErrorStatus</span>(t, <span class="str">"NOT_FOUND"</span>, 404)
+}</pre>
+        </div>
+
+        <h3 class="doc-h3">Testing with auth headers</h3>
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
+          <pre><span class="kw">func</span> <span class="fn">TestProtectedRoute</span>(t <span class="op">*</span><span class="pkg">testing</span>.<span class="ty">T</span>) {
+    token, _ <span class="op">:=</span> <span class="pkg">auth</span>.<span class="fn">GenerateToken</span>(<span class="str">"secret"</span>, <span class="pkg">jwt</span>.<span class="ty">MapClaims</span>{
+        <span class="str">"sub"</span>: <span class="str">"user-1"</span>,
+        <span class="str">"exp"</span>: <span class="pkg">time</span>.<span class="fn">Now</span>().<span class="fn">Add</span>(<span class="pkg">time</span>.<span class="ty">Hour</span>).<span class="fn">Unix</span>(),
+    })
+
+    res <span class="op">:=</span> <span class="pkg">gxtest</span>.<span class="fn">GET</span>(app, <span class="str">"/api/me"</span>).
+        <span class="fn">Header</span>(<span class="str">"Authorization"</span>, <span class="str">"Bearer "</span><span class="op">+</span>token).
+        <span class="fn">Do</span>(t)
+
+    <span class="pkg">res</span>.<span class="fn">AssertStatus</span>(t, 200)
+}</pre>
+        </div>
+      </section>
+
+      <nav class="doc-nav">
+        <a href="plugin-openapi.html" class="doc-nav-link prev">
+          <span class="doc-nav-label">Previous</span>
+          <span class="doc-nav-title">OpenAPI</span>
+        </a>
+        <a href="http3.html" class="doc-nav-link next">
+          <span class="doc-nav-label">Next</span>
+          <span class="doc-nav-title">HTTP/3</span>
+        </a>
+      </nav>
+
+    </div>
+  </main>
+
+  <aside class="toc-aside">
+    <div class="toc-label">On this page</div>
+    <nav class="toc-nav">
+      <a class="toc-link" href="#overview">Overview</a>
+      <a class="toc-link" href="#targets">Supported Targets</a>
+      <a class="toc-link" href="#request-builder">Building Requests</a>
+      <a class="toc-link" href="#assertions">Assertions</a>
+      <a class="toc-link" href="#examples">Examples</a>
+    </nav>
+  </aside>
+</div>
+
+<script src="guide.js"></script>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rate Limiting — GX Documentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="guide.css" />
+</head>
+<body>
+<div id="progress" style="width:0%"></div>
+
+<nav class="topnav">
+  <div class="nav-left">
+    <a href="index.html" class="logo-link"><div class="logo-mark">GX</div><span class="logo-name">gx</span></a>
+    <div class="nav-sep"></div><span class="nav-title">Documentation</span>
+  </div>
+  <div class="nav-right">
+    <a href="quickstart.html" class="nav-link">Quickstart</a>
+    <a href="plugins.html" class="nav-link">Plugins</a>
+    <a href="testing.html" class="nav-link">Testing</a>
+    <a href="https://github.com/s-anzie/gx" target="_blank" rel="noopener" class="nav-github">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+      GitHub
+    </a>
+  </div>
+</nav>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-group">
+      <span class="sidebar-label">Introduction</span>
+      <a href="overview.html" class="sidebar-link"><span class="dot"></span>Overview</a>
+      <a href="quickstart.html" class="sidebar-link"><span class="dot"></span>Quickstart <span class="sidebar-badge">Start here</span></a>
+      <a href="installation.html" class="sidebar-link"><span class="dot"></span>Installation</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Core</span>
+      <a href="routing.html" class="sidebar-link"><span class="dot"></span>Routing</a>
+      <a href="context.html" class="sidebar-link"><span class="dot"></span>Context &amp; Request</a>
+      <a href="responses.html" class="sidebar-link"><span class="dot"></span>Responses</a>
+      <a href="middleware.html" class="sidebar-link"><span class="dot"></span>Middleware</a>
+      <a href="errors.html" class="sidebar-link"><span class="dot"></span>Error Handling</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Features</span>
+      <a href="validation.html" class="sidebar-link"><span class="dot"></span>Validation</a>
+      <a href="cookies.html" class="sidebar-link"><span class="dot"></span>Cookies</a>
+      <a href="uploads.html" class="sidebar-link"><span class="dot"></span>File Uploads</a>
+      <a href="static.html" class="sidebar-link"><span class="dot"></span>Static Files</a>
+      <a href="negotiate.html" class="sidebar-link"><span class="dot"></span>Content Negotiation</a>
+      <a href="goroutines.html" class="sidebar-link"><span class="dot"></span>Safe Goroutines</a>
+      <a href="early-hints.html" class="sidebar-link"><span class="dot"></span>Early Hints</a>
+      <a href="https-redirect.html" class="sidebar-link"><span class="dot"></span>HTTPS Redirect</a>
+      <a href="config.html" class="sidebar-link"><span class="dot"></span>Config from Env</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Plugins</span>
+      <a href="plugins.html" class="sidebar-link"><span class="dot"></span>Plugin System</a>
+      <a href="plugin-auth.html" class="sidebar-link"><span class="dot"></span>Auth (JWT)</a>
+      <a href="plugin-cors.html" class="sidebar-link"><span class="dot"></span>CORS</a>
+      <a href="plugin-compress.html" class="sidebar-link"><span class="dot"></span>Compress</a>
+      <a href="plugin-cache.html" class="sidebar-link"><span class="dot"></span>Cache</a>
+      <a href="plugin-ratelimit.html" class="sidebar-link active"><span class="dot"></span>Rate Limit</a>
+      <a href="plugin-openapi.html" class="sidebar-link"><span class="dot"></span>OpenAPI</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Testing</span>
+      <a href="testing.html" class="sidebar-link"><span class="dot"></span>gxtest Package</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Advanced</span>
+      <a href="http3.html" class="sidebar-link"><span class="dot"></span>HTTP/2 &amp; HTTP/3</a>
+      <a href="lifecycle.html" class="sidebar-link"><span class="dot"></span>Lifecycle Hooks</a>
+      <a href="observability.html" class="sidebar-link"><span class="dot"></span>Observability</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="content">
+
+      <section class="doc-section" id="overview">
+        <div class="section-eyebrow">Plugins</div>
+        <h1 class="doc-h1">Rate Limiting</h1>
+        <p class="doc-lead">The ratelimit plugin enforces request-rate limits using a sliding-window counter. It adds standard <code>X-RateLimit-*</code> headers and returns <code>429 Too Many Requests</code> when the limit is exceeded.</p>
+
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">terminal</span></div>
+          <pre>go get github.com/s-anzie/gx/plugins/ratelimit</pre>
+        </div>
+      </section>
+
+      <section class="doc-section" id="basic">
+        <h2 class="doc-h2">Basic Usage</h2>
+
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
+          <pre><span class="kw">import</span> (
+    <span class="str">"time"</span>
+    <span class="str">"github.com/s-anzie/gx"</span>
+    <span class="str">"github.com/s-anzie/gx/plugins/ratelimit"</span>
+)
+
+app <span class="op">:=</span> <span class="pkg">gx</span>.<span class="fn">New</span>()
+
+<span class="cm">// 100 requests per minute per IP address</span>
+<span class="pkg">app</span>.<span class="fn">Install</span>(<span class="pkg">ratelimit</span>.<span class="fn">New</span>(
+    <span class="pkg">ratelimit</span>.<span class="fn">PerIP</span>(100, <span class="pkg">time</span>.<span class="ty">Minute</span>),
+))</pre>
+        </div>
+      </section>
+
+      <section class="doc-section" id="options">
+        <h2 class="doc-h2">Options</h2>
+
+        <table class="doc-table">
+          <thead><tr><th>Option</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>ratelimit.PerIP(limit int, window time.Duration)</code></td><td>Rate limit by client IP address. Sets <code>Limit</code>, <code>Window</code>, and a default IP-based <code>KeyFunc</code>.</td></tr>
+            <tr><td><code>ratelimit.PerUser(limit int, window time.Duration)</code></td><td>Rate limit by authenticated user ID (falls back to IP)</td></tr>
+            <tr><td><code>ratelimit.OnExceeded(fn func(*gx.Context) core.Response)</code></td><td>Custom response when limit is exceeded</td></tr>
+            <tr><td><code>ratelimit.WithBackend(b Backend)</code></td><td>Custom storage backend</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="doc-section" id="headers">
+        <h2 class="doc-h2">Rate Limit Headers</h2>
+        <p>These headers are set on every response (not just when the limit is exceeded).</p>
+
+        <table class="doc-table">
+          <thead><tr><th>Header</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>X-RateLimit-Limit</code></td><td>Maximum requests allowed in the window</td></tr>
+            <tr><td><code>X-RateLimit-Remaining</code></td><td>Remaining requests in the current window</td></tr>
+            <tr><td><code>Retry-After</code></td><td>Seconds until the window resets (only on 429 responses)</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="doc-section" id="custom-exceeded">
+        <h2 class="doc-h2">Custom Exceeded Response</h2>
+
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
+          <pre><span class="pkg">app</span>.<span class="fn">Install</span>(<span class="pkg">ratelimit</span>.<span class="fn">New</span>(
+    <span class="pkg">ratelimit</span>.<span class="fn">PerIP</span>(60, <span class="pkg">time</span>.<span class="ty">Minute</span>),
+    <span class="pkg">ratelimit</span>.<span class="fn">OnExceeded</span>(<span class="kw">func</span>(c <span class="op">*</span><span class="pkg">gx</span>.<span class="ty">Context</span>) <span class="pkg">core</span>.<span class="ty">Response</span> {
+        <span class="kw">return</span> c.<span class="fn">Fail</span>(<span class="pkg">gx</span>.<span class="fn">E</span>(429, <span class="str">"RATE_LIMITED"</span>,
+            <span class="str">"Too many requests. Please slow down."</span>))
+    }),
+))</pre>
+        </div>
+      </section>
+
+      <section class="doc-section" id="per-user">
+        <h2 class="doc-h2">Per-User Rate Limiting</h2>
+        <p><code>PerUser</code> extracts the user identity from the typed context (set by the auth plugin). It falls back to IP address if no user identity is found.</p>
+
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
+          <pre><span class="cm">// Install auth first, then rate limit per user</span>
+<span class="pkg">app</span>.<span class="fn">Install</span>(<span class="pkg">auth</span>.<span class="fn">JWT</span>(<span class="pkg">auth</span>.<span class="fn">Secret</span>(<span class="str">"secret"</span>)), <span class="pkg">gx</span>.<span class="fn">PluginPriority</span>(750))
+<span class="pkg">app</span>.<span class="fn">Install</span>(<span class="pkg">ratelimit</span>.<span class="fn">New</span>(
+    <span class="pkg">ratelimit</span>.<span class="fn">PerUser</span>(1000, <span class="pkg">time</span>.<span class="ty">Hour</span>),
+), <span class="pkg">gx</span>.<span class="fn">PluginPriority</span>(800))</pre>
+        </div>
+      </section>
+
+      <section class="doc-section" id="backend">
+        <h2 class="doc-h2">Custom Backend</h2>
+        <p>Implement <code>ratelimit.Backend</code> to use Redis or another distributed store for rate limiting across multiple instances.</p>
+
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
+          <pre><span class="cm">// ratelimit.Backend interface</span>
+<span class="kw">type</span> <span class="ty">Backend</span> <span class="kw">interface</span> {
+    <span class="fn">Increment</span>(key <span class="ty">string</span>, window <span class="pkg">time</span>.<span class="ty">Duration</span>, limit <span class="ty">int</span>) (count <span class="ty">int</span>, exceeded <span class="ty">bool</span>, err <span class="ty">error</span>)
+    <span class="fn">Reset</span>(key <span class="ty">string</span>) <span class="ty">error</span>
+}
+
+<span class="pkg">app</span>.<span class="fn">Install</span>(<span class="pkg">ratelimit</span>.<span class="fn">New</span>(
+    <span class="pkg">ratelimit</span>.<span class="fn">PerIP</span>(100, <span class="pkg">time</span>.<span class="ty">Minute</span>),
+    <span class="pkg">ratelimit</span>.<span class="fn">WithBackend</span>(<span class="op">&amp;</span><span class="ty">RedisRateLimitBackend</span>{client: redisClient}),
+))</pre>
+        </div>
+      </section>
+
+      <nav class="doc-nav">
+        <a href="plugin-cache.html" class="doc-nav-link prev">
+          <span class="doc-nav-label">Previous</span>
+          <span class="doc-nav-title">Cache</span>
+        </a>
+        <a href="plugin-openapi.html" class="doc-nav-link next">
+          <span class="doc-nav-label">Next</span>
+          <span class="doc-nav-title">OpenAPI</span>
+        </a>
+      </nav>
+
+    </div>
+  </main>
+
+  <aside class="toc-aside">
+    <div class="toc-label">On this page</div>
+    <nav class="toc-nav">
+      <a class="toc-link" href="#overview">Overview</a>
+      <a class="toc-link" href="#basic">Basic Usage</a>
+      <a class="toc-link" href="#options">Options</a>
+      <a class="toc-link" href="#headers">Rate Limit Headers</a>
+      <a class="toc-link" href="#custom-exceeded">Custom Exceeded Response</a>
+      <a class="toc-link" href="#per-user">Per-User Rate Limiting</a>
+      <a class="toc-link" href="#backend">Custom Backend</a>
+    </nav>
+  </aside>
+</div>
+
+<script src="guide.js"></script>
+</body>
+</html>

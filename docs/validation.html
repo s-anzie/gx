@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Validation — GX Documentation</title>
+  <meta name="description" content="GX struct validation with go-playground/validator: ValidateOrFail, Validate, RegisterValidator, RegisterValidatorAlias, and custom tags." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="guide.css" />
+</head>
+<body>
+<div id="progress" style="width:0%"></div>
+<nav class="topnav">
+  <div class="nav-left">
+    <a href="index.html" class="logo-link"><div class="logo-mark">GX</div><span class="logo-name">gx</span></a>
+    <div class="nav-sep"></div><span class="nav-title">Documentation</span>
+  </div>
+  <div class="nav-right">
+    <a href="quickstart.html" class="nav-link">Quickstart</a>
+    <a href="plugins.html" class="nav-link">Plugins</a>
+    <a href="testing.html" class="nav-link">Testing</a>
+    <a href="https://github.com/s-anzie/gx" target="_blank" rel="noopener" class="nav-github">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+      GitHub
+    </a>
+  </div>
+</nav>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-group">
+      <span class="sidebar-label">Introduction</span>
+      <a href="overview.html" class="sidebar-link"><span class="dot"></span>Overview</a>
+      <a href="quickstart.html" class="sidebar-link"><span class="dot"></span>Quickstart <span class="sidebar-badge">Start here</span></a>
+      <a href="installation.html" class="sidebar-link"><span class="dot"></span>Installation</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Core</span>
+      <a href="routing.html" class="sidebar-link"><span class="dot"></span>Routing</a>
+      <a href="context.html" class="sidebar-link"><span class="dot"></span>Context &amp; Request</a>
+      <a href="responses.html" class="sidebar-link"><span class="dot"></span>Responses</a>
+      <a href="middleware.html" class="sidebar-link"><span class="dot"></span>Middleware</a>
+      <a href="errors.html" class="sidebar-link"><span class="dot"></span>Error Handling</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Features</span>
+      <a href="validation.html" class="sidebar-link"><span class="dot"></span>Validation</a>
+      <a href="cookies.html" class="sidebar-link"><span class="dot"></span>Cookies</a>
+      <a href="uploads.html" class="sidebar-link"><span class="dot"></span>File Uploads</a>
+      <a href="static.html" class="sidebar-link"><span class="dot"></span>Static Files</a>
+      <a href="negotiate.html" class="sidebar-link"><span class="dot"></span>Content Negotiation</a>
+      <a href="goroutines.html" class="sidebar-link"><span class="dot"></span>Safe Goroutines</a>
+      <a href="early-hints.html" class="sidebar-link"><span class="dot"></span>Early Hints</a>
+      <a href="https-redirect.html" class="sidebar-link"><span class="dot"></span>HTTPS Redirect</a>
+      <a href="config.html" class="sidebar-link"><span class="dot"></span>Config from Env</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Plugins</span>
+      <a href="plugins.html" class="sidebar-link"><span class="dot"></span>Plugin System</a>
+      <a href="plugin-auth.html" class="sidebar-link"><span class="dot"></span>Auth (JWT)</a>
+      <a href="plugin-cors.html" class="sidebar-link"><span class="dot"></span>CORS</a>
+      <a href="plugin-compress.html" class="sidebar-link"><span class="dot"></span>Compress</a>
+      <a href="plugin-cache.html" class="sidebar-link"><span class="dot"></span>Cache</a>
+      <a href="plugin-ratelimit.html" class="sidebar-link"><span class="dot"></span>Rate Limit</a>
+      <a href="plugin-openapi.html" class="sidebar-link"><span class="dot"></span>OpenAPI</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Testing</span>
+      <a href="testing.html" class="sidebar-link"><span class="dot"></span>gxtest Package</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Advanced</span>
+      <a href="http3.html" class="sidebar-link"><span class="dot"></span>HTTP/2 &amp; HTTP/3</a>
+      <a href="lifecycle.html" class="sidebar-link"><span class="dot"></span>Lifecycle Hooks</a>
+      <a href="observability.html" class="sidebar-link"><span class="dot"></span>Observability</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="content">
+
+      <section class="doc-section" id="validation">
+        <div class="section-eyebrow">Features</div>
+        <h1 class="doc-h1">Validation</h1>
+        <p class="doc-lead">
+          GX uses <a href="https://github.com/go-playground/validator" target="_blank" rel="noopener">go-playground/validator v10</a>
+          under the hood. Annotate your structs with <code>validate:"..."</code> tags and
+          call one of the validation helpers.
+        </p>
+
+        <h2 class="doc-h2" id="validate-or-fail">ValidateOrFail</h2>
+        <p class="doc-p">
+          <code>gx.ValidateOrFail(c, &amp;v)</code> is the most common pattern. It validates
+          the struct, and if invalid returns a ready-made <code>422 Unprocessable Entity</code>
+          response with field-level errors. It returns <code>(nil, true)</code> on success.
+        </p>
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">handler.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="kw">type</span> <span class="ty">CreateUserReq</span> <span class="kw">struct</span> {
+    Name  <span class="ty">string</span> <span class="str">`json:"name"  validate:"required,min=2,max=50"`</span>
+    Email <span class="ty">string</span> <span class="str">`json:"email" validate:"required,email"`</span>
+    Age   <span class="ty">int</span>    <span class="str">`json:"age"   validate:"gte=18,lte=120"`</span>
+}
+
+<span class="kw">func</span> <span class="fn">CreateUser</span>(c <span class="op">*</span><span class="pkg">core</span>.<span class="ty">Context</span>) <span class="pkg">core</span>.<span class="ty">Response</span> {
+    <span class="kw">var</span> req <span class="ty">CreateUserReq</span>
+    <span class="kw">if</span> err <span class="op">:=</span> c.<span class="fn">BindJSON</span>(<span class="op">&amp;</span>req); err <span class="op">!=</span> <span class="kw">nil</span> {
+        <span class="kw">return</span> <span class="pkg">gx</span>.<span class="pl">ErrBadRequest</span>.<span class="fn">With</span>(<span class="str">"detail"</span>, err.<span class="fn">Error</span>()).<span class="fn">ToResponse</span>()
+    }
+
+    <span class="kw">if</span> res, ok <span class="op">:=</span> <span class="pkg">gx</span>.<span class="fn">ValidateOrFail</span>(c, <span class="op">&amp;</span>req); <span class="op">!</span>ok {
+        <span class="kw">return</span> res <span class="cm">// automatic 422 with field errors</span>
+    }
+
+    <span class="cm">// req is valid — proceed</span>
+    <span class="kw">return</span> c.<span class="fn">JSON</span>(user)
+}</pre>
+        </div>
+
+        <h2 class="doc-h2" id="validate">Validate</h2>
+        <p class="doc-p">
+          Use <code>gx.Validate(v)</code> when you want to handle the error yourself rather
+          than returning an automatic response.
+        </p>
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">manual_validate.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="kw">if</span> err <span class="op">:=</span> <span class="pkg">gx</span>.<span class="fn">Validate</span>(<span class="op">&amp;</span>req); err <span class="op">!=</span> <span class="kw">nil</span> {
+    <span class="kw">return</span> <span class="pkg">gx</span>.<span class="pl">ErrValidation</span>.<span class="fn">With</span>(<span class="str">"fields"</span>, err).<span class="fn">ToResponse</span>()
+}</pre>
+        </div>
+
+        <h2 class="doc-h2" id="validate-var">ValidateVar</h2>
+        <p class="doc-p">Validate a single value without a struct:</p>
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">validate_var.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="kw">if</span> err <span class="op">:=</span> <span class="pkg">gx</span>.<span class="fn">ValidateVar</span>(email, <span class="str">"required,email"</span>); err <span class="op">!=</span> <span class="kw">nil</span> {
+    <span class="kw">return</span> <span class="pkg">gx</span>.<span class="pl">ErrBadRequest</span>.<span class="fn">With</span>(<span class="str">"email"</span>, <span class="str">"invalid email address"</span>).<span class="fn">ToResponse</span>()
+}</pre>
+        </div>
+
+        <h2 class="doc-h2" id="custom-validators">Custom validators</h2>
+        <p class="doc-p">
+          Register entirely new tags with <code>gx.RegisterValidator</code>, or
+          compose existing tags into an alias with <code>gx.RegisterValidatorAlias</code>.
+          Both must be called before the first use of <code>Validate</code>.
+        </p>
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">custom_validator.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="kw">import</span> <span class="str">"github.com/go-playground/validator/v10"</span>
+
+<span class="cm">// Custom rule</span>
+<span class="pkg">gx</span>.<span class="fn">RegisterValidator</span>(<span class="str">"slug"</span>, <span class="kw">func</span>(fl <span class="pkg">validator</span>.<span class="ty">FieldLevel</span>) <span class="ty">bool</span> {
+    <span class="kw">return</span> slugRegex.<span class="fn">MatchString</span>(fl.<span class="fn">Field</span>().<span class="fn">String</span>())
+})
+
+<span class="cm">// Alias composing existing tags</span>
+<span class="pkg">gx</span>.<span class="fn">RegisterValidatorAlias</span>(<span class="str">"password"</span>, <span class="str">"required,min=8,max=72"</span>)
+
+<span class="cm">// Use in struct tags</span>
+<span class="kw">type</span> <span class="ty">Req</span> <span class="kw">struct</span> {
+    Username <span class="ty">string</span> <span class="str">`validate:"required,slug"`</span>
+    Password <span class="ty">string</span> <span class="str">`validate:"password"`</span>
+}</pre>
+        </div>
+
+        <h2 class="doc-h2" id="common-tags">Common validate tags</h2>
+        <div class="doc-table-wrap">
+          <table>
+            <thead><tr><th>Tag</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>required</td><td>field must be present and non-zero</td></tr>
+              <tr><td>min=N / max=N</td><td>string length or numeric value bounds</td></tr>
+              <tr><td>gte=N / lte=N</td><td>numeric greater/less-than-or-equal</td></tr>
+              <tr><td>email</td><td>valid email address format</td></tr>
+              <tr><td>url</td><td>valid URL (scheme required)</td></tr>
+              <tr><td>uuid / uuid4</td><td>UUID format</td></tr>
+              <tr><td>oneof=a b c</td><td>value must equal one of the listed literals</td></tr>
+              <tr><td>len=N</td><td>exact string or slice length</td></tr>
+              <tr><td>alphanum</td><td>alphanumeric characters only</td></tr>
+              <tr><td>numeric</td><td>numeric string</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <nav class="doc-nav">
+        <a href="errors.html" class="doc-nav-link prev">
+          <span class="doc-nav-label">Previous</span>
+          <span class="doc-nav-title">Error Handling</span>
+        </a>
+        <a href="cookies.html" class="doc-nav-link next">
+          <span class="doc-nav-label">Next</span>
+          <span class="doc-nav-title">Cookies</span>
+        </a>
+      </nav>
+
+    </div>
+  </main>
+
+  <aside class="toc-aside">
+    <div class="toc-title">On this page</div>
+    <a href="#validation" class="toc-link">Overview</a>
+    <a href="#validate-or-fail" class="toc-link">ValidateOrFail</a>
+    <a href="#validate" class="toc-link">Validate</a>
+    <a href="#validate-var" class="toc-link">ValidateVar</a>
+    <a href="#custom-validators" class="toc-link">Custom validators</a>
+    <a href="#common-tags" class="toc-link">Common tags</a>
+  </aside>
+</div>
+<script src="guide.js"></script>
+</body>
+</html>

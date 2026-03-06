@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compression — GX Documentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="guide.css" />
+</head>
+<body>
+<div id="progress" style="width:0%"></div>
+
+<nav class="topnav">
+  <div class="nav-left">
+    <a href="index.html" class="logo-link"><div class="logo-mark">GX</div><span class="logo-name">gx</span></a>
+    <div class="nav-sep"></div><span class="nav-title">Documentation</span>
+  </div>
+  <div class="nav-right">
+    <a href="quickstart.html" class="nav-link">Quickstart</a>
+    <a href="plugins.html" class="nav-link">Plugins</a>
+    <a href="testing.html" class="nav-link">Testing</a>
+    <a href="https://github.com/s-anzie/gx" target="_blank" rel="noopener" class="nav-github">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+      GitHub
+    </a>
+  </div>
+</nav>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-group">
+      <span class="sidebar-label">Introduction</span>
+      <a href="overview.html" class="sidebar-link"><span class="dot"></span>Overview</a>
+      <a href="quickstart.html" class="sidebar-link"><span class="dot"></span>Quickstart <span class="sidebar-badge">Start here</span></a>
+      <a href="installation.html" class="sidebar-link"><span class="dot"></span>Installation</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Core</span>
+      <a href="routing.html" class="sidebar-link"><span class="dot"></span>Routing</a>
+      <a href="context.html" class="sidebar-link"><span class="dot"></span>Context &amp; Request</a>
+      <a href="responses.html" class="sidebar-link"><span class="dot"></span>Responses</a>
+      <a href="middleware.html" class="sidebar-link"><span class="dot"></span>Middleware</a>
+      <a href="errors.html" class="sidebar-link"><span class="dot"></span>Error Handling</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Features</span>
+      <a href="validation.html" class="sidebar-link"><span class="dot"></span>Validation</a>
+      <a href="cookies.html" class="sidebar-link"><span class="dot"></span>Cookies</a>
+      <a href="uploads.html" class="sidebar-link"><span class="dot"></span>File Uploads</a>
+      <a href="static.html" class="sidebar-link"><span class="dot"></span>Static Files</a>
+      <a href="negotiate.html" class="sidebar-link"><span class="dot"></span>Content Negotiation</a>
+      <a href="goroutines.html" class="sidebar-link"><span class="dot"></span>Safe Goroutines</a>
+      <a href="early-hints.html" class="sidebar-link"><span class="dot"></span>Early Hints</a>
+      <a href="https-redirect.html" class="sidebar-link"><span class="dot"></span>HTTPS Redirect</a>
+      <a href="config.html" class="sidebar-link"><span class="dot"></span>Config from Env</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Plugins</span>
+      <a href="plugins.html" class="sidebar-link"><span class="dot"></span>Plugin System</a>
+      <a href="plugin-auth.html" class="sidebar-link"><span class="dot"></span>Auth (JWT)</a>
+      <a href="plugin-cors.html" class="sidebar-link"><span class="dot"></span>CORS</a>
+      <a href="plugin-compress.html" class="sidebar-link active"><span class="dot"></span>Compress</a>
+      <a href="plugin-cache.html" class="sidebar-link"><span class="dot"></span>Cache</a>
+      <a href="plugin-ratelimit.html" class="sidebar-link"><span class="dot"></span>Rate Limit</a>
+      <a href="plugin-openapi.html" class="sidebar-link"><span class="dot"></span>OpenAPI</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Testing</span>
+      <a href="testing.html" class="sidebar-link"><span class="dot"></span>gxtest Package</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Advanced</span>
+      <a href="http3.html" class="sidebar-link"><span class="dot"></span>HTTP/2 &amp; HTTP/3</a>
+      <a href="lifecycle.html" class="sidebar-link"><span class="dot"></span>Lifecycle Hooks</a>
+      <a href="observability.html" class="sidebar-link"><span class="dot"></span>Observability</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="content">
+
+      <section class="doc-section" id="overview">
+        <div class="section-eyebrow">Plugins</div>
+        <h1 class="doc-h1">Compression</h1>
+        <p class="doc-lead">The compress plugin transparently compresses responses using Brotli or Gzip based on the client's <code>Accept-Encoding</code> header. Responses below the minimum size threshold are sent uncompressed.</p>
+
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">terminal</span></div>
+          <pre>go get github.com/s-anzie/gx/plugins/compress</pre>
+        </div>
+      </section>
+
+      <section class="doc-section" id="basic">
+        <h2 class="doc-h2">Basic Usage</h2>
+
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
+          <pre><span class="kw">import</span> (
+    <span class="str">"github.com/s-anzie/gx"</span>
+    <span class="str">"github.com/s-anzie/gx/plugins/compress"</span>
+)
+
+app <span class="op">:=</span> <span class="pkg">gx</span>.<span class="fn">New</span>()
+
+<span class="cm">// Use defaults: Brotli preferred, then Gzip; MinSize=1024; Level=-1 (default)</span>
+<span class="pkg">app</span>.<span class="fn">Install</span>(<span class="pkg">compress</span>.<span class="fn">New</span>(<span class="pkg">compress</span>.<span class="fn">DefaultConfig</span>()))</pre>
+        </div>
+      </section>
+
+      <section class="doc-section" id="config">
+        <h2 class="doc-h2">Config Fields</h2>
+
+        <table class="doc-table">
+          <thead><tr><th>Field</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>Algorithms</code></td><td><code>[]Algorithm</code></td><td><code>[Brotli, Gzip]</code></td><td>Algorithms to offer, in order of preference</td></tr>
+            <tr><td><code>MinSize</code></td><td><code>int</code></td><td><code>1024</code></td><td>Minimum response size in bytes to compress</td></tr>
+            <tr><td><code>Level</code></td><td><code>int</code></td><td><code>-1</code></td><td>Compression level. <code>-1</code> = default, <code>1–9</code> for Gzip</td></tr>
+          </tbody>
+        </table>
+
+        <table class="doc-table">
+          <thead><tr><th>Algorithm constant</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td><code>compress.Brotli</code></td><td>Brotli (<code>br</code>) — better compression ratio</td></tr>
+            <tr><td><code>compress.Gzip</code></td><td>Gzip — wider client support</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="doc-section" id="custom">
+        <h2 class="doc-h2">Custom Configuration</h2>
+
+        <div class="code-wrap">
+          <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
+          <pre><span class="pkg">app</span>.<span class="fn">Install</span>(<span class="pkg">compress</span>.<span class="fn">New</span>(<span class="pkg">compress</span>.<span class="ty">Config</span>{
+    Algorithms: []<span class="pkg">compress</span>.<span class="ty">Algorithm</span>{<span class="pkg">compress</span>.<span class="pl">Gzip</span>}, <span class="cm">// Gzip only</span>
+    MinSize:    512,
+    Level:      6, <span class="cm">// Balanced speed/ratio for Gzip</span>
+}))</pre>
+        </div>
+      </section>
+
+      <section class="doc-section" id="notes">
+        <h2 class="doc-h2">Notes</h2>
+        <ul class="doc-list">
+          <li>The plugin buffers response data until <code>MinSize</code> bytes are accumulated before deciding whether to compress.</li>
+          <li>The <code>Content-Length</code> header is removed from compressed responses since the final size differs.</li>
+          <li>The plugin is installed at priority <code>100</code> by default — lower than auth and rate-limiting so it compresses the final output.</li>
+          <li>For static files, consider pre-compressing with <code>.gz</code>/<code>.br</code> variants instead — GX's static file server will serve them directly.</li>
+        </ul>
+      </section>
+
+      <nav class="doc-nav">
+        <a href="plugin-cors.html" class="doc-nav-link prev">
+          <span class="doc-nav-label">Previous</span>
+          <span class="doc-nav-title">CORS</span>
+        </a>
+        <a href="plugin-cache.html" class="doc-nav-link next">
+          <span class="doc-nav-label">Next</span>
+          <span class="doc-nav-title">Cache</span>
+        </a>
+      </nav>
+
+    </div>
+  </main>
+
+  <aside class="toc-aside">
+    <div class="toc-label">On this page</div>
+    <nav class="toc-nav">
+      <a class="toc-link" href="#overview">Overview</a>
+      <a class="toc-link" href="#basic">Basic Usage</a>
+      <a class="toc-link" href="#config">Config Fields</a>
+      <a class="toc-link" href="#custom">Custom Configuration</a>
+      <a class="toc-link" href="#notes">Notes</a>
+    </nav>
+  </aside>
+</div>
+
+<script src="guide.js"></script>
+</body>
+</html>

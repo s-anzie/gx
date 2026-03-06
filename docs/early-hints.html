@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Early Hints — GX Documentation</title>
+  <meta name="description" content="HTTP 103 Early Hints in GX: c.EarlyHints, core.Preload, core.Prefetch, core.Preconnect, core.DNSPrefetch for faster page loads." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="guide.css" />
+</head>
+<body>
+<div id="progress" style="width:0%"></div>
+<nav class="topnav">
+  <div class="nav-left">
+    <a href="index.html" class="logo-link"><div class="logo-mark">GX</div><span class="logo-name">gx</span></a>
+    <div class="nav-sep"></div><span class="nav-title">Documentation</span>
+  </div>
+  <div class="nav-right">
+    <a href="quickstart.html" class="nav-link">Quickstart</a>
+    <a href="plugins.html" class="nav-link">Plugins</a>
+    <a href="testing.html" class="nav-link">Testing</a>
+    <a href="https://github.com/s-anzie/gx" target="_blank" rel="noopener" class="nav-github">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+      GitHub
+    </a>
+  </div>
+</nav>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-group">
+      <span class="sidebar-label">Introduction</span>
+      <a href="overview.html" class="sidebar-link"><span class="dot"></span>Overview</a>
+      <a href="quickstart.html" class="sidebar-link"><span class="dot"></span>Quickstart <span class="sidebar-badge">Start here</span></a>
+      <a href="installation.html" class="sidebar-link"><span class="dot"></span>Installation</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Core</span>
+      <a href="routing.html" class="sidebar-link"><span class="dot"></span>Routing</a>
+      <a href="context.html" class="sidebar-link"><span class="dot"></span>Context &amp; Request</a>
+      <a href="responses.html" class="sidebar-link"><span class="dot"></span>Responses</a>
+      <a href="middleware.html" class="sidebar-link"><span class="dot"></span>Middleware</a>
+      <a href="errors.html" class="sidebar-link"><span class="dot"></span>Error Handling</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Features</span>
+      <a href="validation.html" class="sidebar-link"><span class="dot"></span>Validation</a>
+      <a href="cookies.html" class="sidebar-link"><span class="dot"></span>Cookies</a>
+      <a href="uploads.html" class="sidebar-link"><span class="dot"></span>File Uploads</a>
+      <a href="static.html" class="sidebar-link"><span class="dot"></span>Static Files</a>
+      <a href="negotiate.html" class="sidebar-link"><span class="dot"></span>Content Negotiation</a>
+      <a href="goroutines.html" class="sidebar-link"><span class="dot"></span>Safe Goroutines</a>
+      <a href="early-hints.html" class="sidebar-link"><span class="dot"></span>Early Hints</a>
+      <a href="https-redirect.html" class="sidebar-link"><span class="dot"></span>HTTPS Redirect</a>
+      <a href="config.html" class="sidebar-link"><span class="dot"></span>Config from Env</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Plugins</span>
+      <a href="plugins.html" class="sidebar-link"><span class="dot"></span>Plugin System</a>
+      <a href="plugin-auth.html" class="sidebar-link"><span class="dot"></span>Auth (JWT)</a>
+      <a href="plugin-cors.html" class="sidebar-link"><span class="dot"></span>CORS</a>
+      <a href="plugin-compress.html" class="sidebar-link"><span class="dot"></span>Compress</a>
+      <a href="plugin-cache.html" class="sidebar-link"><span class="dot"></span>Cache</a>
+      <a href="plugin-ratelimit.html" class="sidebar-link"><span class="dot"></span>Rate Limit</a>
+      <a href="plugin-openapi.html" class="sidebar-link"><span class="dot"></span>OpenAPI</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Testing</span>
+      <a href="testing.html" class="sidebar-link"><span class="dot"></span>gxtest Package</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Advanced</span>
+      <a href="http3.html" class="sidebar-link"><span class="dot"></span>HTTP/2 &amp; HTTP/3</a>
+      <a href="lifecycle.html" class="sidebar-link"><span class="dot"></span>Lifecycle Hooks</a>
+      <a href="observability.html" class="sidebar-link"><span class="dot"></span>Observability</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="content">
+
+      <section class="doc-section" id="early-hints">
+        <div class="section-eyebrow">Features</div>
+        <h1 class="doc-h1">Early Hints</h1>
+        <p class="doc-lead">
+          <a href="https://www.rfc-editor.org/rfc/rfc8297" target="_blank" rel="noopener">RFC 8297</a>
+          HTTP 103 Early Hints lets the server tell the browser what sub-resources
+          to fetch before the final response is ready. This overlaps DNS/TCP/TLS with
+          server processing, reducing page load time.
+        </p>
+
+        <div class="callout">
+          Early Hints require <strong>HTTP/2 or HTTP/3</strong>. On HTTP/1.1 connections
+          <code>c.EarlyHints()</code> is a no-op.
+        </div>
+
+        <h2 class="doc-h2" id="usage">Basic usage</h2>
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">handler.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="kw">func</span> <span class="fn">GetPage</span>(c <span class="op">*</span><span class="pkg">core</span>.<span class="ty">Context</span>) <span class="pkg">core</span>.<span class="ty">Response</span> {
+    <span class="cm">// Send 103 hints immediately — browser starts loading resources</span>
+    c.<span class="fn">EarlyHints</span>(
+        <span class="pkg">core</span>.<span class="fn">Preload</span>(<span class="str">"/assets/app.css"</span>,  <span class="str">"style"</span>),
+        <span class="pkg">core</span>.<span class="fn">Preload</span>(<span class="str">"/assets/app.js"</span>,   <span class="str">"script"</span>),
+        <span class="pkg">core</span>.<span class="fn">Preconnect</span>(<span class="str">"https://api.example.com"</span>),
+    )
+
+    <span class="cm">// … slow database query, template rendering …</span>
+    page <span class="op">:=</span> <span class="fn">renderPage</span>(c)
+
+    <span class="kw">return</span> c.<span class="fn">HTML</span>(page)
+}</pre>
+        </div>
+
+        <h2 class="doc-h2" id="link-constructors">Link constructors</h2>
+        <div class="doc-table-wrap">
+          <table>
+            <thead><tr><th>Function</th><th>rel=</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>core.Preload(uri, as)</td><td>preload</td><td>Load a critical sub-resource (style, script, image, font, fetch)</td></tr>
+              <tr><td>core.Prefetch(uri)</td><td>prefetch</td><td>Hint for a resource needed on a likely next navigation</td></tr>
+              <tr><td>core.Preconnect(uri)</td><td>preconnect</td><td>Open TCP + TLS connection to origin early</td></tr>
+              <tr><td>core.DNSPrefetch(uri)</td><td>dns-prefetch</td><td>Resolve the DNS for an origin in advance</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 class="doc-h2" id="cross-origin">Cross-origin resources</h2>
+        <p class="doc-p">
+          Set <code>CrossOrigin: true</code> on a <code>core.Link</code>
+          directly for cross-origin hints (e.g., fonts hosted on a CDN):
+        </p>
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">cross_origin.go</span><span class="code-lang">go</span>
+          </div>
+          <pre>c.<span class="fn">EarlyHints</span>(<span class="pkg">core</span>.<span class="ty">Link</span>{
+    URI:         <span class="str">"https://cdn.example.com/font.woff2"</span>,
+    Rel:         <span class="str">"preload"</span>,
+    As:          <span class="str">"font"</span>,
+    CrossOrigin: <span class="kw">true</span>,
+})</pre>
+        </div>
+      </section>
+
+      <nav class="doc-nav">
+        <a href="goroutines.html" class="doc-nav-link prev">
+          <span class="doc-nav-label">Previous</span>
+          <span class="doc-nav-title">Safe Goroutines</span>
+        </a>
+        <a href="https-redirect.html" class="doc-nav-link next">
+          <span class="doc-nav-label">Next</span>
+          <span class="doc-nav-title">HTTPS Redirect</span>
+        </a>
+      </nav>
+
+    </div>
+  </main>
+
+  <aside class="toc-aside">
+    <div class="toc-title">On this page</div>
+    <a href="#early-hints" class="toc-link">Early Hints</a>
+    <a href="#usage" class="toc-link">Basic usage</a>
+    <a href="#link-constructors" class="toc-link">Link constructors</a>
+    <a href="#cross-origin" class="toc-link">Cross-origin</a>
+  </aside>
+</div>
+<script src="guide.js"></script>
+</body>
+</html>
