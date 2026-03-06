@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"net"
 	"net/http"
 	"os"
 	"os/signal"
@@ -464,7 +465,15 @@ func (a *App) startAltSvcShim(addr string, maxAge time.Duration) {
 	if a.certFile != "" && a.keyFile != "" {
 		err = a.altSvcShim.ListenAndServeTLS(a.certFile, a.keyFile)
 	} else if a.tlsConfig != nil {
-		err = a.altSvcShim.ListenAndServeTLS("", "")
+		// Use TLS listener for in-memory certificates
+		listener, err := net.Listen("tcp", addr)
+		if err != nil {
+			log.Printf("Alt-Svc shim error (non-fatal): failed to listen: %v", err)
+			return
+		}
+
+		tlsListener := tls.NewListener(listener, a.tlsConfig)
+		err = a.altSvcShim.Serve(tlsListener)
 	}
 
 	if err != nil && err != http.ErrServerClosed {
