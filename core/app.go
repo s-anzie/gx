@@ -439,24 +439,25 @@ func (a *App) ListenH3(addr string, opts ...H3Option) error {
 }
 
 // startAltSvcShim starts a TCP server that announces HTTP/3 via Alt-Svc header
-// and redirects to the same URL. This enables HTTP/3 discovery for new clients.
+// and serves the same application as the HTTP/3 server
 func (a *App) startAltSvcShim(addr string, maxAge time.Duration) {
 	altSvc := fmt.Sprintf(`h3="%s"; ma=%.0f`, addr, maxAge.Seconds())
 
+	// Create a wrapper handler that adds Alt-Svc header to all responses
+	wrapper := func(w http.ResponseWriter, r *http.Request) {
+		// Add Alt-Svc header to announce HTTP/3
+		w.Header().Set("Alt-Svc", altSvc)
+
+		// Serve the application normally
+		a.ServeHTTP(w, r)
+	}
+
 	a.altSvcShim = &http.Server{
 		Addr:         addr,
+		Handler:      http.HandlerFunc(wrapper),
 		TLSConfig:    a.tlsConfig,
 		ReadTimeout:  a.readTimeout,
 		WriteTimeout: a.writeTimeout,
-		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			// Announce HTTP/3 availability via Alt-Svc header
-			w.Header().Set("Alt-Svc", altSvc)
-
-			// Return a simple response - no redirect needed
-			// Modern clients will automatically use HTTP/3 when they see the Alt-Svc header
-			w.WriteHeader(http.StatusOK)
-			w.Write([]byte("HTTP/3 available via Alt-Svc header"))
-		}),
 	}
 
 	log.Printf("Alt-Svc shim listening on %s (TCP)", addr)
