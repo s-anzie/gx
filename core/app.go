@@ -449,12 +449,13 @@ func (a *App) startAltSvcShim(addr string, maxAge time.Duration) {
 		ReadTimeout:  a.readTimeout,
 		WriteTimeout: a.writeTimeout,
 		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			// Announce HTTP/3 availability
+			// Announce HTTP/3 availability via Alt-Svc header
 			w.Header().Set("Alt-Svc", altSvc)
 
-			// Redirect to same URL with 308 Permanent Redirect
-			// Client will remember this and use HTTP/3 next time
-			http.Redirect(w, r, r.URL.String(), http.StatusPermanentRedirect)
+			// Return a simple response - no redirect needed
+			// Modern clients will automatically use HTTP/3 when they see the Alt-Svc header
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte("HTTP/3 available via Alt-Svc header"))
 		}),
 	}
 
