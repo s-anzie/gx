@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Context &amp; Request — GX Documentation</title>
+  <meta name="description" content="core.Context is your handle on the request lifecycle: read params, headers, body, bind JSON, manage per-request state, and control the handler chain." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="guide.css" />
+</head>
+<body>
+<div id="progress" style="width:0%"></div>
+<nav class="topnav">
+  <div class="nav-left">
+    <a href="index.html" class="logo-link"><div class="logo-mark">GX</div><span class="logo-name">gx</span></a>
+    <div class="nav-sep"></div><span class="nav-title">Documentation</span>
+  </div>
+  <div class="nav-right">
+    <a href="quickstart.html" class="nav-link">Quickstart</a>
+    <a href="plugins.html" class="nav-link">Plugins</a>
+    <a href="testing.html" class="nav-link">Testing</a>
+    <a href="https://github.com/s-anzie/gx" target="_blank" rel="noopener" class="nav-github">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+      GitHub
+    </a>
+  </div>
+</nav>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-group">
+      <span class="sidebar-label">Introduction</span>
+      <a href="overview.html" class="sidebar-link"><span class="dot"></span>Overview</a>
+      <a href="quickstart.html" class="sidebar-link"><span class="dot"></span>Quickstart <span class="sidebar-badge">Start here</span></a>
+      <a href="installation.html" class="sidebar-link"><span class="dot"></span>Installation</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Core</span>
+      <a href="routing.html" class="sidebar-link"><span class="dot"></span>Routing</a>
+      <a href="context.html" class="sidebar-link"><span class="dot"></span>Context &amp; Request</a>
+      <a href="responses.html" class="sidebar-link"><span class="dot"></span>Responses</a>
+      <a href="middleware.html" class="sidebar-link"><span class="dot"></span>Middleware</a>
+      <a href="errors.html" class="sidebar-link"><span class="dot"></span>Error Handling</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Features</span>
+      <a href="validation.html" class="sidebar-link"><span class="dot"></span>Validation</a>
+      <a href="cookies.html" class="sidebar-link"><span class="dot"></span>Cookies</a>
+      <a href="uploads.html" class="sidebar-link"><span class="dot"></span>File Uploads</a>
+      <a href="static.html" class="sidebar-link"><span class="dot"></span>Static Files</a>
+      <a href="negotiate.html" class="sidebar-link"><span class="dot"></span>Content Negotiation</a>
+      <a href="goroutines.html" class="sidebar-link"><span class="dot"></span>Safe Goroutines</a>
+      <a href="early-hints.html" class="sidebar-link"><span class="dot"></span>Early Hints</a>
+      <a href="https-redirect.html" class="sidebar-link"><span class="dot"></span>HTTPS Redirect</a>
+      <a href="config.html" class="sidebar-link"><span class="dot"></span>Config from Env</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Plugins</span>
+      <a href="plugins.html" class="sidebar-link"><span class="dot"></span>Plugin System</a>
+      <a href="plugin-auth.html" class="sidebar-link"><span class="dot"></span>Auth (JWT)</a>
+      <a href="plugin-cors.html" class="sidebar-link"><span class="dot"></span>CORS</a>
+      <a href="plugin-compress.html" class="sidebar-link"><span class="dot"></span>Compress</a>
+      <a href="plugin-cache.html" class="sidebar-link"><span class="dot"></span>Cache</a>
+      <a href="plugin-ratelimit.html" class="sidebar-link"><span class="dot"></span>Rate Limit</a>
+      <a href="plugin-openapi.html" class="sidebar-link"><span class="dot"></span>OpenAPI</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Testing</span>
+      <a href="testing.html" class="sidebar-link"><span class="dot"></span>gxtest Package</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Advanced</span>
+      <a href="http3.html" class="sidebar-link"><span class="dot"></span>HTTP/2 &amp; HTTP/3</a>
+      <a href="lifecycle.html" class="sidebar-link"><span class="dot"></span>Lifecycle Hooks</a>
+      <a href="observability.html" class="sidebar-link"><span class="dot"></span>Observability</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="content">
+
+      <section class="doc-section" id="context">
+        <div class="section-eyebrow">Core</div>
+        <h1 class="doc-h1">Context &amp; Request</h1>
+        <p class="doc-lead">
+          <code>*core.Context</code> is your handle on the entire request lifecycle.
+          It exposes request data, response builders, and per-request storage.
+        </p>
+
+        <h4 class="doc-h4">Reading the request</h4>
+        <div class="doc-table-wrap">
+          <table>
+            <thead><tr><th>Method</th><th>Returns</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr><td>c.Param("id")</td><td>string</td><td>Named URL parameter</td></tr>
+              <tr><td>c.Query("q")</td><td>string</td><td>Query string value</td></tr>
+              <tr><td>c.QueryDefault("q","val")</td><td>string</td><td>Query with fallback</td></tr>
+              <tr><td>c.Header("Authorization")</td><td>string</td><td>Request header</td></tr>
+              <tr><td>c.FormValue("field")</td><td>string</td><td>Form field (POST body)</td></tr>
+              <tr><td>c.Body()</td><td>([]byte, error)</td><td>Raw request body</td></tr>
+              <tr><td>c.BindJSON(&amp;v)</td><td>error</td><td>Decode JSON body into v</td></tr>
+              <tr><td>c.BindXML(&amp;v)</td><td>error</td><td>Decode XML body into v</td></tr>
+              <tr><td>c.ClientIP()</td><td>string</td><td>Real IP (respects X-Forwarded-For)</td></tr>
+              <tr><td>c.Method()</td><td>string</td><td>HTTP method ("GET", "POST", …)</td></tr>
+              <tr><td>c.Path()</td><td>string</td><td>URL path</td></tr>
+              <tr><td>c.IsHTTP2()</td><td>bool</td><td>Protocol check</td></tr>
+              <tr><td>c.IsHTTP3()</td><td>bool</td><td>Protocol check</td></tr>
+              <tr><td>c.GoContext()</td><td>context.Context</td><td>Underlying Go context for libraries</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4 class="doc-h4">Per-request store</h4>
+        <p class="doc-p">Use <code>c.Set / c.Get</code> to pass data between middleware and handlers:</p>
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">store.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="cm">// In middleware</span>
+c.<span class="fn">Set</span>(<span class="str">"userID"</span>, claims.Subject)
+
+<span class="cm">// In handler</span>
+uid, _ <span class="op">:=</span> c.<span class="fn">Get</span>(<span class="str">"userID"</span>)
+<span class="cm">// or panic on missing:</span>
+uid <span class="op">:=</span> c.<span class="fn">MustGet</span>(<span class="str">"userID"</span>)</pre>
+        </div>
+
+        <h4 class="doc-h4">Typed store</h4>
+        <p class="doc-p">Use the generic helpers for type-safe access:</p>
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">typed_store.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="cm">// Set a typed value (no interface{})</span>
+<span class="pkg">gx</span>.<span class="fn">SetTyped</span>[<span class="ty">UserClaims</span>](c, claims)
+
+<span class="cm">// Get — returns *T (nil if missing or wrong type)</span>
+claims <span class="op">:=</span> <span class="pkg">gx</span>.<span class="fn">Typed</span>[<span class="ty">UserClaims</span>](c)
+
+<span class="cm">// TryTyped — returns (*T, bool)</span>
+claims, ok <span class="op">:=</span> <span class="pkg">gx</span>.<span class="fn">TryTyped</span>[<span class="ty">UserClaims</span>](c)</pre>
+        </div>
+
+        <h4 class="doc-h4">Chain control</h4>
+        <div class="doc-table-wrap">
+          <table>
+            <thead><tr><th>Method</th><th>Effect</th></tr></thead>
+            <tbody>
+              <tr><td>c.Next()</td><td>Call the next handler in the chain (middleware pattern)</td></tr>
+              <tr><td>c.Abort()</td><td>Stop chain execution, no response written</td></tr>
+              <tr><td>c.AbortWithStatus(code)</td><td>Stop chain and write an empty status response</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <nav class="doc-nav">
+        <a href="routing.html" class="doc-nav-link prev">
+          <span class="doc-nav-label">Previous</span>
+          <span class="doc-nav-title">Routing</span>
+        </a>
+        <a href="responses.html" class="doc-nav-link next">
+          <span class="doc-nav-label">Next</span>
+          <span class="doc-nav-title">Responses</span>
+        </a>
+      </nav>
+
+    </div>
+  </main>
+
+  <aside class="toc-aside">
+    <div class="toc-title">On this page</div>
+    <a href="#context" class="toc-link">Reading the request</a>
+    <a href="#context" class="toc-link">Per-request store</a>
+    <a href="#context" class="toc-link">Typed store</a>
+    <a href="#context" class="toc-link">Chain control</a>
+  </aside>
+</div>
+<script src="guide.js"></script>
+</body>
+</html>

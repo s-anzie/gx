@@ -1,0 +1,2073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GX — Documentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #080b12;
+      --bg-card:    #0e1320;
+      --bg-hover:   #131925;
+      --bg-code:    #0a0f1a;
+      --border:     #1e2a3a;
+      --border-hi:  #2a3a52;
+      --accent:     #3b82f6;
+      --accent-2:   #6366f1;
+      --accent-3:   #22d3ee;
+      --green:      #10b981;
+      --yellow:     #f59e0b;
+      --red:        #ef4444;
+      --purple:     #a855f7;
+      --text-1:     #f0f4ff;
+      --text-2:     #8b9ab4;
+      --text-3:     #4a5a72;
+      --sidebar-w:  260px;
+      --nav-h:      60px;
+      --r:          10px;
+      --r-sm:       6px;
+      /* syntax */
+      --s-kw:  #c792ea;
+      --s-fn:  #82aaff;
+      --s-str: #c3e88d;
+      --s-cm:  #4a5a72;
+      --s-num: #f78c6c;
+      --s-ty:  #ffcb6b;
+      --s-op:  #89ddff;
+      --s-pkg: #22d3ee;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text-1);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── Top Nav ── */
+    .topnav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: var(--nav-h);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px;
+      background: rgba(8,11,18,.9);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-left  { display: flex; align-items: center; gap: 16px; }
+    .nav-right { display: flex; align-items: center; gap: 8px; }
+    .logo-link { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-mark {
+      width: 30px; height: 30px; border-radius: 7px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 13px; color: #fff; flex-shrink: 0;
+    }
+    .logo-name { font-weight: 700; font-size: 17px; color: var(--text-1); }
+    .nav-sep { width: 1px; height: 20px; background: var(--border); }
+    .nav-title { font-size: 14px; color: var(--text-2); }
+    .nav-link {
+      font-size: 13px; color: var(--text-2); text-decoration: none;
+      padding: 5px 10px; border-radius: var(--r-sm);
+      transition: color .15s, background .15s;
+    }
+    .nav-link:hover { color: var(--text-1); background: var(--bg-hover); }
+    .nav-link.active { color: var(--accent); }
+    .nav-github {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--text-2); text-decoration: none;
+      padding: 5px 12px; border-radius: var(--r-sm);
+      border: 1px solid var(--border);
+      transition: border-color .15s, color .15s;
+    }
+    .nav-github:hover { border-color: var(--border-hi); color: var(--text-1); }
+
+    /* ── Layout ── */
+    .layout {
+      display: flex;
+      padding-top: var(--nav-h);
+      min-height: 100vh;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      position: fixed;
+      top: var(--nav-h); left: 0; bottom: 0;
+      width: var(--sidebar-w);
+      overflow-y: auto;
+      padding: 28px 0 40px;
+      border-right: 1px solid var(--border);
+      background: var(--bg);
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-track { background: transparent; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    .sidebar-group { margin-bottom: 6px; }
+    .sidebar-label {
+      font-size: 11px; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--text-3);
+      padding: 10px 20px 4px;
+      display: block;
+    }
+    .sidebar-link {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; color: var(--text-2); text-decoration: none;
+      padding: 6px 20px; border-radius: 0;
+      transition: color .15s, background .15s;
+      border-left: 2px solid transparent;
+      margin: 1px 0;
+    }
+    .sidebar-link:hover { color: var(--text-1); background: var(--bg-hover); }
+    .sidebar-link.active {
+      color: var(--accent); background: rgba(59,130,246,.06);
+      border-left-color: var(--accent);
+    }
+    .sidebar-link .dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--text-3); flex-shrink: 0;
+      transition: background .15s;
+    }
+    .sidebar-link.active .dot { background: var(--accent); }
+    .sidebar-badge {
+      margin-left: auto; font-size: 10px; font-weight: 600;
+      padding: 2px 7px; border-radius: 100px;
+      background: rgba(16,185,129,.12); color: var(--green);
+      border: 1px solid rgba(16,185,129,.2);
+    }
+
+    /* ── Main content ── */
+    .main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      min-width: 0;
+    }
+    .content {
+      max-width: 840px;
+      padding: 56px 56px 120px;
+    }
+    @media(max-width: 1100px) { .content { padding: 40px 32px 80px; } }
+    @media(max-width: 700px) {
+      .sidebar { display: none; }
+      .main { margin-left: 0; }
+      .content { padding: 28px 20px 60px; }
+    }
+
+    /* ── Section anchors ── */
+    .doc-section { padding-top: 24px; margin-bottom: 72px; }
+    .doc-section:first-child { padding-top: 0; }
+
+    /* ── Section header ── */
+    .section-eyebrow {
+      font-size: 11px; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
+    }
+    h1.doc-h1 {
+      font-size: clamp(28px, 4vw, 40px); font-weight: 800;
+      letter-spacing: -1.2px; line-height: 1.1; margin-bottom: 16px;
+    }
+    h2.doc-h2 {
+      font-size: 24px; font-weight: 700; letter-spacing: -.6px;
+      margin-bottom: 14px; padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    h3.doc-h3 {
+      font-size: 17px; font-weight: 600; letter-spacing: -.3px;
+      margin: 28px 0 10px;
+    }
+    h4.doc-h4 {
+      font-size: 14px; font-weight: 600; color: var(--text-2);
+      margin: 20px 0 8px; text-transform: uppercase; letter-spacing: .06em;
+    }
+    .doc-lead {
+      font-size: 17px; color: var(--text-2); line-height: 1.75;
+      margin-bottom: 32px; max-width: 680px;
+    }
+    p.doc-p { font-size: 15px; color: var(--text-2); line-height: 1.75; margin-bottom: 16px; }
+    p.doc-p code, li code { /* inline code */
+      font-family: 'JetBrains Mono', monospace; font-size: 12.5px;
+      background: rgba(59,130,246,.08); border: 1px solid rgba(59,130,246,.15);
+      color: #93c5fd; padding: 1px 6px; border-radius: 4px;
+    }
+
+    /* ── Code blocks ── */
+    .code-wrap {
+      background: var(--bg-code); border: 1px solid var(--border);
+      border-radius: var(--r); overflow: hidden;
+      margin: 20px 0;
+      box-shadow: 0 4px 24px rgba(0,0,0,.3);
+    }
+    .code-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 9px 16px;
+      background: rgba(255,255,255,.025);
+      border-bottom: 1px solid var(--border);
+    }
+    .code-dots { display: flex; gap: 6px; }
+    .code-dots span { width: 11px; height: 11px; border-radius: 50%; }
+    .code-dots span:nth-child(1) { background: #ff5f57; }
+    .code-dots span:nth-child(2) { background: #febc2e; }
+    .code-dots span:nth-child(3) { background: #28c840; }
+    .code-filename {
+      font-family: 'JetBrains Mono', monospace; font-size: 11.5px;
+      color: var(--text-3);
+    }
+    .code-lang {
+      font-size: 10px; font-weight: 600; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--text-3);
+      background: rgba(255,255,255,.04); padding: 2px 8px;
+      border-radius: 4px; border: 1px solid var(--border);
+    }
+    pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px; line-height: 1.75;
+      padding: 22px 24px;
+      overflow-x: auto;
+      tab-size: 4;
+    }
+    pre .kw  { color: var(--s-kw); }
+    pre .fn  { color: var(--s-fn); }
+    pre .str { color: var(--s-str); }
+    pre .cm  { color: var(--s-cm); font-style: italic; }
+    pre .num { color: var(--s-num); }
+    pre .ty  { color: var(--s-ty); }
+    pre .op  { color: var(--s-op); }
+    pre .pkg { color: var(--s-pkg); }
+    pre .pl  { color: var(--text-1); }
+
+    /* ── Callout boxes ── */
+    .callout {
+      display: flex; gap: 14px; align-items: flex-start;
+      padding: 16px 20px; border-radius: var(--r);
+      margin: 20px 0; font-size: 14px; line-height: 1.65;
+    }
+    .callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+    .callout p { color: inherit; margin: 0; }
+    .callout p code { font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+    .callout.info  { background: rgba(59,130,246,.07);  border: 1px solid rgba(59,130,246,.18); color: #93c5fd; }
+    .callout.warn  { background: rgba(245,158,11,.07);  border: 1px solid rgba(245,158,11,.18); color: #fcd34d; }
+    .callout.tip   { background: rgba(16,185,129,.07);  border: 1px solid rgba(16,185,129,.18); color: #6ee7b7; }
+    .callout.danger{ background: rgba(239,68,68,.07);   border: 1px solid rgba(239,68,68,.18);  color: #fca5a5; }
+
+    /* ── Tables ── */
+    .doc-table-wrap { overflow-x: auto; margin: 20px 0; }
+    table {
+      width: 100%; border-collapse: collapse; font-size: 13.5px;
+    }
+    th {
+      text-align: left; font-weight: 600; font-size: 12px;
+      text-transform: uppercase; letter-spacing: .06em;
+      color: var(--text-3); padding: 8px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 10px 14px; border-bottom: 1px solid rgba(30,42,58,.6);
+      color: var(--text-2); vertical-align: top;
+    }
+    td:first-child { color: var(--text-1); font-family: 'JetBrains Mono', monospace; font-size: 12.5px; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,.015); }
+
+    /* ── Lists ── */
+    ul.doc-list, ol.doc-list {
+      padding-left: 20px; margin: 12px 0 20px;
+    }
+    ul.doc-list li, ol.doc-list li {
+      color: var(--text-2); font-size: 14.5px; line-height: 1.7;
+      margin-bottom: 6px;
+    }
+    ul.doc-list li::marker { color: var(--accent); }
+
+    /* ── Tag pills ── */
+    .tags { display: flex; flex-wrap: wrap; gap: 7px; margin: 14px 0; }
+    .tag {
+      font-size: 12px; font-weight: 500; padding: 3px 10px; border-radius: 100px;
+      background: rgba(59,130,246,.07); border: 1px solid rgba(59,130,246,.18);
+      color: #93c5fd;
+    }
+    .tag.green  { background: rgba(16,185,129,.07);  border-color: rgba(16,185,129,.2);  color: #6ee7b7; }
+    .tag.yellow { background: rgba(245,158,11,.07);  border-color: rgba(245,158,11,.2);  color: #fcd34d; }
+    .tag.purple { background: rgba(168,85,247,.07);  border-color: rgba(168,85,247,.2);  color: #d8b4fe; }
+
+    /* ── Steps ── */
+    .steps { margin: 24px 0; }
+    .step {
+      display: flex; gap: 18px; margin-bottom: 28px; position: relative;
+    }
+    .step::before {
+      content: ''; position: absolute;
+      left: 18px; top: 40px; bottom: -28px; width: 1px;
+      background: var(--border);
+    }
+    .step:last-child::before { display: none; }
+    .step-num {
+      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+      background: var(--bg-card); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; color: var(--accent);
+    }
+    .step-body h4 { font-size: 15px; font-weight: 600; margin-bottom: 6px; color: var(--text-1); }
+    .step-body p  { font-size: 14px; color: var(--text-2); margin: 0; }
+
+    /* ── Divider ── */
+    .doc-divider { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    /* ── API signature ── */
+    .api-sig {
+      font-family: 'JetBrains Mono', monospace; font-size: 13px;
+      background: rgba(59,130,246,.06); border: 1px solid rgba(59,130,246,.14);
+      border-left: 3px solid var(--accent);
+      padding: 12px 16px; border-radius: var(--r-sm);
+      margin: 14px 0; color: var(--text-1);
+      overflow-x: auto;
+    }
+    .api-sig .ty  { color: var(--s-ty); }
+    .api-sig .fn  { color: var(--s-fn); }
+    .api-sig .kw  { color: var(--s-kw); }
+    .api-sig .str { color: var(--s-str); }
+
+    /* ── On-page TOC (right column) — optional ── */
+    .toc-aside {
+      display: none;
+    }
+    @media(min-width: 1280px) {
+      .toc-aside {
+        display: block;
+        position: fixed; top: var(--nav-h); right: 0; bottom: 0;
+        width: 220px; overflow-y: auto;
+        padding: 36px 20px; border-left: 1px solid var(--border);
+        background: var(--bg);
+      }
+      .main { margin-right: 220px; }
+    }
+    .toc-title {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .08em; color: var(--text-3); margin-bottom: 12px;
+    }
+    .toc-link {
+      display: block; font-size: 12.5px; color: var(--text-3);
+      text-decoration: none; padding: 4px 0;
+      border-left: 2px solid transparent; padding-left: 10px;
+      transition: color .15s, border-color .15s;
+    }
+    .toc-link:hover { color: var(--text-2); }
+    .toc-link.active { color: var(--accent); border-left-color: var(--accent); }
+
+    /* ── Scroll progress bar ── */
+    #progress {
+      position: fixed; top: 0; left: 0; height: 2px; z-index: 300;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      transition: width .1s linear;
+    }
+
+    /* ── Buttons ── */
+    .btn-primary, .btn-secondary {
+      display: inline-block; padding: .6rem 1.4rem; border-radius: 8px;
+      font-size: .9rem; font-weight: 600; text-decoration: none;
+      transition: transform .15s, box-shadow .15s;
+    }
+    .btn-primary {
+      background: var(--accent); color: #fff;
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 24px rgba(59,130,246,.45); }
+    .btn-secondary {
+      background: var(--surface-2); color: var(--text-1);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { transform: translateY(-1px); border-color: var(--accent); color: var(--accent); }
+
+    /* ── Footer CTA ── */
+    .footer-cta {
+      margin-top: 5rem; padding: 3rem 2.5rem;
+      background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 8%, var(--surface-1)) 0%, var(--surface-1) 100%);
+      border: 1px solid color-mix(in srgb, var(--accent) 25%, var(--border));
+      border-radius: 16px; text-align: center;
+    }
+    .footer-cta h2 { font-size: 1.7rem; margin-bottom: .6rem; }
+    .footer-cta p  { color: var(--text-2); margin-bottom: 1.8rem; max-width: 44ch; margin-inline: auto; }
+    .footer-cta-actions { display: flex; gap: .9rem; justify-content: center; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+
+<div id="progress" style="width:0%"></div>
+
+<!-- ── Top Nav ── -->
+<nav class="topnav">
+  <div class="nav-left">
+    <a href="index.html" class="logo-link">
+      <div class="logo-mark">GX</div>
+      <span class="logo-name">gx</span>
+    </a>
+    <div class="nav-sep"></div>
+    <span class="nav-title">Documentation</span>
+  </div>
+  <div class="nav-right">
+    <a href="#quickstart" class="nav-link">Quickstart</a>
+    <a href="#plugins" class="nav-link">Plugins</a>
+    <a href="#testing" class="nav-link">Testing</a>
+    <a href="https://github.com/s-anzie/gx" target="_blank" class="nav-github">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+      GitHub
+    </a>
+  </div>
+</nav>
+
+<!-- ── Layout ── -->
+<div class="layout">
+
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar">
+
+    <div class="sidebar-group">
+      <span class="sidebar-label">Introduction</span>
+      <a href="#overview"    class="sidebar-link active"><span class="dot"></span>Overview</a>
+      <a href="#quickstart"  class="sidebar-link"><span class="dot"></span>Quickstart <span class="sidebar-badge">Start here</span></a>
+      <a href="#installation" class="sidebar-link"><span class="dot"></span>Installation</a>
+    </div>
+
+    <div class="sidebar-group">
+      <span class="sidebar-label">Core</span>
+      <a href="#routing"     class="sidebar-link"><span class="dot"></span>Routing</a>
+      <a href="#context"     class="sidebar-link"><span class="dot"></span>Context &amp; Request</a>
+      <a href="#responses"   class="sidebar-link"><span class="dot"></span>Responses</a>
+      <a href="#middleware"  class="sidebar-link"><span class="dot"></span>Middleware</a>
+      <a href="#errors"      class="sidebar-link"><span class="dot"></span>Error Handling</a>
+    </div>
+
+    <div class="sidebar-group">
+      <span class="sidebar-label">Features</span>
+      <a href="#validation"  class="sidebar-link"><span class="dot"></span>Validation</a>
+      <a href="#cookies"     class="sidebar-link"><span class="dot"></span>Cookies</a>
+      <a href="#uploads"     class="sidebar-link"><span class="dot"></span>File Uploads</a>
+      <a href="#static"      class="sidebar-link"><span class="dot"></span>Static Files</a>
+      <a href="#negotiate"   class="sidebar-link"><span class="dot"></span>Content Negotiation</a>
+      <a href="#goroutines"  class="sidebar-link"><span class="dot"></span>Safe Goroutines</a>
+      <a href="#early-hints" class="sidebar-link"><span class="dot"></span>Early Hints</a>
+      <a href="#https-redirect" class="sidebar-link"><span class="dot"></span>HTTPS Redirect</a>
+      <a href="#config"      class="sidebar-link"><span class="dot"></span>Config from Env</a>
+      <a href="#i18n"        class="sidebar-link"><span class="dot"></span>i18n Errors</a>
+    </div>
+
+    <div class="sidebar-group">
+      <span class="sidebar-label">Plugins</span>
+      <a href="#plugins"     class="sidebar-link"><span class="dot"></span>Plugin System</a>
+      <a href="#plugin-auth"     class="sidebar-link"><span class="dot"></span>Auth (JWT)</a>
+      <a href="#plugin-cors"     class="sidebar-link"><span class="dot"></span>CORS</a>
+      <a href="#plugin-compress" class="sidebar-link"><span class="dot"></span>Compress</a>
+      <a href="#plugin-cache"    class="sidebar-link"><span class="dot"></span>Cache</a>
+      <a href="#plugin-ratelimit" class="sidebar-link"><span class="dot"></span>Rate Limit</a>
+      <a href="#plugin-openapi"  class="sidebar-link"><span class="dot"></span>OpenAPI</a>
+    </div>
+
+    <div class="sidebar-group">
+      <span class="sidebar-label">Testing</span>
+      <a href="#testing"     class="sidebar-link"><span class="dot"></span>gxtest Package</a>
+    </div>
+
+    <div class="sidebar-group">
+      <span class="sidebar-label">Advanced</span>
+      <a href="#http3"       class="sidebar-link"><span class="dot"></span>HTTP/2 &amp; HTTP/3</a>
+      <a href="#lifecycle"   class="sidebar-link"><span class="dot"></span>Lifecycle Hooks</a>
+      <a href="#observability" class="sidebar-link"><span class="dot"></span>Observability</a>
+    </div>
+
+  </aside>
+
+  <!-- ── Main ── -->
+  <main class="main">
+    <div class="content">
+
+      <!-- ═══════════════════════════════════════════
+           SECTION: Overview
+      ════════════════════════════════════════════ -->
+      <section class="doc-section" id="overview">
+        <div class="section-eyebrow">Introduction</div>
+        <h1 class="doc-h1">GX Framework</h1>
+        <p class="doc-lead">
+          GX is a minimal, expressive HTTP framework for Go. It gives you a high-performance
+          radix-tree router, chainable middleware, a typed plugin system, and a rich set of
+          opt-in features — all on top of the standard <code>net/http</code> library.
+        </p>
+
+        <div class="callout info">
+          <span class="callout-icon">💡</span>
+          <p>GX requires <strong>Go 1.22+</strong>. The module path is
+          <code>github.com/s-anzie/gx</code>.</p>
+        </div>
+
+        <h3 class="doc-h3">Design philosophy</h3>
+        <ul class="doc-list">
+          <li><strong>Thin core, optional everything.</strong> The <code>core</code> package is a
+              pure HTTP layer with zero external dependencies. Features are opt-in.</li>
+          <li><strong>Idiomatic Go.</strong> Every function signature is a plain Go function.
+              No reflection magic, no global state, no hidden behaviour.</li>
+          <li><strong>Composable plugins.</strong> Plugins install middleware in a guaranteed
+              priority order regardless of call order in your code.</li>
+          <li><strong>Zero-alloc hot path.</strong> <code>Context</code> objects are pooled via
+              <code>sync.Pool</code>, keeping allocations near zero per request.</li>
+        </ul>
+
+        <h3 class="doc-h3">Package overview</h3>
+        <div class="doc-table-wrap">
+          <table>
+            <thead><tr><th>Package</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr><td>github.com/s-anzie/gx</td><td>Main app, options, validation, config, goroutines</td></tr>
+              <tr><td>github.com/s-anzie/gx/core</td><td>Pure HTTP primitives: router, context, responses, middleware</td></tr>
+              <tr><td>github.com/s-anzie/gx/gxtest</td><td>Test helpers — no real server needed</td></tr>
+              <tr><td>github.com/s-anzie/gx/plugins/auth</td><td>JWT Bearer authentication plugin</td></tr>
+              <tr><td>github.com/s-anzie/gx/plugins/cors</td><td>CORS headers plugin</td></tr>
+              <tr><td>github.com/s-anzie/gx/plugins/compress</td><td>Brotli + gzip compression plugin</td></tr>
+              <tr><td>github.com/s-anzie/gx/plugins/cache</td><td>Response caching plugin</td></tr>
+              <tr><td>github.com/s-anzie/gx/plugins/ratelimit</td><td>Token-bucket rate limiting plugin</td></tr>
+              <tr><td>github.com/s-anzie/gx/plugins/openapi</td><td>OpenAPI 3.1 auto-generation plugin</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <hr class="doc-divider" />
+
+      <!-- ═══════════════════════════════════════════
+           SECTION: Quickstart
+      ════════════════════════════════════════════ -->
+      <section class="doc-section" id="quickstart">
+        <div class="section-eyebrow">Getting Started</div>
+        <h2 class="doc-h2">Quickstart</h2>
+        <p class="doc-lead">From zero to a running API in under a minute.</p>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <h4>Create a new module</h4>
+              <p>Run these commands in your project directory.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">terminal</span>
+            <span class="code-lang">shell</span>
+          </div>
+          <pre><span class="cm"># Create module</span>
+mkdir myapp && cd myapp
+go mod init myapp
+
+<span class="cm"># Install GX</span>
+go get github.com/s-anzie/gx@latest</pre>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <h4>Write main.go</h4>
+              <p>A minimal app with one route and graceful shutdown.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">main.go</span>
+            <span class="code-lang">go</span>
+          </div>
+          <pre><span class="kw">package</span> <span class="pl">main</span>
+
+<span class="kw">import</span> (
+    <span class="str">"github.com/s-anzie/gx"</span>
+    <span class="str">"github.com/s-anzie/gx/core"</span>
+)
+
+<span class="kw">func</span> <span class="fn">main</span>() {
+    app <span class="op">:=</span> <span class="pkg">gx</span>.<span class="fn">New</span>()
+
+    app.<span class="fn">GET</span>(<span class="str">"/ping"</span>, <span class="kw">func</span>(c *<span class="pkg">core</span>.<span class="ty">Context</span>) <span class="pkg">core</span>.<span class="ty">Response</span> {
+        <span class="kw">return</span> c.<span class="fn">JSON</span>(<span class="pkg">gx</span>.<span class="ty">Map</span>{<span class="str">"message"</span>: <span class="str">"pong"</span>})
+    })
+
+    app.<span class="fn">Boot</span>(<span class="str">":8080"</span>)
+}</pre>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <h4>Run it</h4>
+              <p>GX logs startup info and handles SIGTERM / SIGINT automatically.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">terminal</span>
+            <span class="code-lang">shell</span>
+          </div>
+          <pre><span class="cm"># Start the server</span>
+go run main.go
+
+<span class="cm"># In another terminal</span>
+curl http://localhost:8080/ping
+<span class="cm"># → {"message":"pong"}</span></pre>
+        </div>
+
+        <div class="callout tip">
+          <span class="callout-icon">✅</span>
+          <p>GX listens for <code>SIGTERM</code> and <code>SIGINT</code> and performs a graceful shutdown
+          (default 10s timeout). No extra setup required.</p>
+        </div>
+      </section>
+
+      <hr class="doc-divider" />
+
+      <!-- ═══════════════════════════════════════════
+           SECTION: Installation
+      ════════════════════════════════════════════ -->
+      <section class="doc-section" id="installation">
+        <h2 class="doc-h2">Installation</h2>
+        <p class="doc-p">Install the main module and any plugins you need:</p>
+
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">terminal</span>
+            <span class="code-lang">shell</span>
+          </div>
+          <pre><span class="cm"># Core framework (required)</span>
+go get github.com/s-anzie/gx@latest
+
+<span class="cm"># Plugins (install only what you use)</span>
+go get github.com/s-anzie/gx/plugins/cors
+go get github.com/s-anzie/gx/plugins/auth
+go get github.com/s-anzie/gx/plugins/compress
+go get github.com/s-anzie/gx/plugins/cache
+go get github.com/s-anzie/gx/plugins/ratelimit
+go get github.com/s-anzie/gx/plugins/openapi</pre>
+        </div>
+
+        <h3 class="doc-h3">App options</h3>
+        <p class="doc-p">
+          <code>gx.New()</code> accepts functional options to configure the application at startup.
+        </p>
+
+        <div class="doc-table-wrap">
+          <table>
+            <thead><tr><th>Option</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>WithEnvironment(env)</td><td>Development</td><td>Sets app environment: <code>Development</code>, <code>Staging</code>, <code>Production</code></td></tr>
+              <tr><td>ReadTimeout(d)</td><td>15s</td><td>Max duration for reading an entire request</td></tr>
+              <tr><td>WriteTimeout(d)</td><td>15s</td><td>Max duration before timing out response writes</td></tr>
+              <tr><td>ShutdownTimeout(d)</td><td>10s</td><td>Max wait time for graceful shutdown</td></tr>
+              <tr><td>MaxBodySize(n)</td><td>10 MB</td><td>Request body size limit in bytes</td></tr>
+              <tr><td>TrustedProxies(...)</td><td>—</td><td>IP/CIDR list of trusted reverse proxies</td></tr>
+              <tr><td>WithDevTLS(hosts...)</td><td>—</td><td>Self-signed TLS for local development</td></tr>
+              <tr><td>IgnoreEnv()</td><td>—</td><td>Disable <code>GX_*</code> environment variable overrides</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">main.go</span>
+            <span class="code-lang">go</span>
+          </div>
+          <pre>app <span class="op">:=</span> <span class="pkg">gx</span>.<span class="fn">New</span>(
+    <span class="pkg">gx</span>.<span class="fn">WithEnvironment</span>(<span class="pkg">gx</span>.<span class="pl">Production</span>),
+    <span class="pkg">gx</span>.<span class="fn">ReadTimeout</span>(<span class="num">30</span>*time.Second),
+    <span class="pkg">gx</span>.<span class="fn">WriteTimeout</span>(<span class="num">30</span>*time.Second),
+    <span class="pkg">gx</span>.<span class="fn">MaxBodySize</span>(<span class="num">32</span> &lt;&lt; <span class="num">20</span>), <span class="cm">// 32 MB</span>
+    <span class="pkg">gx</span>.<span class="fn">TrustedProxies</span>(<span class="str">"10.0.0.0/8"</span>),
+)</pre>
+        </div>
+
+        <h3 class="doc-h3">Environment variables</h3>
+        <p class="doc-p">
+          GX reads <code>GX_*</code> env vars at startup, after options are applied. Use <code>IgnoreEnv()</code> to disable this.
+        </p>
+        <div class="doc-table-wrap">
+          <table>
+            <thead><tr><th>Variable</th><th>Example</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>GX_ENV</td><td>production</td><td>Sets the runtime environment</td></tr>
+              <tr><td>GX_MAX_BODY_SIZE</td><td>32MB</td><td>Max request body size (supports B/KB/MB/GB)</td></tr>
+              <tr><td>GX_TRUSTED_PROXIES</td><td>10.0.0.1,10.0.0.2</td><td>Comma-separated trusted proxy IPs</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════
+           SECTION: Routing
+      ════════════════════════════════════════════ -->
+      <hr class="doc-divider" />
+      <section class="doc-section" id="routing">
+        <div class="section-eyebrow">Core</div>
+        <h2 class="doc-h2">Routing</h2>
+        <p class="doc-lead">
+          GX uses a radix-tree router for sub-microsecond route resolution.
+          Routes are registered directly on the app, on a <em>group</em>, or on a
+          standalone <code>Router</code> that can be mounted later.
+        </p>
+
+        <h3 class="doc-h3">HTTP methods</h3>
+        <p class="doc-p">All standard methods are available as named helpers:</p>
+
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">routes.go</span><span class="code-lang">go</span>
+          </div>
+          <pre>app.<span class="fn">GET</span>(<span class="str">"/users"</span>, listUsers)
+app.<span class="fn">POST</span>(<span class="str">"/users"</span>, createUser)
+app.<span class="fn">PUT</span>(<span class="str">"/users/:id"</span>, replaceUser)
+app.<span class="fn">PATCH</span>(<span class="str">"/users/:id"</span>, updateUser)
+app.<span class="fn">DELETE</span>(<span class="str">"/users/:id"</span>, deleteUser)
+app.<span class="fn">HEAD</span>(<span class="str">"/users"</span>, headUsers)
+app.<span class="fn">OPTIONS</span>(<span class="str">"/users"</span>, optionsUsers)
+
+<span class="cm">// Register a handler for ALL methods</span>
+app.<span class="fn">Any</span>(<span class="str">"/*path"</span>, catchAll)</pre>
+        </div>
+
+        <h3 class="doc-h3">Route parameters</h3>
+        <div class="doc-table-wrap">
+          <table>
+            <thead><tr><th>Syntax</th><th>Example URL</th><th>c.Param("…")</th></tr></thead>
+            <tbody>
+              <tr><td>:name</td><td>/users/42</td><td>"42"</td></tr>
+              <tr><td>*name (wildcard)</td><td>/files/a/b/c</td><td>"a/b/c"</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">handler.go</span><span class="code-lang">go</span>
+          </div>
+          <pre>app.<span class="fn">GET</span>(<span class="str">"/users/:id/posts/:postId"</span>, <span class="kw">func</span>(c *<span class="pkg">core</span>.<span class="ty">Context</span>) <span class="pkg">core</span>.<span class="ty">Response</span> {
+    userID <span class="op">:=</span> c.<span class="fn">Param</span>(<span class="str">"id"</span>)
+    postID <span class="op">:=</span> c.<span class="fn">Param</span>(<span class="str">"postId"</span>)
+    <span class="kw">return</span> c.<span class="fn">JSON</span>(<span class="pkg">gx</span>.<span class="ty">Map</span>{<span class="str">"user"</span>: userID, <span class="str">"post"</span>: postID})
+})</pre>
+        </div>
+
+        <h3 class="doc-h3">Groups</h3>
+        <p class="doc-p">
+          Groups share a common URL prefix and optional middleware. Groups can be nested —
+          middleware composes in order from outer to inner.
+        </p>
+
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">groups.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="cm">// All routes under /api/v1 go through authMiddleware</span>
+api <span class="op">:=</span> app.<span class="fn">Group</span>(<span class="str">"/api"</span>, authMiddleware)
+v1  <span class="op">:=</span> api.<span class="fn">Group</span>(<span class="str">"/v1"</span>)
+
+v1.<span class="fn">GET</span>(<span class="str">"/users"</span>,     listUsers)
+v1.<span class="fn">POST</span>(<span class="str">"/users"</span>,    createUser)
+v1.<span class="fn">GET</span>(<span class="str">"/users/:id"</span>, getUser)
+
+<span class="cm">// Nested group — adds adminOnly on top of authMiddleware</span>
+admin <span class="op">:=</span> v1.<span class="fn">Group</span>(<span class="str">"/admin"</span>, adminOnly)
+admin.<span class="fn">DELETE</span>(<span class="str">"/users/:id"</span>, hardDeleteUser)</pre>
+        </div>
+
+        <h3 class="doc-h3">Standalone Router &amp; Mount</h3>
+        <p class="doc-p">
+          Build a <code>*core.Router</code> independently and mount it at a prefix.
+          Useful for splitting routes across files or packages.
+        </p>
+
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">router_mount.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="cm">// In another file / package</span>
+<span class="kw">func</span> <span class="fn">UserRouter</span>() *<span class="pkg">core</span>.<span class="ty">Router</span> {
+    r <span class="op">:=</span> <span class="pkg">core</span>.<span class="fn">NewRouter</span>()
+    r.<span class="fn">GET</span>(<span class="str">"/users"</span>,     listUsers)
+    r.<span class="fn">POST</span>(<span class="str">"/users"</span>,    createUser)
+    r.<span class="fn">GET</span>(<span class="str">"/users/:id"</span>, getUser)
+    <span class="kw">return</span> r
+}
+
+<span class="cm">// In main — mount with optional extra middleware</span>
+app.<span class="fn">Mount</span>(<span class="str">"/api/v1"</span>, <span class="fn">UserRouter</span>(), authMiddleware)</pre>
+        </div>
+
+        <div class="callout info">
+          <span class="callout-icon">ℹ️</span>
+          <p>The router's own <code>Use()</code> middleware runs <em>inside</em> the mount-level
+          middleware. Execution order: mount middleware → router middleware → handler.</p>
+        </div>
+      </section>
+
+      <hr class="doc-divider" />
+
+      <!-- ═══════════════════════════════════════════
+           SECTION: Context & Request
+      ════════════════════════════════════════════ -->
+      <section class="doc-section" id="context">
+        <h2 class="doc-h2">Context &amp; Request</h2>
+        <p class="doc-lead">
+          <code>*core.Context</code> is your handle on the entire request lifecycle.
+          It exposes request data, response builders, and per-request storage.
+        </p>
+
+        <h4 class="doc-h4">Reading the request</h4>
+        <div class="doc-table-wrap">
+          <table>
+            <thead><tr><th>Method</th><th>Returns</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr><td>c.Param("id")</td><td>string</td><td>Named URL parameter</td></tr>
+              <tr><td>c.Query("q")</td><td>string</td><td>Query string value</td></tr>
+              <tr><td>c.QueryDefault("q","val")</td><td>string</td><td>Query with fallback</td></tr>
+              <tr><td>c.Header("Authorization")</td><td>string</td><td>Request header</td></tr>
+              <tr><td>c.FormValue("field")</td><td>string</td><td>Form field (POST body)</td></tr>
+              <tr><td>c.Body()</td><td>([]byte, error)</td><td>Raw request body</td></tr>
+              <tr><td>c.BindJSON(&amp;v)</td><td>error</td><td>Decode JSON body into v</td></tr>
+              <tr><td>c.BindXML(&amp;v)</td><td>error</td><td>Decode XML body into v</td></tr>
+              <tr><td>c.ClientIP()</td><td>string</td><td>Real IP (respects X-Forwarded-For)</td></tr>
+              <tr><td>c.Method()</td><td>string</td><td>HTTP method ("GET", "POST", …)</td></tr>
+              <tr><td>c.Path()</td><td>string</td><td>URL path</td></tr>
+              <tr><td>c.IsHTTP2()</td><td>bool</td><td>Protocol check</td></tr>
+              <tr><td>c.IsHTTP3()</td><td>bool</td><td>Protocol check</td></tr>
+              <tr><td>c.GoContext()</td><td>context.Context</td><td>Underlying Go context for libraries</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4 class="doc-h4">Per-request store</h4>
+        <p class="doc-p">Use <code>c.Set / c.Get</code> to pass data between middleware and handlers:</p>
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">store.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="cm">// In middleware</span>
+c.<span class="fn">Set</span>(<span class="str">"userID"</span>, claims.Subject)
+
+<span class="cm">// In handler</span>
+uid, _ <span class="op">:=</span> c.<span class="fn">Get</span>(<span class="str">"userID"</span>)
+<span class="cm">// or panic-on-missing:</span>
+uid <span class="op">:=</span> c.<span class="fn">MustGet</span>(<span class="str">"userID"</span>)</pre>
+        </div>
+
+        <h4 class="doc-h4">Chain control</h4>
+        <div class="doc-table-wrap">
+          <table>
+            <thead><tr><th>Method</th><th>Effect</th></tr></thead>
+            <tbody>
+              <tr><td>c.Next()</td><td>Call the next handler in the chain (middleware pattern)</td></tr>
+              <tr><td>c.Abort()</td><td>Stop chain execution, no response written</td></tr>
+              <tr><td>c.AbortWithStatus(code)</td><td>Stop chain and write an empty status response</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <hr class="doc-divider" />
+
+      <!-- ═══════════════════════════════════════════
+           SECTION: Responses
+      ════════════════════════════════════════════ -->
+      <section class="doc-section" id="responses">
+        <h2 class="doc-h2">Responses</h2>
+        <p class="doc-lead">
+          Every handler returns a <code>core.Response</code>. Responses are immutable values —
+          you can chain header/status modifiers without mutating the original.
+        </p>
+
+        <h3 class="doc-h3">Built-in response builders</h3>
+        <div class="doc-table-wrap">
+          <table>
+            <thead><tr><th>Builder</th><th>Status</th><th>Content-Type</th></tr></thead>
+            <tbody>
+              <tr><td>c.JSON(data)</td><td>200</td><td>application/json</td></tr>
+              <tr><td>c.Created(data)</td><td>201</td><td>application/json</td></tr>
+              <tr><td>c.NoContent()</td><td>204</td><td>—</td></tr>
+              <tr><td>c.Text(format, args…)</td><td>200</td><td>text/plain</td></tr>
+              <tr><td>c.HTML(html)</td><td>200</td><td>text/html</td></tr>
+              <tr><td>c.XML(data)</td><td>200</td><td>application/xml</td></tr>
+              <tr><td>c.File(path)</td><td>200</td><td>auto-detected</td></tr>
+              <tr><td>c.Stream(ct, reader)</td><td>200</td><td>custom</td></tr>
+              <tr><td>c.Redirect(url)</td><td>302</td><td>—</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="doc-h3">Chaining modifiers</h3>
+        <p class="doc-p">
+          Use <code>core.WithStatus</code>, <code>core.WithHeader</code>, and cookie helpers
+          to decorate any response:
+        </p>
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">response_chain.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="cm">// 201 + custom header + cookie</span>
+<span class="kw">return</span> <span class="pkg">core</span>.<span class="fn">WithCookie</span>(
+    <span class="pkg">core</span>.<span class="fn">WithHeader</span>(
+        <span class="pkg">core</span>.<span class="fn">WithStatus</span>(c.<span class="fn">JSON</span>(user), <span class="num">201</span>),
+        <span class="str">"X-Request-Id"</span>, requestID,
+    ),
+    <span class="pkg">core</span>.<span class="ty">Cookie</span>{Name: <span class="str">"session"</span>, Value: token, HttpOnly: <span class="kw">true</span>},
+)</pre>
+        </div>
+
+        <h3 class="doc-h3">Error responses</h3>
+        <p class="doc-p">
+          Use <code>gx.AppError</code> to return structured, client-facing errors. See the
+          <a href="#errors" style="color:var(--accent)">Error Handling</a> section for full details.
+        </p>
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">error_response.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="kw">var</span> <span class="pl">ErrNotFound</span> <span class="op">=</span> <span class="pkg">gx</span>.<span class="fn">E</span>(<span class="num">404</span>, <span class="str">"NOT_FOUND"</span>, <span class="str">"Resource not found"</span>)
+
+<span class="kw">func</span> <span class="fn">getUser</span>(c *<span class="pkg">core</span>.<span class="ty">Context</span>) <span class="pkg">core</span>.<span class="ty">Response</span> {
+    user, err <span class="op">:=</span> <span class="fn">findUser</span>(c.<span class="fn">Param</span>(<span class="str">"id"</span>))
+    <span class="kw">if</span> err <span class="op">!=</span> <span class="kw">nil</span> {
+        <span class="kw">return</span> <span class="pl">ErrNotFound</span>.<span class="fn">Wrap</span>(err).<span class="fn">ToResponse</span>()
+    }
+    <span class="kw">return</span> c.<span class="fn">JSON</span>(user)
+}</pre>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════
+           SECTION: Middleware
+      ════════════════════════════════════════════ -->
+      <hr class="doc-divider" />
+      <section class="doc-section" id="middleware">
+        <h2 class="doc-h2">Middleware</h2>
+        <p class="doc-lead">
+          Middleware is a function with signature <code>func(core.Handler) core.Handler</code>.
+          It wraps a handler, allowing code to run before and after the inner handler.
+        </p>
+
+        <h3 class="doc-h3">Writing middleware</h3>
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">middleware.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="kw">func</span> <span class="fn">Logger</span>() <span class="pkg">core</span>.<span class="ty">Middleware</span> {
+    <span class="kw">return func</span>(next <span class="pkg">core</span>.<span class="ty">Handler</span>) <span class="pkg">core</span>.<span class="ty">Handler</span> {
+        <span class="kw">return func</span>(c *<span class="pkg">core</span>.<span class="ty">Context</span>) <span class="pkg">core</span>.<span class="ty">Response</span> {
+            start <span class="op">:=</span> time.<span class="fn">Now</span>()
+            res <span class="op">:=</span> <span class="fn">next</span>(c)                     <span class="cm">// call inner handler</span>
+            elapsed <span class="op">:=</span> time.<span class="fn">Since</span>(start)
+
+            slog.<span class="fn">Info</span>(<span class="str">"request"</span>,
+                <span class="str">"method"</span>,  c.<span class="fn">Method</span>(),
+                <span class="str">"path"</span>,    c.<span class="fn">Path</span>(),
+                <span class="str">"status"</span>,  res.<span class="fn">Status</span>(),
+                <span class="str">"elapsed"</span>, elapsed,
+            )
+            <span class="kw">return</span> res
+        }
+    }
+}</pre>
+        </div>
+
+        <h3 class="doc-h3">Registering middleware</h3>
+        <div class="doc-table-wrap">
+          <table>
+            <thead><tr><th>Scope</th><th>API</th><th>Effect</th></tr></thead>
+            <tbody>
+              <tr><td>Global</td><td>app.Use(mw1, mw2)</td><td>Runs for every request</td></tr>
+              <tr><td>Group</td><td>app.Group("/api", mw)</td><td>Runs for routes in this group only</td></tr>
+              <tr><td>Route</td><td>app.GET("/x", mw, handler)</td><td>Runs for this single route</td></tr>
+              <tr><td>Mount</td><td>app.Mount("/x", router, mw)</td><td>Runs before the mounted router's own middleware</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">register_mw.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="cm">// Global — runs for ALL routes</span>
+app.<span class="fn">Use</span>(<span class="fn">Logger</span>(), <span class="fn">Recovery</span>())
+
+<span class="cm">// Route-level — only for this handler</span>
+app.<span class="fn">POST</span>(<span class="str">"/upload"</span>, <span class="fn">RateLimitUpload</span>(), <span class="fn">handleUpload</span>)</pre>
+        </div>
+
+        <h3 class="doc-h3">Execution order</h3>
+        <p class="doc-p">
+          Middleware executes in registration order, outermost first. For a global +
+          group + route chain:
+        </p>
+        <div class="callout info">
+          <span class="callout-icon">🔗</span>
+          <p>Global middleware → Group middleware → Route middleware → Handler<br/>
+          Response unwinds in reverse order (like a stack).</p>
+        </div>
+      </section>
+
+      <hr class="doc-divider" />
+
+      <!-- ═══════════════════════════════════════════
+           SECTION: Error Handling
+      ════════════════════════════════════════════ -->
+      <section class="doc-section" id="errors">
+        <h2 class="doc-h2">Error Handling</h2>
+        <p class="doc-lead">
+          GX uses structured <code>AppError</code> values instead of plain Go errors.
+          They carry an HTTP status, a machine-readable code, a human message,
+          optional detail fields, and optional translations.
+        </p>
+
+        <h3 class="doc-h3">Defining errors</h3>
+        <p class="doc-p">
+          Define errors as package-level variables so they're reusable and testable:
+        </p>
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">errors.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="kw">var</span> (
+    <span class="pl">ErrNotFound</span>     <span class="op">=</span> <span class="pkg">gx</span>.<span class="fn">E</span>(<span class="num">404</span>, <span class="str">"NOT_FOUND"</span>,      <span class="str">"Resource not found"</span>)
+    <span class="pl">ErrUnauthorized</span> <span class="op">=</span> <span class="pkg">gx</span>.<span class="fn">E</span>(<span class="num">401</span>, <span class="str">"UNAUTHORIZED"</span>,    <span class="str">"Authentication required"</span>)
+    <span class="pl">ErrForbidden</span>    <span class="op">=</span> <span class="pkg">gx</span>.<span class="fn">E</span>(<span class="num">403</span>, <span class="str">"FORBIDDEN"</span>,       <span class="str">"Access denied"</span>)
+    <span class="pl">ErrConflict</span>     <span class="op">=</span> <span class="pkg">gx</span>.<span class="fn">E</span>(<span class="num">409</span>, <span class="str">"CONFLICT"</span>,        <span class="str">"Resource already exists"</span>)
+)</pre>
+        </div>
+
+        <h3 class="doc-h3">Adding context</h3>
+        <p class="doc-p">
+          <code>With(key, value)</code> adds detail fields. <code>Wrap(err)</code> attaches an
+          internal Go error for logging — it is never sent to the client. Both methods
+          return a new <code>AppError</code> (immutable).
+        </p>
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">error_context.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="kw">return</span> <span class="pl">ErrNotFound</span>.
+    <span class="fn">With</span>(<span class="str">"id"</span>, userID).
+    <span class="fn">With</span>(<span class="str">"resource"</span>, <span class="str">"user"</span>).
+    <span class="fn">Wrap</span>(dbErr).          <span class="cm">// logged, not sent</span>
+    <span class="fn">ToResponse</span>()</pre>
+        </div>
+
+        <p class="doc-p">The JSON response body sent to the client:</p>
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">response.json</span><span class="code-lang">json</span>
+          </div>
+          <pre>{
+    <span class="str">"error"</span>: {
+        <span class="str">"code"</span>:    <span class="str">"NOT_FOUND"</span>,
+        <span class="str">"message"</span>: <span class="str">"Resource not found"</span>,
+        <span class="str">"details"</span>: { <span class="str">"id"</span>: <span class="str">"42"</span>, <span class="str">"resource"</span>: <span class="str">"user"</span> }
+    }
+}</pre>
+        </div>
+
+        <h3 class="doc-h3">i18n — translated messages</h3>
+        <p class="doc-p">
+          Pass a <code>gx.Translations</code> map as an optional fourth argument to <code>gx.E()</code>.
+          Call <code>err.MessageFor("fr")</code> to retrieve the localized message.
+        </p>
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">i18n_errors.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="kw">var</span> <span class="pl">ErrNotFound</span> <span class="op">=</span> <span class="pkg">gx</span>.<span class="fn">E</span>(<span class="num">404</span>, <span class="str">"NOT_FOUND"</span>, <span class="str">"Resource not found"</span>,
+    <span class="pkg">gx</span>.<span class="ty">Translations</span>{
+        <span class="str">"fr"</span>: <span class="str">"Ressource introuvable"</span>,
+        <span class="str">"es"</span>: <span class="str">"Recurso no encontrado"</span>,
+        <span class="str">"de"</span>: <span class="str">"Ressource nicht gefunden"</span>,
+    },
+)
+
+<span class="cm">// In a handler — detect language, pick translation</span>
+lang <span class="op">:=</span> c.<span class="fn">AcceptLanguage</span>()          <span class="cm">// "fr"</span>
+msg  <span class="op">:=</span> <span class="pl">ErrNotFound</span>.<span class="fn">MessageFor</span>(lang)  <span class="cm">// "Ressource introuvable"</span></pre>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════
+           SECTION: Validation
+      ════════════════════════════════════════════ -->
+      <hr class="doc-divider" />
+      <section class="doc-section" id="validation">
+        <div class="section-eyebrow">Features</div>
+        <h2 class="doc-h2">Validation</h2>
+        <p class="doc-lead">
+          GX integrates <code>go-playground/validator/v10</code> with a one-call API.
+          Validation errors are automatically converted into structured
+          <code>AppError</code> responses with per-field messages.
+        </p>
+
+        <h3 class="doc-h3">ValidateOrFail — the happy path</h3>
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">create_user.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="kw">type</span> <span class="ty">CreateUserReq</span> <span class="kw">struct</span> {
+    Name  <span class="ty">string</span> <span class="str">`json:"name"  validate:"required,min=2,max=64"`</span>
+    Email <span class="ty">string</span> <span class="str">`json:"email" validate:"required,email"`</span>
+    Age   <span class="ty">int</span>    <span class="str">`json:"age"   validate:"gte=18,lte=120"`</span>
+}
+
+<span class="kw">func</span> <span class="fn">createUser</span>(c *<span class="pkg">core</span>.<span class="ty">Context</span>) <span class="pkg">core</span>.<span class="ty">Response</span> {
+    <span class="kw">var</span> req <span class="ty">CreateUserReq</span>
+    <span class="kw">if</span> err <span class="op">:=</span> c.<span class="fn">BindJSON</span>(&amp;req); err <span class="op">!=</span> <span class="kw">nil</span> {
+        <span class="kw">return</span> <span class="pkg">gx</span>.<span class="pl">ErrBadRequest</span>.<span class="fn">Wrap</span>(err).<span class="fn">ToResponse</span>()
+    }
+
+    <span class="cm">// Validates + returns 422 with field errors on failure</span>
+    <span class="kw">if</span> res, ok <span class="op">:=</span> <span class="pkg">gx</span>.<span class="fn">ValidateOrFail</span>(c, &amp;req); !ok {
+        <span class="kw">return</span> res
+    }
+
+    <span class="cm">// req is valid ✓</span>
+    <span class="kw">return</span> c.<span class="fn">Created</span>(<span class="fn">saveUser</span>(req))
+}</pre>
+        </div>
+
+        <h3 class="doc-h3">Standalone validation</h3>
+        <div class="doc-table-wrap">
+          <table>
+            <thead><tr><th>Function</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>gx.Validate(v)</td><td>Validate a struct — returns nil or ValidationError</td></tr>
+              <tr><td>gx.ValidateOrFail(c, v)</td><td>Validate + return 422 Response on failure</td></tr>
+              <tr><td>gx.ValidateVar(v, "required,email")</td><td>Validate a single value against tags</td></tr>
+              <tr><td>gx.RegisterValidator(tag, fn)</td><td>Register a custom validation function</td></tr>
+              <tr><td>gx.RegisterValidatorAlias(alias, tags)</td><td>Create a named alias for a tag combination</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="doc-h3">Custom validators</h3>
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">custom_validator.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="cm">// Register once at startup</span>
+<span class="pkg">gx</span>.<span class="fn">RegisterValidator</span>(<span class="str">"slug"</span>, <span class="kw">func</span>(fl validator.<span class="ty">FieldLevel</span>) <span class="ty">bool</span> {
+    <span class="kw">return</span> slugRe.<span class="fn">MatchString</span>(fl.<span class="fn">Field</span>().<span class="fn">String</span>())
+})
+
+<span class="cm">// Use in struct tags</span>
+<span class="kw">type</span> <span class="ty">Post</span> <span class="kw">struct</span> {
+    Slug <span class="ty">string</span> <span class="str">`validate:"required,slug"`</span>
+}</pre>
+        </div>
+
+        <div class="callout tip">
+          <span class="callout-icon">✅</span>
+          <p>Validation is lazy-initialized via <code>sync.Once</code> — the validator is only
+          created on first use, so startup is unaffected even if you register many custom rules.</p>
+        </div>
+      </section>
+
+      <hr class="doc-divider" />
+
+      <!-- ═══════════════════════════════════════════
+           SECTION: Cookies
+      ════════════════════════════════════════════ -->
+      <section class="doc-section" id="cookies">
+        <h2 class="doc-h2">Cookies</h2>
+        <p class="doc-p">
+          GX provides typed cookie helpers with secure defaults:
+          <code>HttpOnly=true</code> and <code>SameSite=Lax</code> out of the box.
+        </p>
+
+        <h4 class="doc-h4">Reading cookies</h4>
+        <div class="doc-table-wrap">
+          <table>
+            <thead><tr><th>Method</th><th>Returns</th></tr></thead>
+            <tbody>
+              <tr><td>c.Cookie("name")</td><td>(string, error)</td></tr>
+              <tr><td>c.CookieDefault("name", "fallback")</td><td>string</td></tr>
+              <tr><td>c.RawCookie("name")</td><td>(*http.Cookie, error)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4 class="doc-h4">Writing cookies</h4>
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">cookies.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="cm">// Quick setter (HttpOnly + SameSite=Lax defaults)</span>
+c.<span class="fn">SetCookie</span>(<span class="str">"session"</span>, token)
+
+<span class="cm">// Full control — chainable on any Response</span>
+<span class="kw">return</span> <span class="pkg">core</span>.<span class="fn">WithCookie</span>(c.<span class="fn">JSON</span>(user), <span class="pkg">core</span>.<span class="ty">Cookie</span>{
+    Name:     <span class="str">"session"</span>,
+    Value:    token,
+    MaxAge:   <span class="num">86400</span>,   <span class="cm">// 1 day</span>
+    HttpOnly: <span class="kw">true</span>,
+    Secure:   <span class="kw">true</span>,
+    SameSite: http.<span class="pl">SameSiteStrictMode</span>,
+})
+
+<span class="cm">// Delete a cookie</span>
+<span class="kw">return</span> <span class="pkg">core</span>.<span class="fn">WithClearCookie</span>(c.<span class="fn">NoContent</span>(), <span class="str">"session"</span>)</pre>
+        </div>
+      </section>
+
+      <hr class="doc-divider" />
+
+      <!-- ═══════════════════════════════════════════
+           SECTION: File Uploads
+      ════════════════════════════════════════════ -->
+      <section class="doc-section" id="uploads">
+        <h2 class="doc-h2">File Uploads</h2>
+        <p class="doc-p">
+          GX handles multipart form uploads with magic-byte MIME detection.
+          The detected <code>ContentType</code> is based on file content, not the
+          client-provided header — preventing Content-Type spoofing.
+        </p>
+
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">upload.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="kw">func</span> <span class="fn">handleUpload</span>(c *<span class="pkg">core</span>.<span class="ty">Context</span>) <span class="pkg">core</span>.<span class="ty">Response</span> {
+    file, err <span class="op">:=</span> c.<span class="fn">FormFile</span>(<span class="str">"avatar"</span>)
+    <span class="kw">if</span> err <span class="op">!=</span> <span class="kw">nil</span> {
+        <span class="kw">return</span> <span class="pkg">gx</span>.<span class="pl">ErrBadRequest</span>.<span class="fn">Wrap</span>(err).<span class="fn">ToResponse</span>()
+    }
+
+    <span class="cm">// Magic-byte MIME detection (JPEG, PNG, GIF, WebP, PDF, ZIP…)</span>
+    fmt.<span class="fn">Println</span>(file.ContentType)  <span class="cm">// e.g. "image/png"</span>
+    fmt.<span class="fn">Println</span>(file.Size)         <span class="cm">// bytes</span>
+    fmt.<span class="fn">Println</span>(file.Filename)     <span class="cm">// original filename</span>
+
+    <span class="cm">// Save to disk</span>
+    <span class="kw">if</span> err <span class="op">:=</span> file.<span class="fn">Save</span>(<span class="str">"./uploads/"</span> + file.Filename); err <span class="op">!=</span> <span class="kw">nil</span> {
+        <span class="kw">return</span> <span class="pkg">gx</span>.<span class="pl">ErrInternal</span>.<span class="fn">Wrap</span>(err).<span class="fn">ToResponse</span>()
+    }
+    <span class="kw">return</span> c.<span class="fn">JSON</span>(<span class="pkg">gx</span>.<span class="ty">Map</span>{<span class="str">"saved"</span>: file.Filename})
+}
+
+<span class="cm">// Multiple files under one field</span>
+files, _ <span class="op">:=</span> c.<span class="fn">FormFiles</span>(<span class="str">"photos"</span>)
+<span class="kw">for</span> _, f <span class="op">:=</span> <span class="kw">range</span> files {
+    data, _ <span class="op">:=</span> f.<span class="fn">Bytes</span>()   <span class="cm">// read all bytes</span>
+    _ <span class="op">=</span> data
+}</pre>
+        </div>
+      </section>
+
+      <hr class="doc-divider" />
+
+      <!-- ═══════════════════════════════════════════
+           SECTION: Static Files
+      ════════════════════════════════════════════ -->
+      <section class="doc-section" id="static">
+        <h2 class="doc-h2">Static Files</h2>
+        <p class="doc-p">
+          Serve a directory, a single file, or an <code>embed.FS</code>.
+          Path traversal is blocked. Pre-compressed <code>.br</code> / <code>.gz</code>
+          variants are served automatically when the client supports them.
+        </p>
+
+        <div class="doc-table-wrap">
+          <table>
+            <thead><tr><th>Method</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>app.Static("/assets", "./public")</td><td>Serve directory from disk</td></tr>
+              <tr><td>app.StaticFile("/favicon.ico", "./static/fav.ico")</td><td>Serve a single file</td></tr>
+              <tr><td>app.StaticFS("/assets", embedFS)</td><td>Serve an embedded FS</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">static.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="cm">// Serve ./public at /assets with 7-day cache</span>
+app.<span class="fn">Static</span>(<span class="str">"/assets"</span>, <span class="str">"./public"</span>,
+    <span class="pkg">core</span>.<span class="fn">StaticMaxAge</span>(<span class="num">7</span>*<span class="num">24</span>*time.Hour),
+    <span class="pkg">core</span>.<span class="fn">StaticIndex</span>(<span class="str">"index.html"</span>),
+    <span class="pkg">core</span>.<span class="fn">StaticBrowse</span>(<span class="kw">false</span>),    <span class="cm">// no directory listing</span>
+)
+
+<span class="cm">// Single file shortcut</span>
+app.<span class="fn">StaticFile</span>(<span class="str">"/favicon.ico"</span>, <span class="str">"./static/favicon.ico"</span>)
+
+<span class="cm">// Embedded FS (go:embed)</span>
+<span class="cm">//go:embed dist/*</span>
+<span class="kw">var</span> <span class="pl">embedFS</span> embed.<span class="ty">FS</span>
+app.<span class="fn">StaticFS</span>(<span class="str">"/app"</span>, <span class="pl">embedFS</span>)</pre>
+        </div>
+      </section>
+
+      <hr class="doc-divider" />
+
+      <!-- ═══════════════════════════════════════════
+           SECTION: Content Negotiation
+      ════════════════════════════════════════════ -->
+      <section class="doc-section" id="negotiate">
+        <h2 class="doc-h2">Content Negotiation</h2>
+        <p class="doc-p">
+          GX parses <code>Accept</code> and <code>Accept-Language</code> headers using
+          full q-factor weighting.
+        </p>
+
+        <div class="doc-table-wrap">
+          <table>
+            <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>c.Negotiate(v)</td><td>Response</td><td>Auto-select JSON / XML / text based on Accept</td></tr>
+              <tr><td>c.Accepts("json","xml")</td><td>string</td><td>Best match from candidates (q-weighted)</td></tr>
+              <tr><td>c.AcceptLanguage()</td><td>string</td><td>Primary preferred language ("fr", "en"…)</td></tr>
+              <tr><td>c.AcceptLanguages()</td><td>[]string</td><td>All languages in preference order</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">negotiate.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="kw">func</span> <span class="fn">getUser</span>(c *<span class="pkg">core</span>.<span class="ty">Context</span>) <span class="pkg">core</span>.<span class="ty">Response</span> {
+    user <span class="op">:=</span> <span class="fn">fetchUser</span>(c.<span class="fn">Param</span>(<span class="str">"id"</span>))
+
+    <span class="cm">// Picks JSON, XML, or text/plain automatically</span>
+    <span class="kw">return</span> c.<span class="fn">Negotiate</span>(user)
+}
+
+<span class="kw">func</span> <span class="fn">translate</span>(c *<span class="pkg">core</span>.<span class="ty">Context</span>) <span class="pkg">core</span>.<span class="ty">Response</span> {
+    lang <span class="op">:=</span> c.<span class="fn">AcceptLanguage</span>()     <span class="cm">// "fr"</span>
+    msg  <span class="op">:=</span> i18n.<span class="fn">Get</span>(lang, <span class="str">"welcome"</span>)
+    <span class="kw">return</span> c.<span class="fn">JSON</span>(<span class="pkg">gx</span>.<span class="ty">Map</span>{<span class="str">"message"</span>: msg})
+}</pre>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════
+           SECTION: Safe Goroutines
+      ════════════════════════════════════════════ -->
+      <hr class="doc-divider" />
+      <section class="doc-section" id="goroutines">
+        <h2 class="doc-h2">Safe Goroutines</h2>
+        <p class="doc-lead">
+          Never use a bare <code>go func()</code> inside a handler — a panic will crash the
+          server. Use <code>gx.Go</code> instead. Panics are recovered, logged with a full
+          stack trace, and the server keeps running.
+        </p>
+
+        <div class="callout danger">
+          <span class="callout-icon">⚠️</span>
+          <p>Never capture <code>*core.Context</code> in a goroutine — it is pooled and will
+          be recycled after the handler returns. Extract needed values first.</p>
+        </div>
+
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">goroutine.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="kw">func</span> <span class="fn">sendWelcome</span>(c *<span class="pkg">core</span>.<span class="ty">Context</span>) <span class="pkg">core</span>.<span class="ty">Response</span> {
+    email <span class="op">:=</span> c.<span class="fn">Param</span>(<span class="str">"email"</span>) <span class="cm">// extract before goroutine</span>
+
+    <span class="cm">// Fire-and-forget — panic-safe</span>
+    <span class="pkg">gx</span>.<span class="fn">Go</span>(<span class="kw">func</span>() {
+        mailer.<span class="fn">SendWelcome</span>(email)
+    })
+
+    <span class="kw">return</span> c.<span class="fn">NoContent</span>()
+}
+
+<span class="cm">// With context — honours request cancellation</span>
+<span class="kw">func</span> <span class="fn">processAsync</span>(c *<span class="pkg">core</span>.<span class="ty">Context</span>) <span class="pkg">core</span>.<span class="ty">Response</span> {
+    ctx <span class="op">:=</span> c.<span class="fn">GoContext</span>()
+    id  <span class="op">:=</span> c.<span class="fn">Param</span>(<span class="str">"id"</span>)
+
+    <span class="pkg">gx</span>.<span class="fn">GoCtx</span>(ctx, <span class="kw">func</span>(ctx context.<span class="ty">Context</span>) {
+        <span class="fn">heavyWork</span>(ctx, id)
+    })
+
+    <span class="kw">return</span> c.<span class="fn">JSON</span>(<span class="pkg">gx</span>.<span class="ty">Map</span>{<span class="str">"queued"</span>: <span class="kw">true</span>})
+}</pre>
+        </div>
+      </section>
+
+      <hr class="doc-divider" />
+
+      <!-- ═══════════════════════════════════════════
+           SECTION: Early Hints
+      ════════════════════════════════════════════ -->
+      <section class="doc-section" id="early-hints">
+        <h2 class="doc-h2">Early Hints (103)</h2>
+        <p class="doc-p">
+          Send <code>103 Early Hints</code> to push resource hints to the browser before the
+          final response. No-op on HTTP/1.1 connections.
+        </p>
+
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">early_hints.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="kw">func</span> <span class="fn">page</span>(c *<span class="pkg">core</span>.<span class="ty">Context</span>) <span class="pkg">core</span>.<span class="ty">Response</span> {
+    <span class="cm">// Sent immediately over HTTP/2 before the response body is ready</span>
+    c.<span class="fn">EarlyHints</span>(
+        <span class="pkg">core</span>.<span class="fn">Preload</span>(<span class="str">"/assets/app.css"</span>,  <span class="str">"style"</span>),
+        <span class="pkg">core</span>.<span class="fn">Preload</span>(<span class="str">"/assets/app.js"</span>,   <span class="str">"script"</span>),
+        <span class="pkg">core</span>.<span class="fn">Preconnect</span>(<span class="str">"https://cdn.example.com"</span>),
+        <span class="pkg">core</span>.<span class="fn">DNSPrefetch</span>(<span class="str">"https://fonts.googleapis.com"</span>),
+    )
+
+    <span class="cm">// ... generate the page ...</span>
+    <span class="kw">return</span> c.<span class="fn">HTML</span>(html)
+}</pre>
+        </div>
+
+        <div class="doc-table-wrap">
+          <table>
+            <thead><tr><th>Helper</th><th>Link rel</th></tr></thead>
+            <tbody>
+              <tr><td>core.Preload(uri, as)</td><td>preload</td></tr>
+              <tr><td>core.Prefetch(uri)</td><td>prefetch</td></tr>
+              <tr><td>core.Preconnect(uri)</td><td>preconnect</td></tr>
+              <tr><td>core.DNSPrefetch(uri)</td><td>dns-prefetch</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <hr class="doc-divider" />
+
+      <!-- ═══════════════════════════════════════════
+           SECTION: HTTPS Redirect
+      ════════════════════════════════════════════ -->
+      <section class="doc-section" id="https-redirect">
+        <h2 class="doc-h2">HTTPS Redirect</h2>
+        <p class="doc-p">
+          Two helpers make HTTP→HTTPS redirection trivial — a middleware for
+          single-server setups and a dedicated redirect server for dual-listen setups.
+        </p>
+
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">https_redirect.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="cm">// Option A — middleware: redirects any HTTP request on the same server</span>
+app.<span class="fn">Use</span>(<span class="pkg">gx</span>.<span class="fn">HTTPSRedirect</span>())
+
+<span class="cm">// Option B — dual-listen: HTTP :80 redirects to HTTPS :443</span>
+app.<span class="fn">ListenHTTPRedirect</span>(<span class="str">":80"</span>, <span class="str">":443"</span>)  <span class="cm">// runs in background goroutine</span>
+app.<span class="fn">Boot</span>(<span class="str">":443"</span>)                          <span class="cm">// main TLS server</span></pre>
+        </div>
+
+        <div class="callout info">
+          <span class="callout-icon">🔒</span>
+          <p>The redirect uses <code>308 Permanent Redirect</code> (preserves POST bodies) and
+          injects a <code>Strict-Transport-Security</code> header automatically.</p>
+        </div>
+      </section>
+
+      <hr class="doc-divider" />
+
+      <!-- ═══════════════════════════════════════════
+           SECTION: Config from Env
+      ════════════════════════════════════════════ -->
+      <section class="doc-section" id="config">
+        <h2 class="doc-h2">Config from Env</h2>
+        <p class="doc-p">
+          <code>gx.LoadConfig[T]()</code> reads environment variables into a typed struct
+          using struct tags. Supports defaults, required fields, and common types.
+        </p>
+
+        <div class="doc-table-wrap">
+          <table>
+            <thead><tr><th>Tag</th><th>Example</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>env:"VAR"</td><td>env:"DATABASE_URL"</td><td>Env var name to read</td></tr>
+              <tr><td>default:"val"</td><td>default:"8080"</td><td>Fallback if env var is unset</td></tr>
+              <tr><td>required:"true"</td><td>required:"true"</td><td>Returns error if missing</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="doc-p">Supported field types: <code>string</code>, <code>int / int64</code>, <code>float64</code>, <code>bool</code>, <code>time.Duration</code>, <code>[]string</code> (comma-separated).</p>
+
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">config.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="kw">type</span> <span class="ty">Config</span> <span class="kw">struct</span> {
+    DatabaseURL <span class="ty">string</span>        <span class="str">`env:"DATABASE_URL" required:"true"`</span>
+    Port        <span class="ty">int</span>           <span class="str">`env:"PORT"         default:"8080"`</span>
+    Debug       <span class="ty">bool</span>          <span class="str">`env:"DEBUG"        default:"false"`</span>
+    Timeout     time.<span class="ty">Duration</span> <span class="str">`env:"TIMEOUT"      default:"30s"`</span>
+    AllowedIPs  []<span class="ty">string</span>      <span class="str">`env:"ALLOWED_IPS"`</span>  <span class="cm">// comma-separated</span>
+}
+
+<span class="kw">func</span> <span class="fn">main</span>() {
+    cfg, err <span class="op">:=</span> <span class="pkg">gx</span>.<span class="fn">LoadConfig</span>[<span class="ty">Config</span>]()
+    <span class="kw">if</span> err <span class="op">!=</span> <span class="kw">nil</span> {
+        log.<span class="fn">Fatal</span>(err)
+    }
+
+    app <span class="op">:=</span> <span class="pkg">gx</span>.<span class="fn">New</span>()
+    app.<span class="fn">Boot</span>(fmt.<span class="fn">Sprintf</span>(<span class="str">":%d"</span>, cfg.Port))
+}</pre>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════
+           SECTION: Plugin System
+      ════════════════════════════════════════════ -->
+      <hr class="doc-divider" />
+      <section class="doc-section" id="plugins">
+        <div class="section-eyebrow">Plugins</div>
+        <h2 class="doc-h2">Plugin System</h2>
+        <p class="doc-lead">
+          Plugins are installed with <code>app.Install()</code> and automatically
+          sorted by priority before the first request. Higher priority runs first.
+        </p>
+
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">plugins.go</span><span class="code-lang">go</span>
+          </div>
+          <pre>app.<span class="fn">Install</span>(<span class="pkg">cors</span>.<span class="fn">New</span>())
+app.<span class="fn">Install</span>(<span class="pkg">compress</span>.<span class="fn">New</span>())
+app.<span class="fn">Install</span>(<span class="pkg">auth</span>.<span class="fn">New</span>(secret))
+app.<span class="fn">Install</span>(<span class="pkg">ratelimit</span>.<span class="fn">New</span>(...))
+
+<span class="cm">// Override execution priority (higher = runs first)</span>
+app.<span class="fn">Install</span>(myPlugin, <span class="pkg">gx</span>.<span class="fn">PluginPriority</span>(<span class="num">999</span>))</pre>
+        </div>
+
+        <h3 class="doc-h3">Built-in priority table</h3>
+        <div class="doc-table-wrap">
+          <table>
+            <thead><tr><th>Plugin</th><th>Default Priority</th><th>Position</th></tr></thead>
+            <tbody>
+              <tr><td>Recovery</td><td>1000</td><td>Outermost — catches panics from everything</td></tr>
+              <tr><td>Request ID</td><td>950</td><td>Before logging so ID is available</td></tr>
+              <tr><td>Logger</td><td>900</td><td>Logs with request ID</td></tr>
+              <tr><td>CORS</td><td>850</td><td>Before auth, handles preflight</td></tr>
+              <tr><td>Rate Limit</td><td>800</td><td>Reject early — before heavy auth</td></tr>
+              <tr><td>Auth</td><td>750</td><td>After rate limit</td></tr>
+              <tr><td>Cache</td><td>700</td><td>After auth — cache user-specific responses</td></tr>
+              <tr><td>Compress</td><td>100</td><td>Innermost — compresses final response</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="doc-h3">Plugin interfaces</h3>
+        <div class="doc-table-wrap">
+          <table>
+            <thead><tr><th>Interface</th><th>Method</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>RequestPlugin</td><td>Middleware() core.Middleware</td><td>Contributes a request middleware</td></tr>
+              <tr><td>BootPlugin</td><td>Boot(ctx, app) error</td><td>Runs once on app.Boot()</td></tr>
+              <tr><td>ShutdownPlugin</td><td>Shutdown(ctx) error</td><td>Runs on graceful shutdown</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <hr class="doc-divider" />
+
+      <!-- ─── Plugin: Auth ─── -->
+      <section class="doc-section" id="plugin-auth">
+        <h2 class="doc-h2">Plugin: Auth (JWT)</h2>
+        <p class="doc-p">
+          Validates <code>Authorization: Bearer &lt;token&gt;</code> headers using HMAC-SHA256.
+          Claims are injected into the context store under <code>"claims"</code>.
+        </p>
+
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">auth_plugin.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="kw">import</span> <span class="str">"github.com/s-anzie/gx/plugins/auth"</span>
+
+app.<span class="fn">Install</span>(<span class="pkg">auth</span>.<span class="fn">New</span>(
+    <span class="pkg">auth</span>.<span class="fn">WithSecret</span>([]<span class="ty">byte</span>(os.<span class="fn">Getenv</span>(<span class="str">"JWT_SECRET"</span>))),
+    <span class="pkg">auth</span>.<span class="fn">WithSkip</span>(<span class="str">"/health"</span>, <span class="str">"/login"</span>),  <span class="cm">// public paths</span>
+))
+
+<span class="cm">// In a protected handler</span>
+claims <span class="op">:=</span> <span class="pkg">auth</span>.<span class="fn">ClaimsFrom</span>(c)
+fmt.<span class="fn">Println</span>(claims.Subject)  <span class="cm">// user ID</span></pre>
+        </div>
+      </section>
+
+      <hr class="doc-divider" />
+
+      <!-- ─── Plugin: CORS ─── -->
+      <section class="doc-section" id="plugin-cors">
+        <h2 class="doc-h2">Plugin: CORS</h2>
+        <p class="doc-p">
+          Handles <code>Origin</code>, preflight <code>OPTIONS</code> requests, and
+          <code>Access-Control-*</code> response headers.
+        </p>
+
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">cors_plugin.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="kw">import</span> <span class="str">"github.com/s-anzie/gx/plugins/cors"</span>
+
+<span class="cm">// Allow any origin (development)</span>
+app.<span class="fn">Install</span>(<span class="pkg">cors</span>.<span class="fn">New</span>())
+
+<span class="cm">// Restricted (production)</span>
+app.<span class="fn">Install</span>(<span class="pkg">cors</span>.<span class="fn">New</span>(
+    <span class="pkg">cors</span>.<span class="fn">AllowOrigins</span>(<span class="str">"https://app.example.com"</span>),
+    <span class="pkg">cors</span>.<span class="fn">AllowMethods</span>(<span class="str">"GET"</span>, <span class="str">"POST"</span>, <span class="str">"DELETE"</span>),
+    <span class="pkg">cors</span>.<span class="fn">AllowHeaders</span>(<span class="str">"Authorization"</span>, <span class="str">"Content-Type"</span>),
+    <span class="pkg">cors</span>.<span class="fn">AllowCredentials</span>(<span class="kw">true</span>),
+    <span class="pkg">cors</span>.<span class="fn">MaxAge</span>(<span class="num">86400</span>),
+))</pre>
+        </div>
+      </section>
+
+      <hr class="doc-divider" />
+
+      <!-- ─── Plugin: Compress ─── -->
+      <section class="doc-section" id="plugin-compress">
+        <h2 class="doc-h2">Plugin: Compress</h2>
+        <p class="doc-p">
+          Compresses responses using Brotli (preferred) or gzip depending on the
+          client's <code>Accept-Encoding</code>. Skips responses below the minimum size.
+        </p>
+
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">compress_plugin.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="kw">import</span> <span class="str">"github.com/s-anzie/gx/plugins/compress"</span>
+
+app.<span class="fn">Install</span>(<span class="pkg">compress</span>.<span class="fn">New</span>(
+    <span class="pkg">compress</span>.<span class="fn">WithLevel</span>(<span class="num">5</span>),       <span class="cm">// 1–11 for brotli, 1–9 for gzip</span>
+    <span class="pkg">compress</span>.<span class="fn">WithMinSize</span>(<span class="num">1024</span>),  <span class="cm">// skip responses smaller than 1 KB</span>
+))</pre>
+        </div>
+      </section>
+
+      <hr class="doc-divider" />
+
+      <!-- ─── Plugin: Cache ─── -->
+      <section class="doc-section" id="plugin-cache">
+        <h2 class="doc-h2">Plugin: Cache</h2>
+        <p class="doc-p">
+          Caches GET responses in memory (default) or a pluggable backend.
+          Only 200 responses are cached. Cache keys are based on method + path.
+        </p>
+
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">cache_plugin.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="kw">import</span> <span class="str">"github.com/s-anzie/gx/plugins/cache"</span>
+
+app.<span class="fn">Install</span>(<span class="pkg">cache</span>.<span class="fn">New</span>(
+    <span class="pkg">cache</span>.<span class="fn">WithTTL</span>(<span class="num">60</span>*time.Second),
+    <span class="pkg">cache</span>.<span class="fn">WithKeyBuilder</span>(<span class="kw">func</span>(c *<span class="pkg">core</span>.<span class="ty">Context</span>) <span class="ty">string</span> {
+        <span class="kw">return</span> c.<span class="fn">Method</span>() + <span class="str">":"</span> + c.<span class="fn">Path</span>()
+    }),
+))</pre>
+        </div>
+      </section>
+
+      <hr class="doc-divider" />
+
+      <!-- ─── Plugin: Rate Limit ─── -->
+      <section class="doc-section" id="plugin-ratelimit">
+        <h2 class="doc-h2">Plugin: Rate Limit</h2>
+        <p class="doc-p">
+          Token-bucket rate limiting. Keyed by IP by default.
+          Supports custom key extractors (e.g. per authenticated user).
+        </p>
+
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">ratelimit_plugin.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="kw">import</span> <span class="str">"github.com/s-anzie/gx/plugins/ratelimit"</span>
+
+app.<span class="fn">Install</span>(<span class="pkg">ratelimit</span>.<span class="fn">New</span>(
+    <span class="pkg">ratelimit</span>.<span class="fn">WithRate</span>(<span class="num">100</span>, time.Minute), <span class="cm">// 100 req / minute</span>
+    <span class="pkg">ratelimit</span>.<span class="fn">WithKeyFunc</span>(<span class="kw">func</span>(c *<span class="pkg">core</span>.<span class="ty">Context</span>) <span class="ty">string</span> {
+        <span class="kw">return</span> c.<span class="fn">ClientIP</span>()
+    }),
+    <span class="pkg">ratelimit</span>.<span class="fn">WithOnExceeded</span>(<span class="kw">func</span>(c *<span class="pkg">core</span>.<span class="ty">Context</span>) <span class="pkg">core</span>.<span class="ty">Response</span> {
+        <span class="kw">return</span> <span class="pkg">gx</span>.<span class="fn">E</span>(<span class="num">429</span>, <span class="str">"RATE_LIMITED"</span>, <span class="str">"Slow down"</span>).<span class="fn">ToResponse</span>()
+    }),
+))</pre>
+        </div>
+      </section>
+
+      <hr class="doc-divider" />
+
+      <!-- ─── Plugin: OpenAPI ─── -->
+      <section class="doc-section" id="plugin-openapi">
+        <h2 class="doc-h2">Plugin: OpenAPI</h2>
+        <p class="doc-p">
+          Auto-generates an OpenAPI 3.1 spec from route <code>Contract</code> declarations.
+          Serves Scalar (default) or Swagger UI documentation.
+        </p>
+
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">openapi_plugin.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="kw">import</span> <span class="str">"github.com/s-anzie/gx/plugins/openapi"</span>
+
+<span class="cm">// Install OpenAPI — serves /docs and /openapi.json</span>
+app.<span class="fn">Install</span>(<span class="pkg">openapi</span>.<span class="fn">New</span>(
+    <span class="pkg">openapi</span>.<span class="fn">WithTitle</span>(<span class="str">"My API"</span>),
+    <span class="pkg">openapi</span>.<span class="fn">WithVersion</span>(<span class="str">"1.0.0"</span>),
+    <span class="pkg">openapi</span>.<span class="fn">WithUI</span>(<span class="pkg">openapi</span>.<span class="pl">UIScalar</span>),   <span class="cm">// or UISwagger</span>
+))
+
+<span class="cm">// Annotate a route with a Contract</span>
+app.<span class="fn">Contract</span>(<span class="pkg">gx</span>.<span class="ty">Contract</span>{
+    Method:      <span class="str">"POST"</span>,
+    Path:        <span class="str">"/users"</span>,
+    Summary:     <span class="str">"Create a user"</span>,
+    Tags:        []<span class="ty">string</span>{<span class="str">"Users"</span>},
+    Body:        <span class="ty">CreateUserReq</span>{},
+    Response:    <span class="ty">UserResp</span>{},
+    Errors:      []<span class="ty">int</span>{<span class="num">400</span>, <span class="num">409</span>, <span class="num">422</span>},
+}).<span class="fn">POST</span>(<span class="str">"/users"</span>, createUser)</pre>
+        </div>
+      </section>
+
+
+
+      <!-- ── Testing ── -->
+      <section id="testing">
+        <div class="section-eyebrow">Testing</div>
+        <h2>Testing with gxtest</h2>
+        <p>The <code>gxtest</code> package provides a lightweight test-helper layer that dispatches requests directly to your handlers — no real HTTP server required. Import it with:</p>
+        <div class="code-wrap">
+          <div class="code-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="fname">go.mod / import</span></div>
+          <pre><span class="kw">import</span> <span class="str">"github.com/s-anzie/gx/gxtest"</span></pre>
+        </div>
+
+        <h3>Test a standalone handler</h3>
+        <p>Wrap a single <code>core.Handler</code> function and fire requests at it:</p>
+        <div class="code-wrap">
+          <div class="code-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="fname">handler_test.go</span></div>
+          <pre><span class="kw">func</span> <span class="fn">TestGetUser</span>(t *<span class="ty">testing.T</span>) {
+    <span class="cm">// Wrap a handler directly</span>
+    resp := gxtest.<span class="fn">GET</span>(getUser, <span class="str">"/users/42"</span>).
+        <span class="fn">Do</span>(t)
+
+    resp.<span class="fn">AssertStatus</span>(t, <span class="num">200</span>)
+    resp.<span class="fn">AssertBodyContains</span>(t, <span class="str">"42"</span>)
+}</pre>
+        </div>
+
+        <h3>Test against a router</h3>
+        <p>Pass your <code>*core.Router</code> (or <code>*gx.App</code>) to test the full routing + middleware stack:</p>
+        <div class="code-wrap">
+          <div class="code-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="fname">router_test.go</span></div>
+          <pre><span class="kw">func</span> <span class="fn">TestAPI</span>(t *<span class="ty">testing.T</span>) {
+    app := <span class="fn">buildApp</span>()   <span class="cm">// returns *gx.App</span>
+
+    resp := gxtest.<span class="fn">POST</span>(app, <span class="str">"/users"</span>).
+        <span class="fn">JSON</span>(map[<span class="ty">string</span>]<span class="kw">any</span>{<span class="str">"name"</span>: <span class="str">"Alice"</span>}).
+        <span class="fn">Header</span>(<span class="str">"X-Request-ID"</span>, <span class="str">"test-1"</span>).
+        <span class="fn">Do</span>(t)
+
+    resp.<span class="fn">AssertStatus</span>(t, <span class="num">201</span>)
+    resp.<span class="fn">AssertJSON</span>(t, <span class="str">`{"id":1,"name":"Alice"}`</span>)
+}</pre>
+        </div>
+
+        <h3>Request builder methods</h3>
+        <div class="doc-table-wrap">
+          <table>
+            <thead><tr><th>Method</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>.Header(key, value)</code></td><td>Add a request header</td></tr>
+              <tr><td><code>.Cookie(name, value)</code></td><td>Add a cookie to the request</td></tr>
+              <tr><td><code>.Query(key, value)</code></td><td>Append a URL query parameter</td></tr>
+              <tr><td><code>.JSON(v)</code></td><td>Set body to JSON-encoded <code>v</code>, Content-Type: application/json</td></tr>
+              <tr><td><code>.XML(v)</code></td><td>Set body to XML-encoded <code>v</code>, Content-Type: application/xml</td></tr>
+              <tr><td><code>.Body(r)</code></td><td>Set body from an <code>io.Reader</code></td></tr>
+              <tr><td><code>.BodyString(s)</code></td><td>Set body from a raw string</td></tr>
+              <tr><td><code>.Do(t)</code></td><td>Dispatch the request, returns <code>*RecordedResponse</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Assertion methods on RecordedResponse</h3>
+        <div class="doc-table-wrap">
+          <table>
+            <thead><tr><th>Method</th><th>Asserts</th></tr></thead>
+            <tbody>
+              <tr><td><code>.AssertStatus(t, code)</code></td><td>HTTP status code equals <code>code</code></td></tr>
+              <tr><td><code>.AssertHeader(t, key, val)</code></td><td>Response header exact match</td></tr>
+              <tr><td><code>.AssertHeaderContains(t, key, sub)</code></td><td>Response header contains substring</td></tr>
+              <tr><td><code>.AssertBodyContains(t, sub)</code></td><td>Body contains substring</td></tr>
+              <tr><td><code>.AssertBodyEquals(t, want)</code></td><td>Body exactly equals <code>want</code></td></tr>
+              <tr><td><code>.AssertJSON(t, want)</code></td><td>Body equals JSON string (whitespace-insensitive)</td></tr>
+              <tr><td><code>.AssertError(t, msg)</code></td><td>Body error message contains <code>msg</code></td></tr>
+              <tr><td><code>.AssertErrorStatus(t, code, msg)</code></td><td>Status + error message combined</td></tr>
+              <tr><td><code>.AssertCookie(t, name, val)</code></td><td>Set-Cookie header contains named cookie</td></tr>
+              <tr><td><code>.AssertNoCookie(t, name)</code></td><td>Named cookie is absent from response</td></tr>
+              <tr><td><code>.AssertContentType(t, ct)</code></td><td>Content-Type header contains <code>ct</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout tip">
+          <strong>Tip:</strong> <code>RecordedResponse</code> also exposes <code>.Code</code> (int), <code>.Body</code> (<code>*bytes.Buffer</code>), and <code>.Header()</code> for lower-level assertions when the helper methods aren't enough.
+        </div>
+      </section>
+
+      <!-- ── HTTP/2 & HTTP/3 ── -->
+      <section id="http3">
+        <div class="section-eyebrow">Transports</div>
+        <h2>HTTP/2 &amp; HTTP/3</h2>
+        <p>GX supports HTTP/2 automatically when you run with TLS, and HTTP/3 (QUIC) via <code>ListenH3</code>.</p>
+
+        <h3>Enabling TLS (HTTP/2 auto-upgrade)</h3>
+        <div class="code-wrap">
+          <div class="code-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="fname">main.go</span></div>
+          <pre>app.<span class="fn">ListenTLS</span>(<span class="str">":443"</span>, <span class="str">"cert.pem"</span>, <span class="str">"key.pem"</span>)</pre>
+        </div>
+
+        <h3>HTTP/3 (QUIC)</h3>
+        <p>Serving over QUIC requires a valid TLS certificate. Call <code>ListenH3</code> instead of <code>Listen</code>:</p>
+        <div class="code-wrap">
+          <div class="code-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="fname">main.go</span></div>
+          <pre>err := app.<span class="fn">ListenH3</span>(<span class="str">":443"</span>, <span class="str">"cert.pem"</span>, <span class="str">"key.pem"</span>)</pre>
+        </div>
+
+        <h3>Detecting the protocol in a handler</h3>
+        <div class="code-wrap">
+          <div class="code-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="fname">handler.go</span></div>
+          <pre><span class="kw">func</span> <span class="fn">info</span>(c *<span class="ty">core.Context</span>) <span class="ty">error</span> {
+    <span class="kw">if</span> c.<span class="fn">IsHTTP3</span>() {
+        <span class="cm">// request arrived over QUIC</span>
+    }
+    <span class="kw">return</span> c.<span class="fn">JSON</span>(<span class="num">200</span>, map[<span class="ty">string</span>]<span class="kw">any</span>{
+        <span class="str">"proto"</span>: c.Request.Proto,
+    })
+}</pre>
+        </div>
+
+        <div class="callout info">
+          <strong>Note:</strong> HTTP/3 requires that the <code>Alt-Svc</code> header is advertised so browsers upgrade. GX sets this header automatically when <code>ListenH3</code> is used.
+        </div>
+      </section>
+
+      <!-- ── Lifecycle Hooks ── -->
+      <section id="lifecycle">
+        <div class="section-eyebrow">Lifecycle</div>
+        <h2>Lifecycle Hooks</h2>
+        <p>Register callbacks that fire at well-defined points in the application lifecycle — before the server accepts connections (<em>boot</em>), after graceful shutdown (<em>shutdown</em>), and for liveness/readiness probing (<em>health check</em>).</p>
+
+        <h3>OnBoot</h3>
+        <p>Runs <strong>once</strong>, just before the server starts accepting connections. Use it to connect to databases, warm caches, or print a startup banner.</p>
+        <div class="code-wrap">
+          <div class="code-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="fname">main.go</span></div>
+          <pre>app.<span class="fn">OnBoot</span>(<span class="kw">func</span>(a *<span class="ty">gx.App</span>) <span class="ty">error</span> {
+    <span class="kw">return</span> db.<span class="fn">Connect</span>()
+})</pre>
+        </div>
+
+        <h3>OnShutdown</h3>
+        <p>Runs after the server has drained active connections. Use it to flush queues, close pools, or clean up resources.</p>
+        <div class="code-wrap">
+          <div class="code-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="fname">main.go</span></div>
+          <pre>app.<span class="fn">OnShutdown</span>(<span class="kw">func</span>(a *<span class="ty">gx.App</span>) <span class="ty">error</span> {
+    db.<span class="fn">Close</span>()
+    cache.<span class="fn">Flush</span>()
+    <span class="kw">return nil</span>
+})</pre>
+        </div>
+
+        <h3>HealthCheck</h3>
+        <p>Register a named health-check probe. GX exposes all registered probes at <code>GET /_health</code>:</p>
+        <div class="code-wrap">
+          <div class="code-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="fname">main.go</span></div>
+          <pre>app.<span class="fn">HealthCheck</span>(<span class="str">"database"</span>, <span class="kw">func</span>() <span class="ty">error</span> {
+    <span class="kw">return</span> db.<span class="fn">Ping</span>()
+})
+
+app.<span class="fn">HealthCheck</span>(<span class="str">"redis"</span>, <span class="kw">func</span>() <span class="ty">error</span> {
+    <span class="kw">return</span> redis.<span class="fn">Ping</span>()
+})</pre>
+        </div>
+        <p>A successful probe returns <code>200 {"status":"ok","checks":{"database":"ok","redis":"ok"}}</code>. Any failing probe returns <code>503</code> with the error message.</p>
+
+        <h3>Graceful shutdown</h3>
+        <p>GX listens for <code>SIGINT</code> / <code>SIGTERM</code> automatically. On signal, it stops accepting new connections, waits for in-flight requests to complete (up to a configurable timeout), then fires all <code>OnShutdown</code> callbacks.</p>
+        <div class="callout tip">
+          <strong>Tip:</strong> Override the default shutdown timeout via the <code>GX_SHUTDOWN_TIMEOUT</code> environment variable (e.g. <code>GX_SHUTDOWN_TIMEOUT=15s</code>).
+        </div>
+      </section>
+
+      <!-- ── Observability ── -->
+      <section id="observability">
+        <div class="section-eyebrow">Observability</div>
+        <h2>Observability</h2>
+        <p>GX ships first-class support for distributed tracing, metrics, and structured logging — all wired through standard Go interfaces so you can plug in any backend.</p>
+
+        <h3>Structured logging</h3>
+        <p>GX uses the standard library's <code>log/slog</code>. Pass your own <code>*slog.Logger</code> at construction time:</p>
+        <div class="code-wrap">
+          <div class="code-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="fname">main.go</span></div>
+          <pre>logger := slog.<span class="fn">New</span>(slog.<span class="fn">NewJSONHandler</span>(os.Stdout, <span class="kw">nil</span>))
+
+app := gx.<span class="fn">New</span>(gx.Options{
+    Logger: logger,
+})</pre>
+        </div>
+        <p>Every request is logged automatically with <code>method</code>, <code>path</code>, <code>status</code>, <code>latency</code>, and <code>request_id</code>.</p>
+
+        <h3>Distributed tracing</h3>
+        <p>Register an OpenTelemetry tracer provider with <code>WithTracing</code>:</p>
+        <div class="code-wrap">
+          <div class="code-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="fname">main.go</span></div>
+          <pre>tp := <span class="fn">initTracerProvider</span>()  <span class="cm">// returns *sdktrace.TracerProvider</span>
+
+app.<span class="fn">WithTracing</span>(tp)</pre>
+        </div>
+        <p>A span is created for each incoming request and stored on the context. Retrieve it inside a handler:</p>
+        <div class="code-wrap">
+          <div class="code-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="fname">handler.go</span></div>
+          <pre>ctx, span := c.<span class="fn">StartSpan</span>(<span class="str">"fetch-user"</span>)
+<span class="kw">defer</span> span.<span class="fn">End</span>()
+
+user, err := db.<span class="fn">GetUser</span>(ctx, id)</pre>
+        </div>
+
+        <h3>Metrics</h3>
+        <p>Pass a Prometheus (or any OpenTelemetry-compatible) meter provider with <code>WithMetrics</code>:</p>
+        <div class="code-wrap">
+          <div class="code-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="fname">main.go</span></div>
+          <pre>mp := <span class="fn">initMeterProvider</span>()
+
+app.<span class="fn">WithMetrics</span>(mp)
+
+<span class="cm">// Expose the /metrics scrape endpoint</span>
+app.<span class="fn">GET</span>(<span class="str">"/metrics"</span>, gx.<span class="fn">PrometheusHandler</span>())</pre>
+        </div>
+
+        <h3>Observability fields summary</h3>
+        <div class="doc-table-wrap">
+          <table>
+            <thead><tr><th>Method / Field</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>app.WithTracing(tp)</code></td><td>Attach an OTel <code>TracerProvider</code></td></tr>
+              <tr><td><code>app.WithMetrics(mp)</code></td><td>Attach an OTel <code>MeterProvider</code></td></tr>
+              <tr><td><code>gx.Options{Logger: l}</code></td><td>Set the structured logger (<code>*slog.Logger</code>)</td></tr>
+              <tr><td><code>c.StartSpan(name)</code></td><td>Create a child span from the request context</td></tr>
+              <tr><td><code>c.RequestID()</code></td><td>Return the auto-generated or propagated request ID</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout info">
+          <strong>OpenTelemetry compatible:</strong> GX does not vendor any OTEL SDK — bring your own provider and GX will use it for both traces and metrics, keeping binary size minimal.
+        </div>
+      </section>
+
+      <!-- ── Footer CTA ── -->
+      <div class="footer-cta">
+        <div class="footer-cta-inner">
+          <h2>Ready to build?</h2>
+          <p>You've reached the end of the guide. GX is designed to stay out of your way while keeping every primitive within reach.</p>
+          <div class="footer-cta-actions">
+            <a href="index.html" class="btn-primary">Back to home</a>
+            <a href="https://github.com/s-anzie/gx" class="btn-secondary" target="_blank" rel="noopener">View on GitHub</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ── Right TOC ── -->
+  <aside class="toc-aside" id="toc">
+    <div class="toc-title">On this page</div>
+  </aside>
+
+</div><!-- end .layout -->
+
+<script>
+  // ── Scroll progress ──
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+    document.getElementById('progress').style.width = pct + '%';
+  });
+
+  // ── Active sidebar link on scroll ──
+  const links = document.querySelectorAll('.sidebar-link[href^="#"]');
+  const sections = Array.from(links).map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector(`.sidebar-link[href="#${e.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

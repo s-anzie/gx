@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GX — Fast HTTP Framework for Go</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #080b12;
+      --bg-card:   #0e1320;
+      --bg-hover:  #131925;
+      --border:    #1e2a3a;
+      --border-hi: #2a3a52;
+      --accent:    #3b82f6;
+      --accent-2:  #6366f1;
+      --accent-3:  #22d3ee;
+      --green:     #10b981;
+      --yellow:    #f59e0b;
+      --text-1:    #f0f4ff;
+      --text-2:    #8b9ab4;
+      --text-3:    #4a5a72;
+      --r:         12px;
+      --r-sm:      8px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text-1);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px; height: 64px;
+      background: rgba(8,11,18,.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-mark {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 14px; color: #fff;
+    }
+    .nav-brand { font-weight: 700; font-size: 18px; color: var(--text-1); }
+    .nav-links { display: flex; align-items: center; gap: 8px; }
+    .nav-links a {
+      color: var(--text-2); text-decoration: none; font-size: 14px;
+      padding: 6px 12px; border-radius: var(--r-sm);
+      transition: color .15s, background .15s;
+    }
+    .nav-links a:hover { color: var(--text-1); background: var(--bg-hover); }
+    .btn-doc {
+      background: var(--accent); color: #fff !important;
+      padding: 6px 16px; border-radius: var(--r-sm);
+      font-weight: 500; transition: opacity .15s !important;
+    }
+    .btn-doc:hover { opacity: .88; background: var(--accent) !important; }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 120px 24px 80px;
+      position: relative; overflow: hidden;
+    }
+    .hero-glow {
+      position: absolute; top: 20%; left: 50%; transform: translate(-50%, -50%);
+      width: 900px; height: 600px; border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(59,130,246,.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-glow-2 {
+      position: absolute; top: 60%; left: 30%;
+      width: 400px; height: 400px; border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(99,102,241,.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(59,130,246,.1); border: 1px solid rgba(59,130,246,.25);
+      color: #93c5fd; font-size: 12px; font-weight: 500;
+      padding: 4px 12px; border-radius: 100px; margin-bottom: 28px;
+    }
+    .badge-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .4; } }
+
+    h1 {
+      font-size: clamp(42px, 7vw, 88px);
+      font-weight: 800; letter-spacing: -2.5px; line-height: 1.05;
+      margin-bottom: 24px; max-width: 900px;
+      background: linear-gradient(135deg, #fff 30%, #8b9ab4 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    h1 span {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-sub {
+      font-size: 18px; color: var(--text-2); max-width: 540px;
+      margin-bottom: 44px; line-height: 1.7;
+    }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+    .btn-primary {
+      background: var(--accent); color: #fff; text-decoration: none;
+      padding: 12px 28px; border-radius: var(--r-sm); font-weight: 600; font-size: 15px;
+      display: flex; align-items: center; gap: 8px;
+      transition: transform .15s, box-shadow .15s;
+      box-shadow: 0 0 24px rgba(59,130,246,.35);
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 32px rgba(59,130,246,.5); }
+    .btn-secondary {
+      background: var(--bg-card); color: var(--text-1); text-decoration: none;
+      padding: 12px 28px; border-radius: var(--r-sm); font-weight: 500; font-size: 15px;
+      border: 1px solid var(--border-hi); display: flex; align-items: center; gap: 8px;
+      transition: border-color .15s, background .15s;
+    }
+    .btn-secondary:hover { border-color: var(--accent); background: var(--bg-hover); }
+
+    /* ── Code block hero ── */
+    .hero-code {
+      margin-top: 64px; width: 100%; max-width: 620px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--r); overflow: hidden;
+      box-shadow: 0 32px 80px rgba(0,0,0,.5);
+    }
+    .code-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 16px; background: rgba(255,255,255,.03);
+      border-bottom: 1px solid var(--border);
+    }
+    .code-dots { display: flex; gap: 6px; }
+    .code-dots span { width: 12px; height: 12px; border-radius: 50%; }
+    .code-dots span:nth-child(1) { background: #ff5f57; }
+    .code-dots span:nth-child(2) { background: #febc2e; }
+    .code-dots span:nth-child(3) { background: #28c840; }
+    .code-file { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-3); }
+    pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px; line-height: 1.7;
+      padding: 24px;
+      text-align: left; overflow-x: auto;
+    }
+    .kw { color: #c792ea; }
+    .fn { color: #82aaff; }
+    .str { color: #c3e88d; }
+    .cm { color: var(--text-3); font-style: italic; }
+    .num { color: #f78c6c; }
+    .type { color: #ffcb6b; }
+    .op { color: var(--text-2); }
+    .pkg { color: var(--accent-3); }
+
+    /* ── Stats ── */
+    .stats {
+      display: flex; justify-content: center; gap: 64px;
+      padding: 40px; flex-wrap: wrap;
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    }
+    .stat { text-align: center; }
+    .stat-n { font-size: 32px; font-weight: 800; color: var(--text-1); }
+    .stat-n span { color: var(--accent); }
+    .stat-label { font-size: 13px; color: var(--text-2); margin-top: 4px; }
+
+    /* ── Sections ── */
+    section { padding: 96px 24px; }
+    .container { max-width: 1120px; margin: 0 auto; }
+    .section-label { font-size: 13px; font-weight: 600; color: var(--accent); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 12px; }
+    h2 { font-size: clamp(28px, 4vw, 42px); font-weight: 800; letter-spacing: -1px; margin-bottom: 16px; }
+    .section-sub { font-size: 17px; color: var(--text-2); max-width: 580px; line-height: 1.7; }
+
+    /* ── Features Grid ── */
+    .features-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+      margin-top: 56px;
+    }
+    @media(max-width: 900px) { .features-grid { grid-template-columns: repeat(2,1fr); } }
+    @media(max-width: 560px) { .features-grid { grid-template-columns: 1fr; } }
+
+    .feat-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 28px;
+      transition: border-color .2s, transform .2s, box-shadow .2s;
+      cursor: default;
+    }
+    .feat-card:hover { border-color: var(--border-hi); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,.3); }
+    .feat-icon {
+      width: 44px; height: 44px; border-radius: 10px; margin-bottom: 16px;
+      display: flex; align-items: center; justify-content: center; font-size: 22px;
+    }
+    .feat-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+    .feat-card p { font-size: 14px; color: var(--text-2); line-height: 1.6; }
+
+    /* ── Code Showcase ── */
+    .showcase { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; margin-top: 56px; }
+    @media(max-width: 800px) { .showcase { grid-template-columns: 1fr; } }
+    .showcase-desc h3 { font-size: 22px; font-weight: 700; margin-bottom: 12px; letter-spacing: -.5px; }
+    .showcase-desc p { color: var(--text-2); line-height: 1.7; margin-bottom: 16px; }
+    .tag-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag {
+      font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 100px;
+      background: rgba(59,130,246,.08); border: 1px solid rgba(59,130,246,.2); color: #93c5fd;
+    }
+    .code-block {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--r); overflow: hidden;
+    }
+
+    /* ── Plugin cards ── */
+    .plugins-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 56px; }
+    @media(max-width: 900px) { .plugins-grid { grid-template-columns: repeat(2,1fr); } }
+    @media(max-width: 560px) { .plugins-grid { grid-template-columns: 1fr; } }
+
+    .plugin-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 24px;
+      transition: border-color .2s;
+    }
+    .plugin-card:hover { border-color: var(--border-hi); }
+    .plugin-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .plugin-icon { font-size: 20px; }
+    .plugin-card h3 { font-size: 15px; font-weight: 600; }
+    .plugin-card p { font-size: 13px; color: var(--text-2); line-height: 1.6; margin-bottom: 12px; }
+    .plugin-import {
+      font-family: 'JetBrains Mono', monospace; font-size: 11px;
+      color: var(--text-3); background: rgba(255,255,255,.03);
+      padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border);
+    }
+
+    /* ── CTA ── */
+    .cta-section {
+      text-align: center; background: var(--bg-card);
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      padding: 96px 24px;
+    }
+    .cta-section h2 { margin-bottom: 16px; }
+    .cta-section p { color: var(--text-2); font-size: 17px; max-width: 480px; margin: 0 auto 40px; }
+
+    /* ── Footer ── */
+    footer {
+      padding: 40px; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+    }
+    .footer-left { display: flex; align-items: center; gap: 10px; }
+    footer span { font-size: 13px; color: var(--text-3); }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a { font-size: 13px; color: var(--text-3); text-decoration: none; transition: color .15s; }
+    .footer-links a:hover { color: var(--text-2); }
+
+    /* ── Scroll reveal ── */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+  </style>
+</head>
+<body>
+
+<!-- ── Navigation ── -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="logo-mark">GX</div>
+    <span class="nav-brand">gx</span>
+  </a>
+  <div class="nav-links">
+    <a href="guide.html">Docs</a>
+    <a href="guide.html#plugins">Plugins</a>
+    <a href="guide.html#testing">Testing</a>
+    <a href="https://github.com/s-anzie/gx" target="_blank">GitHub</a>
+    <a href="guide.html" class="btn-doc">Get Started →</a>
+  </div>
+</nav>
+
+<!-- ── Hero ── -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow-2"></div>
+
+  <div class="badge">
+    <span class="badge-dot"></span>
+    v1.0 · Production Ready
+  </div>
+
+  <h1>Build APIs at<br /><span>the speed of Go</span></h1>
+
+  <p class="hero-sub">
+    GX is a minimal, expressive HTTP framework for Go — zero-compromise performance, 
+    composable plugins, and an API that feels native.
+  </p>
+
+  <div class="hero-actions">
+    <a href="guide.html" class="btn-primary">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      Read the docs
+    </a>
+    <a href="guide.html#quickstart" class="btn-secondary">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+      Quickstart
+    </a>
+  </div>
+
+  <div class="hero-code reveal">
+    <div class="code-bar">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <span class="code-file">main.go</span>
+    </div>
+    <pre><span class="kw">package</span> main
+
+<span class="kw">import</span> (
+    <span class="str">"github.com/s-anzie/gx"</span>
+    <span class="str">"github.com/s-anzie/gx/plugins/cors"</span>
+)
+
+<span class="kw">func</span> <span class="fn">main</span>() {
+    app <span class="op">:=</span> <span class="pkg">gx</span>.<span class="fn">New</span>()
+
+    app.<span class="fn">Install</span>(<span class="pkg">cors</span>.<span class="fn">New</span>())
+
+    app.<span class="fn">GET</span>(<span class="str">"/users/:id"</span>, <span class="kw">func</span>(c *<span class="pkg">gx</span>.<span class="type">Context</span>) <span class="pkg">core</span>.<span class="type">Response</span> {
+        id <span class="op">:=</span> c.<span class="fn">Param</span>(<span class="str">"id"</span>)
+        <span class="kw">return</span> c.<span class="fn">JSON</span>(<span class="pkg">gx</span>.<span class="type">Map</span>{<span class="str">"id"</span>: id, <span class="str">"ok"</span>: <span class="kw">true</span>})
+    })
+
+    app.<span class="fn">Boot</span>(<span class="str">":8080"</span>)
+}</pre>
+  </div>
+</section>
+
+<!-- ── Stats ── -->
+<div class="stats">
+  <div class="stat reveal">
+    <div class="stat-n"><span>~0</span> allocs</div>
+    <div class="stat-label">per request (pooled context)</div>
+  </div>
+  <div class="stat reveal">
+    <div class="stat-n"><span>8</span> plugins</div>
+    <div class="stat-label">ready to install</div>
+  </div>
+  <div class="stat reveal">
+    <div class="stat-n">HTTP/<span>3</span></div>
+    <div class="stat-label">QUIC + TLS support</div>
+  </div>
+  <div class="stat reveal">
+    <div class="stat-n"><span>100%</span></div>
+    <div class="stat-label">idiomatic Go</div>
+  </div>
+</div>
+
+<!-- ── Features ── -->
+<section>
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Core Features</div>
+      <h2>Everything you need.<br/>Nothing you don't.</h2>
+      <p class="section-sub">GX gives you a thin, fast core and a rich set of composable features — each opt-in.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feat-card reveal">
+        <div class="feat-icon" style="background:rgba(59,130,246,.12);">⚡</div>
+        <h3>Radix-tree Router</h3>
+        <p>Sub-microsecond route resolution with named params, wildcards, and method-aware routing.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon" style="background:rgba(99,102,241,.12);">🧩</div>
+        <h3>Composable Middleware</h3>
+        <p>Chain middleware globally, per-group, or per-route. Full control over execution order.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon" style="background:rgba(16,185,129,.12);">🔌</div>
+        <h3>Priority Plugin System</h3>
+        <p>Install plugins at any time. Priority-ordered execution ensures consistent behavior.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon" style="background:rgba(245,158,11,.12);">🛡️</div>
+        <h3>Type-safe Contracts</h3>
+        <p>Declare request/response schemas with <code>Contract</code> for automatic OpenAPI generation.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon" style="background:rgba(236,72,153,.12);">🌐</div>
+        <h3>HTTP/2 &amp; HTTP/3</h3>
+        <p>TLS auto-config, QUIC transport (http3 via quic-go), and HTTP/3 Alt-Svc advertisement.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon" style="background:rgba(34,211,238,.12);">🔍</div>
+        <h3>Content Negotiation</h3>
+        <p>Automatic JSON/XML/text selection from Accept headers. Language detection included.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon" style="background:rgba(239,68,68,.12);">✅</div>
+        <h3>Struct Validation</h3>
+        <p>Built-in validation via go-playground/validator with human-readable error messages.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon" style="background:rgba(59,130,246,.12);">📁</div>
+        <h3>Static File Serving</h3>
+        <p>Serve directories, single files, or <code>embed.FS</code>. Brotli/gzip auto-detection.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon" style="background:rgba(16,185,129,.12);">🍪</div>
+        <h3>Cookies &amp; Sessions</h3>
+        <p>Typed cookie API with secure defaults. HttpOnly + SameSite=Lax out of the box.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon" style="background:rgba(245,158,11,.12);">📤</div>
+        <h3>File Uploads</h3>
+        <p>Magic-byte MIME detection. Save, open, or read upload bytes directly from context.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon" style="background:rgba(99,102,241,.12);">⚙️</div>
+        <h3>Env Config Loader</h3>
+        <p>Generic <code>LoadConfig[T]</code> reads env vars into structs with defaults and validation.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon" style="background:rgba(34,211,238,.12);">🧪</div>
+        <h3>Testing Utilities</h3>
+        <p>The <code>gxtest</code> package lets you test handlers without starting a server.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Code Showcase: Routing ── -->
+<section style="padding-top:0;">
+  <div class="container">
+    <div class="showcase reveal">
+      <div class="showcase-desc">
+        <div class="section-label">Routing &amp; Groups</div>
+        <h3>Expressive, nested routing</h3>
+        <p>Define routes directly on the app, or group them with shared prefixes and middleware. The <code>Mount</code> API lets you attach entire routers.</p>
+        <div class="tag-list">
+          <span class="tag">Named params :id</span>
+          <span class="tag">Wildcards *</span>
+          <span class="tag">Groups</span>
+          <span class="tag">Mount</span>
+          <span class="tag">Any()</span>
+        </div>
+      </div>
+      <div class="code-block">
+        <div class="code-bar">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span class="code-file">routing.go</span>
+        </div>
+        <pre><span class="cm">// Route groups with middleware</span>
+api <span class="op">:=</span> app.<span class="fn">Group</span>(<span class="str">"/api"</span>, authMiddleware)
+
+v1 <span class="op">:=</span> api.<span class="fn">Group</span>(<span class="str">"/v1"</span>)
+v1.<span class="fn">GET</span>(<span class="str">"/users"</span>, listUsers)
+v1.<span class="fn">POST</span>(<span class="str">"/users"</span>, createUser)
+v1.<span class="fn">GET</span>(<span class="str">"/users/:id"</span>, getUser)
+
+<span class="cm">// Standalone router — mountable</span>
+r <span class="op">:=</span> <span class="pkg">core</span>.<span class="fn">NewRouter</span>()
+r.<span class="fn">GET</span>(<span class="str">"/health"</span>, healthHandler)
+
+app.<span class="fn">Mount</span>(<span class="str">"/admin"</span>, r, adminOnly)</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Code Showcase: Validation ── -->
+<section style="padding-top:0;">
+  <div class="container">
+    <div class="showcase reveal" style="direction: rtl;">
+      <div class="showcase-desc" style="direction:ltr;">
+        <div class="section-label">Validation</div>
+        <h3>Validate once, use anywhere</h3>
+        <p>Use <code>gx.Validate()</code> for standalone validation, or <code>ValidateOrFail()</code> to automatically return a 422 response on failure.</p>
+        <div class="tag-list">
+          <span class="tag">go-playground/validator</span>
+          <span class="tag">Human errors</span>
+          <span class="tag">Custom rules</span>
+          <span class="tag">422 auto-response</span>
+        </div>
+      </div>
+      <div class="code-block" style="direction:ltr;">
+        <div class="code-bar">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span class="code-file">validate.go</span>
+        </div>
+        <pre><span class="kw">type</span> <span class="type">CreateUser</span> <span class="kw">struct</span> {
+    Name  <span class="type">string</span> <span class="str">`validate:"required,min=2"`</span>
+    Email <span class="type">string</span> <span class="str">`validate:"required,email"`</span>
+    Age   <span class="type">int</span>    <span class="str">`validate:"gte=18"`</span>
+}
+
+<span class="kw">func</span> <span class="fn">createUser</span>(c *<span class="pkg">gx</span>.<span class="type">Context</span>) <span class="pkg">core</span>.<span class="type">Response</span> {
+    <span class="kw">var</span> body <span class="type">CreateUser</span>
+    c.<span class="fn">BindJSON</span>(&body)
+
+    <span class="kw">if</span> res, ok <span class="op">:=</span> <span class="pkg">gx</span>.<span class="fn">ValidateOrFail</span>(c, &body); !ok {
+        <span class="kw">return</span> res <span class="cm">// 422 with field errors</span>
+    }
+    <span class="cm">// body is valid ✓</span>
+    <span class="kw">return</span> c.<span class="fn">Created</span>(body)
+}</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Plugins ── -->
+<section>
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Plugin Ecosystem</div>
+      <h2>Install with one line</h2>
+      <p class="section-sub">Each plugin is a self-contained package. Install any combination — they compose cleanly via the priority system.</p>
+    </div>
+
+    <div class="plugins-grid">
+      <div class="plugin-card reveal">
+        <div class="plugin-header">
+          <span class="plugin-icon">🔐</span>
+          <h3>Auth</h3>
+        </div>
+        <p>JWT Bearer token validation. Inject claims into context. Configurable extractors.</p>
+        <div class="plugin-import">plugins/auth</div>
+      </div>
+      <div class="plugin-card reveal">
+        <div class="plugin-header">
+          <span class="plugin-icon">🗄️</span>
+          <h3>Cache</h3>
+        </div>
+        <p>Response caching with TTL, key builders, and pluggable backends (memory, Redis).</p>
+        <div class="plugin-import">plugins/cache</div>
+      </div>
+      <div class="plugin-card reveal">
+        <div class="plugin-header">
+          <span class="plugin-icon">💨</span>
+          <h3>Compress</h3>
+        </div>
+        <p>Brotli + gzip compression with configurable min-size and level thresholds.</p>
+        <div class="plugin-import">plugins/compress</div>
+      </div>
+      <div class="plugin-card reveal">
+        <div class="plugin-header">
+          <span class="plugin-icon">🌍</span>
+          <h3>CORS</h3>
+        </div>
+        <p>Cross-Origin Resource Sharing headers with allowlist, credentials, and preflight.</p>
+        <div class="plugin-import">plugins/cors</div>
+      </div>
+      <div class="plugin-card reveal">
+        <div class="plugin-header">
+          <span class="plugin-icon">📋</span>
+          <h3>OpenAPI</h3>
+        </div>
+        <p>Auto-generates OpenAPI 3.1 from route Contracts. Serves Scalar or Swagger UI.</p>
+        <div class="plugin-import">plugins/openapi</div>
+      </div>
+      <div class="plugin-card reveal">
+        <div class="plugin-header">
+          <span class="plugin-icon">🚦</span>
+          <h3>Rate Limit</h3>
+        </div>
+        <p>Token-bucket rate limiting per-IP or per-user. Custom key extractor and exceeded handler.</p>
+        <div class="plugin-import">plugins/ratelimit</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<div class="cta-section">
+  <div class="reveal">
+    <div class="section-label">Start Building</div>
+    <h2>Ready to build something fast?</h2>
+    <p>The docs cover every feature with working examples. Get up and running in minutes.</p>
+    <div class="hero-actions" style="justify-content:center;">
+      <a href="guide.html" class="btn-primary">Read the full guide →</a>
+      <a href="guide.html#quickstart" class="btn-secondary">Quickstart</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── Footer ── -->
+<footer>
+  <div class="footer-left">
+    <div class="logo-mark" style="width:24px;height:24px;font-size:11px;">GX</div>
+    <span>GX Framework · MIT License</span>
+  </div>
+  <div class="footer-links">
+    <a href="guide.html">Docs</a>
+    <a href="guide.html#plugins">Plugins</a>
+    <a href="guide.html#testing">Testing</a>
+    <a href="https://github.com/s-anzie/gx" target="_blank">GitHub</a>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const els = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  els.forEach(el => io.observe(el));
+</script>
+</body>
+</html>

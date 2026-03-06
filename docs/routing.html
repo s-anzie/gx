@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Routing — GX Documentation</title>
+  <meta name="description" content="GX's radix-tree router. HTTP methods, named parameters, wildcards, groups, standalone routers and mounting." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="guide.css" />
+</head>
+<body>
+<div id="progress" style="width:0%"></div>
+<nav class="topnav">
+  <div class="nav-left">
+    <a href="index.html" class="logo-link"><div class="logo-mark">GX</div><span class="logo-name">gx</span></a>
+    <div class="nav-sep"></div><span class="nav-title">Documentation</span>
+  </div>
+  <div class="nav-right">
+    <a href="quickstart.html" class="nav-link">Quickstart</a>
+    <a href="plugins.html" class="nav-link">Plugins</a>
+    <a href="testing.html" class="nav-link">Testing</a>
+    <a href="https://github.com/s-anzie/gx" target="_blank" rel="noopener" class="nav-github">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+      GitHub
+    </a>
+  </div>
+</nav>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-group">
+      <span class="sidebar-label">Introduction</span>
+      <a href="overview.html" class="sidebar-link"><span class="dot"></span>Overview</a>
+      <a href="quickstart.html" class="sidebar-link"><span class="dot"></span>Quickstart <span class="sidebar-badge">Start here</span></a>
+      <a href="installation.html" class="sidebar-link"><span class="dot"></span>Installation</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Core</span>
+      <a href="routing.html" class="sidebar-link"><span class="dot"></span>Routing</a>
+      <a href="context.html" class="sidebar-link"><span class="dot"></span>Context &amp; Request</a>
+      <a href="responses.html" class="sidebar-link"><span class="dot"></span>Responses</a>
+      <a href="middleware.html" class="sidebar-link"><span class="dot"></span>Middleware</a>
+      <a href="errors.html" class="sidebar-link"><span class="dot"></span>Error Handling</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Features</span>
+      <a href="validation.html" class="sidebar-link"><span class="dot"></span>Validation</a>
+      <a href="cookies.html" class="sidebar-link"><span class="dot"></span>Cookies</a>
+      <a href="uploads.html" class="sidebar-link"><span class="dot"></span>File Uploads</a>
+      <a href="static.html" class="sidebar-link"><span class="dot"></span>Static Files</a>
+      <a href="negotiate.html" class="sidebar-link"><span class="dot"></span>Content Negotiation</a>
+      <a href="goroutines.html" class="sidebar-link"><span class="dot"></span>Safe Goroutines</a>
+      <a href="early-hints.html" class="sidebar-link"><span class="dot"></span>Early Hints</a>
+      <a href="https-redirect.html" class="sidebar-link"><span class="dot"></span>HTTPS Redirect</a>
+      <a href="config.html" class="sidebar-link"><span class="dot"></span>Config from Env</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Plugins</span>
+      <a href="plugins.html" class="sidebar-link"><span class="dot"></span>Plugin System</a>
+      <a href="plugin-auth.html" class="sidebar-link"><span class="dot"></span>Auth (JWT)</a>
+      <a href="plugin-cors.html" class="sidebar-link"><span class="dot"></span>CORS</a>
+      <a href="plugin-compress.html" class="sidebar-link"><span class="dot"></span>Compress</a>
+      <a href="plugin-cache.html" class="sidebar-link"><span class="dot"></span>Cache</a>
+      <a href="plugin-ratelimit.html" class="sidebar-link"><span class="dot"></span>Rate Limit</a>
+      <a href="plugin-openapi.html" class="sidebar-link"><span class="dot"></span>OpenAPI</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Testing</span>
+      <a href="testing.html" class="sidebar-link"><span class="dot"></span>gxtest Package</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="sidebar-label">Advanced</span>
+      <a href="http3.html" class="sidebar-link"><span class="dot"></span>HTTP/2 &amp; HTTP/3</a>
+      <a href="lifecycle.html" class="sidebar-link"><span class="dot"></span>Lifecycle Hooks</a>
+      <a href="observability.html" class="sidebar-link"><span class="dot"></span>Observability</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="content">
+
+      <section class="doc-section" id="routing">
+        <div class="section-eyebrow">Core</div>
+        <h1 class="doc-h1">Routing</h1>
+        <p class="doc-lead">
+          GX uses a radix-tree router for sub-microsecond route resolution.
+          Routes are registered directly on the app, on a <em>group</em>, or on a
+          standalone <code>Router</code> that can be mounted later.
+        </p>
+
+        <h3 class="doc-h3">HTTP methods</h3>
+        <p class="doc-p">All standard methods are available as named helpers:</p>
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">routes.go</span><span class="code-lang">go</span>
+          </div>
+          <pre>app.<span class="fn">GET</span>(<span class="str">"/users"</span>, listUsers)
+app.<span class="fn">POST</span>(<span class="str">"/users"</span>, createUser)
+app.<span class="fn">PUT</span>(<span class="str">"/users/:id"</span>, replaceUser)
+app.<span class="fn">PATCH</span>(<span class="str">"/users/:id"</span>, updateUser)
+app.<span class="fn">DELETE</span>(<span class="str">"/users/:id"</span>, deleteUser)
+app.<span class="fn">HEAD</span>(<span class="str">"/users"</span>, headUsers)
+app.<span class="fn">OPTIONS</span>(<span class="str">"/users"</span>, optionsUsers)
+
+<span class="cm">// Register a handler for ALL methods</span>
+app.<span class="fn">Any</span>(<span class="str">"/*path"</span>, catchAll)</pre>
+        </div>
+
+        <h3 class="doc-h3">Route parameters</h3>
+        <div class="doc-table-wrap">
+          <table>
+            <thead><tr><th>Syntax</th><th>Example URL</th><th>c.Param("…")</th></tr></thead>
+            <tbody>
+              <tr><td>:name</td><td>/users/42</td><td>"42"</td></tr>
+              <tr><td>*name (wildcard)</td><td>/files/a/b/c</td><td>"a/b/c"</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">handler.go</span><span class="code-lang">go</span>
+          </div>
+          <pre>app.<span class="fn">GET</span>(<span class="str">"/users/:id/posts/:postId"</span>, <span class="kw">func</span>(c *<span class="pkg">core</span>.<span class="ty">Context</span>) <span class="pkg">core</span>.<span class="ty">Response</span> {
+    userID <span class="op">:=</span> c.<span class="fn">Param</span>(<span class="str">"id"</span>)
+    postID <span class="op">:=</span> c.<span class="fn">Param</span>(<span class="str">"postId"</span>)
+    <span class="kw">return</span> c.<span class="fn">JSON</span>(map[<span class="ty">string</span>]<span class="kw">any</span>{<span class="str">"user"</span>: userID, <span class="str">"post"</span>: postID})
+})</pre>
+        </div>
+
+        <h3 class="doc-h3">Groups</h3>
+        <p class="doc-p">
+          Groups share a common URL prefix and optional middleware. Groups can be nested —
+          middleware composes in order from outer to inner.
+        </p>
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">groups.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="cm">// All routes under /api go through authMiddleware</span>
+api <span class="op">:=</span> app.<span class="fn">Group</span>(<span class="str">"/api"</span>, authMiddleware)
+v1  <span class="op">:=</span> api.<span class="fn">Group</span>(<span class="str">"/v1"</span>)
+
+v1.<span class="fn">GET</span>(<span class="str">"/users"</span>,     listUsers)
+v1.<span class="fn">POST</span>(<span class="str">"/users"</span>,    createUser)
+v1.<span class="fn">GET</span>(<span class="str">"/users/:id"</span>, getUser)
+
+<span class="cm">// Nested group — adds adminOnly on top of authMiddleware</span>
+admin <span class="op">:=</span> v1.<span class="fn">Group</span>(<span class="str">"/admin"</span>, adminOnly)
+admin.<span class="fn">DELETE</span>(<span class="str">"/users/:id"</span>, hardDeleteUser)</pre>
+        </div>
+
+        <h3 class="doc-h3">Standalone Router &amp; Mount</h3>
+        <p class="doc-p">
+          Build a <code>*core.Router</code> independently and mount it at a prefix.
+          Useful for splitting routes across files or packages.
+        </p>
+        <div class="code-wrap">
+          <div class="code-bar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">router_mount.go</span><span class="code-lang">go</span>
+          </div>
+          <pre><span class="cm">// In another file / package</span>
+<span class="kw">func</span> <span class="fn">UserRouter</span>() *<span class="pkg">core</span>.<span class="ty">Router</span> {
+    r <span class="op">:=</span> <span class="pkg">core</span>.<span class="fn">NewRouter</span>()
+    r.<span class="fn">GET</span>(<span class="str">"/users"</span>,     listUsers)
+    r.<span class="fn">POST</span>(<span class="str">"/users"</span>,    createUser)
+    r.<span class="fn">GET</span>(<span class="str">"/users/:id"</span>, getUser)
+    <span class="kw">return</span> r
+}
+
+<span class="cm">// In main — mount with optional extra middleware</span>
+app.<span class="fn">Mount</span>(<span class="str">"/api/v1"</span>, <span class="fn">UserRouter</span>(), authMiddleware)</pre>
+        </div>
+
+        <div class="callout info">
+          <span class="callout-icon">ℹ️</span>
+          <p>The router's own <code>Use()</code> middleware runs <em>inside</em> the mount-level
+          middleware. Execution order: mount middleware → router middleware → handler.</p>
+        </div>
+      </section>
+
+      <nav class="doc-nav">
+        <a href="installation.html" class="doc-nav-link prev">
+          <span class="doc-nav-label">Previous</span>
+          <span class="doc-nav-title">Installation</span>
+        </a>
+        <a href="context.html" class="doc-nav-link next">
+          <span class="doc-nav-label">Next</span>
+          <span class="doc-nav-title">Context &amp; Request</span>
+        </a>
+      </nav>
+
+    </div>
+  </main>
+
+  <aside class="toc-aside">
+    <div class="toc-title">On this page</div>
+    <a href="#routing" class="toc-link">HTTP methods</a>
+    <a href="#routing" class="toc-link">Route parameters</a>
+    <a href="#routing" class="toc-link">Groups</a>
+    <a href="#routing" class="toc-link">Standalone Router &amp; Mount</a>
+  </aside>
+
+</div>
+<script src="guide.js"></script>
+</body>
+</html>
