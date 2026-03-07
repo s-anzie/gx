@@ -9,6 +9,9 @@ import (
 	"github.com/s-anzie/gx/core"
 )
 
+// Public type aliases for easier API usage
+type Response = core.Response
+
 // Environment represents the application environment
 type Environment string
 
