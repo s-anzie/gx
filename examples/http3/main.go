@@ -25,7 +25,7 @@ func main() {
 		})
 	})
 
-	app.WithDevTLS("localhost", "127.0.0.1", "::1")
+	app.WithTLS("./certs/cert.pem", "./certs/key.pem")
 
 	log.Println("HTTP/3 server starting on https://localhost:8443")
 	log.Println("With Alt-Svc bootstrap shim")

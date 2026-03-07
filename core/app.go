@@ -226,7 +226,7 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Listen starts the HTTP server on the given address
+// Listen starts the server with graceful shutdown handling
 func (a *App) Listen(addr string) error {
 	a.server = &http.Server{
 		Addr:         addr,
@@ -236,14 +236,46 @@ func (a *App) Listen(addr string) error {
 		TLSConfig:    a.tlsConfig,
 	}
 
-	log.Printf("Server listening on %s", addr)
+	// Channel to listen for errors from the server
+	serverErrors := make(chan error, 1)
 
-	// Start server
-	if a.tlsConfig != nil || (a.certFile != "" && a.keyFile != "") {
-		return a.server.ListenAndServeTLS(a.certFile, a.keyFile)
+	// Start server in a goroutine
+	go func() {
+		log.Printf("Server listening on %s", addr)
+
+		if a.tlsConfig != nil || (a.certFile != "" && a.keyFile != "") {
+			serverErrors <- a.server.ListenAndServeTLS(a.certFile, a.keyFile)
+		} else {
+			serverErrors <- a.server.ListenAndServe()
+		}
+	}()
+
+	// Channel to listen for interrupt signals
+	shutdown := make(chan os.Signal, 1)
+	signal.Notify(shutdown, os.Interrupt, syscall.SIGTERM)
+
+	// Block until we receive a signal or server error
+	select {
+	case err := <-serverErrors:
+		return fmt.Errorf("server error: %w", err)
+
+	case sig := <-shutdown:
+		log.Printf("Received signal %v, shutting down gracefully...", sig)
+
+		// Create context with timeout for shutdown
+		ctx, cancel := context.WithTimeout(context.Background(), a.shutdownTimeout)
+		defer cancel()
+
+		// Attempt graceful shutdown
+		if err := a.server.Shutdown(ctx); err != nil {
+			log.Printf("Error during server shutdown: %v", err)
+			return err
+		}
+
+		log.Println("Server stopped")
 	}
 
-	return a.server.ListenAndServe()
+	return nil
 }
 
 // ListenWithGracefulShutdown starts the server and handles graceful shutdown
@@ -402,8 +434,7 @@ func AltSvcMaxAge(duration time.Duration) H3Option {
 	}
 }
 
-// ListenH3 starts an HTTP/3 server with optional Alt-Svc bootstrap shim
-// The shim is a TCP server that announces HTTP/3 availability via Alt-Svc header
+// ListenH3 starts an HTTP/3 server with graceful shutdown handling and optional Alt-Svc bootstrap shim
 func (a *App) ListenH3(addr string, opts ...H3Option) error {
 	// Apply configuration options
 	cfg := defaultH3Config()
@@ -423,19 +454,86 @@ func (a *App) ListenH3(addr string, opts ...H3Option) error {
 		TLSConfig: a.tlsConfig,
 	}
 
+	// Channel to listen for errors from both servers
+	serverErrors := make(chan error, 2)
+
+	// Start HTTP/3 server in a goroutine
+	go func() {
+		log.Printf("HTTP/3 server listening on %s", addr)
+
+		if a.certFile != "" && a.keyFile != "" {
+			serverErrors <- a.h3Server.ListenAndServeTLS(a.certFile, a.keyFile)
+		} else {
+			serverErrors <- a.h3Server.ListenAndServe()
+		}
+	}()
+
 	// Start Alt-Svc shim if enabled
 	if cfg.altSvcShim {
-		go a.startAltSvcShim(addr, cfg.altSvcMaxAge)
+		go func() {
+			a.startAltSvcShim(addr, cfg.altSvcMaxAge)
+			// Note: shim errors are logged internally, not sent to serverErrors
+			// as they are non-fatal
+		}()
 	}
 
-	log.Printf("HTTP/3 server listening on %s", addr)
+	// Channel to listen for interrupt signals
+	shutdown := make(chan os.Signal, 1)
+	signal.Notify(shutdown, os.Interrupt, syscall.SIGTERM)
 
-	// Start HTTP/3 server
-	if a.certFile != "" && a.keyFile != "" {
-		return a.h3Server.ListenAndServeTLS(a.certFile, a.keyFile)
+	// Block until we receive a signal or server error
+	select {
+	case err := <-serverErrors:
+		// HTTP/3 server error - shutdown gracefully
+		log.Printf("HTTP/3 server error: %v, shutting down gracefully...", err)
+
+		ctx, cancel := context.WithTimeout(context.Background(), a.shutdownTimeout)
+		defer cancel()
+
+		// Shutdown both servers
+		if a.h3Server != nil {
+			if closeErr := a.h3Server.Close(); closeErr != nil {
+				log.Printf("Error closing HTTP/3 server: %v", closeErr)
+			}
+		}
+
+		if a.altSvcShim != nil {
+			if shutdownErr := a.altSvcShim.Shutdown(ctx); shutdownErr != nil {
+				log.Printf("Error shutting down Alt-Svc shim: %v", shutdownErr)
+			}
+		}
+
+		return fmt.Errorf("server error: %w", err)
+
+	case sig := <-shutdown:
+		log.Printf("Received signal %v, shutting down gracefully...", sig)
+
+		// Create context with timeout for shutdown
+		ctx, cancel := context.WithTimeout(context.Background(), a.shutdownTimeout)
+		defer cancel()
+
+		// Shutdown both servers gracefully
+		var shutdownErr error
+
+		if a.h3Server != nil {
+			if err := a.h3Server.Close(); err != nil {
+				log.Printf("Error closing HTTP/3 server: %v", err)
+				shutdownErr = err
+			}
+		}
+
+		if a.altSvcShim != nil {
+			if err := a.altSvcShim.Shutdown(ctx); err != nil {
+				log.Printf("Error shutting down Alt-Svc shim: %v", err)
+				if shutdownErr == nil {
+					shutdownErr = err
+				}
+			}
+		}
+
+		log.Println("Servers stopped")
+		return shutdownErr
 	}
-
-	return a.h3Server.ListenAndServe()
 }
 
 // startAltSvcShim starts a TCP server that announces HTTP/3 via Alt-Svc header
@@ -503,15 +601,10 @@ func (a *App) ListenH3WithGracefulShutdown(addr string, opts ...H3Option) error 
 		TLSConfig: a.tlsConfig,
 	}
 
-	// Start Alt-Svc shim if enabled
-	if cfg.altSvcShim {
-		go a.startAltSvcShim(addr, cfg.altSvcMaxAge)
-	}
+	// Channel to listen for errors from both servers
+	serverErrors := make(chan error, 2)
 
-	// Channel to listen for errors from the server
-	serverErrors := make(chan error, 1)
-
-	// Start server in a goroutine
+	// Start HTTP/3 server in a goroutine
 	go func() {
 		log.Printf("HTTP/3 server listening on %s", addr)
 
@@ -522,6 +615,15 @@ func (a *App) ListenH3WithGracefulShutdown(addr string, opts ...H3Option) error 
 		}
 	}()
 
+	// Start Alt-Svc shim if enabled
+	if cfg.altSvcShim {
+		go func() {
+			a.startAltSvcShim(addr, cfg.altSvcMaxAge)
+			// Note: shim errors are logged internally, not sent to serverErrors
+			// as they are non-fatal
+		}()
+	}
+
 	// Channel to listen for interrupt signals
 	shutdown := make(chan os.Signal, 1)
 	signal.Notify(shutdown, os.Interrupt, syscall.SIGTERM)
@@ -529,6 +631,25 @@ func (a *App) ListenH3WithGracefulShutdown(addr string, opts ...H3Option) error 
 	// Block until we receive a signal or server error
 	select {
 	case err := <-serverErrors:
+		// HTTP/3 server error - shutdown gracefully
+		log.Printf("HTTP/3 server error: %v, shutting down gracefully...", err)
+
+		ctx, cancel := context.WithTimeout(context.Background(), a.shutdownTimeout)
+		defer cancel()
+
+		// Shutdown both servers
+		if a.h3Server != nil {
+			if closeErr := a.h3Server.Close(); closeErr != nil {
+				log.Printf("Error closing HTTP/3 server: %v", closeErr)
+			}
+		}
+
+		if a.altSvcShim != nil {
+			if shutdownErr := a.altSvcShim.Shutdown(ctx); shutdownErr != nil {
+				log.Printf("Error shutting down Alt-Svc shim: %v", shutdownErr)
+			}
+		}
+
 		return fmt.Errorf("server error: %w", err)
 
 	case sig := <-shutdown:
@@ -538,20 +659,26 @@ func (a *App) ListenH3WithGracefulShutdown(addr string, opts ...H3Option) error 
 		ctx, cancel := context.WithTimeout(context.Background(), a.shutdownTimeout)
 		defer cancel()
 
-		// Shutdown HTTP/3 server
-		if err := a.h3Server.Close(); err != nil {
-			log.Printf("Error closing HTTP/3 server: %v", err)
-		}
+		// Shutdown both servers gracefully
+		var shutdownErr error
 
-		// Shutdown Alt-Svc shim if running
-		if a.altSvcShim != nil {
-			if err := a.altSvcShim.Shutdown(ctx); err != nil {
-				log.Printf("Error shutting down Alt-Svc shim: %v", err)
+		if a.h3Server != nil {
+			if err := a.h3Server.Close(); err != nil {
+				log.Printf("Error closing HTTP/3 server: %v", err)
+				shutdownErr = err
 			}
 		}
 
-		log.Println("Server stopped")
-	}
+		if a.altSvcShim != nil {
+			if err := a.altSvcShim.Shutdown(ctx); err != nil {
+				log.Printf("Error shutting down Alt-Svc shim: %v", err)
+				if shutdownErr == nil {
+					shutdownErr = err
+				}
+			}
+		}
 
-	return nil
+		log.Println("Servers stopped")
+		return shutdownErr
+	}
 }
