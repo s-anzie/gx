@@ -122,9 +122,9 @@ func (r *staticFileResponse) Write(w http.ResponseWriter) error {
 	return nil
 }
 
-func (r *staticFileResponse) Status() int { return 200 }
+func (r *staticFileResponse) Status() int          { return 200 }
 func (r *staticFileResponse) Headers() http.Header { return make(http.Header) }
-func (r *staticFileResponse) ContentType() string { return "" }
+func (r *staticFileResponse) ContentType() string  { return "" }
 
 // StaticFile serves a single file at path.
 //

@@ -87,7 +87,7 @@ func main() {
 	fmt.Println("  -H 'Origin: http://any-origin.com' \\")
 	fmt.Println("  -v")
 
-	if err := app.Listen(":8083"); err != nil {
+	if err := app.Listen("localhost", "8080"); err != nil {
 		log.Fatal(err)
 	}
 }

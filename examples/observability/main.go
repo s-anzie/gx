@@ -144,7 +144,7 @@ func main() {
 	log.Println("  curl http://localhost:8081/slow")
 	log.Println("  curl http://localhost:8081/error")
 
-	if err := app.Listen(":8081"); err != nil {
+	if err := app.Listen("localhost", "8080"); err != nil {
 		log.Fatalf("Server failed: %v", err)
 	}
 }

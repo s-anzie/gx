@@ -186,7 +186,7 @@ func main() {
 	fmt.Println("  GET    /health      - Health check")
 	fmt.Println("")
 
-	if err := app.Listen(":8080"); err != nil {
+	if err := app.Listen("localhost", "8080"); err != nil {
 		panic(err)
 	}
 }

@@ -79,7 +79,7 @@ func main() {
 	fmt.Println("  curl -X POST http://localhost:8080/submit   # POST not cached")
 	fmt.Println("")
 
-	if err := app.Listen(":8080"); err != nil {
+	if err := app.Listen("localhost", "8080"); err != nil {
 		panic(err)
 	}
 }

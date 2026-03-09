@@ -20,5 +20,5 @@ func main() {
 
 	// Start the server
 	log.Println("Server running on http://localhost:8080")
-	log.Fatal(app.Listen(":8080"))
+	log.Fatal(app.Listen("localhost", "8080"))
 }

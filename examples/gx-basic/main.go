@@ -160,7 +160,7 @@ func main() {
 	log.Println("  curl http://localhost:8080/api/v1/users")
 	log.Println("  curl -X POST http://localhost:8080/api/v1/users -H 'Content-Type: application/json' -d '{\"name\":\"Alice\",\"email\":\"alice@example.com\",\"age\":25}'")
 
-	if err := app.Listen(":8080"); err != nil {
+	if err := app.Listen("localhost", "8080"); err != nil {
 		log.Fatalf("Server failed: %v", err)
 	}
 }

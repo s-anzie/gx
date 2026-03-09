@@ -1,12 +1,12 @@
 package main
 
 import (
-"fmt"
-"log"
-"time"
+	"fmt"
+	"log"
+	"time"
 
-"github.com/s-anzie/gx"
-"github.com/s-anzie/gx/core"
+	"github.com/s-anzie/gx"
+	"github.com/s-anzie/gx/core"
 )
 
 type Notification struct {
@@ -17,8 +17,8 @@ type Notification struct {
 
 func main() {
 	app := gx.New(
-gx.WithEnvironment(gx.Development),
-gx.WithStructuredLogs(),
+		gx.WithEnvironment(gx.Development),
+		gx.WithStructuredLogs(),
 	)
 
 	app.GET("/stream/notifications", gx.WrapHandlerWithApp(app, notificationHandler))
@@ -27,7 +27,7 @@ gx.WithStructuredLogs(),
 	fmt.Println("Channel example on :8082")
 	fmt.Println("Try: curl http://localhost:8082/stream/time")
 
-	if err := app.Listen(":8082"); err != nil {
+	if err := app.Listen("localhost", "8080"); err != nil {
 		log.Fatal(err)
 	}
 }

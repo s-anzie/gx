@@ -228,10 +228,12 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 // Listen starts the server with optional HTTP/3 support.
-// If HTTP/3 is enabled via WithHTTP3() or options are provided,
-// it launches HTTP/3 with optional Alt-Svc bootstrap shim.
+// If HTTP/3 is enabled via EnableHTTP3(), it launches HTTP/3 with optional Alt-Svc bootstrap shim.
 // Otherwise, it launches HTTP/1.1 + HTTP/2 server.
-func (a *App) Listen(addr string, opts ...H3Option) error {
+// The host can be empty (defaults to all interfaces), port is required.
+func (a *App) Listen(host, port string, opts ...H3Option) error {
+	addr := net.JoinHostPort(host, port)
+
 	// If HTTP/3 is not explicitly enabled and no options passed, use HTTP/1.1/2
 	if !a.http3Enabled && len(opts) == 0 {
 		return a.listenHTTP12(addr)

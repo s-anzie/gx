@@ -106,5 +106,5 @@ func main() {
 	fmt.Println("  # 4. Access admin area with token")
 	fmt.Println("  curl -H \"Authorization: Bearer $TOKEN\" http://localhost:8080/admin")
 
-	app.Listen(":8080")
+	app.Listen("localhost", "8080")
 }
