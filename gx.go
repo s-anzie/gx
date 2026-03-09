@@ -130,11 +130,17 @@ func WithHTTP2() Option {
 	}
 }
 
-// WithHTTP3 enables HTTP/3 support (enabled by default with TLS)
+// WithHTTP3 enables HTTP/3 support (QUIC)
 func WithHTTP3() Option {
 	return func(app *App) {
-		// HTTP/3 availability is determined by calling ListenH3
-		// This is a no-op placeholder for API consistency
+		app.EnableHTTP3()
+	}
+}
+
+// WithTLS configures TLS using certificate and key files
+func WithTLS(certFile, keyFile string) Option {
+	return func(app *App) {
+		app.App.WithTLS(certFile, keyFile)
 	}
 }
 

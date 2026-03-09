@@ -93,7 +93,7 @@
 
       <section class="doc-section" id="listen">
         <h2 class="doc-h2">Starting an HTTP/3 Server</h2>
-        <p>Use <code>app.ListenH3</code> instead of (or alongside) <code>app.ListenWithGracefulShutdown</code>.</p>
+        <p>Use <code>gx.WithHTTP3()</code> option and <code>app.Listen()</code> automatically handles both TCP (HTTP/1.1+HTTP/2) and UDP (HTTP/3) protocols with automatic Alt-Svc bootstrap header.</p>
 
         <div class="code-wrap">
           <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
@@ -102,36 +102,30 @@
     <span class="pkg">gx</span>.<span class="fn">WithHTTP3</span>(), <span class="cm">// Enable HTTP/3 support</span>
 )
 
-<span class="cm">// Start HTTP/3 server with graceful shutdown</span>
-<span class="kw">if</span> err <span class="op">:=</span> <span class="pkg">app</span>.<span class="fn">ListenH3WithGracefulShutdown</span>(<span class="str">":443"</span>); err <span class="op">!=</span> <span class="kw">nil</span> {
+<span class="cm">// Listen automatically handles HTTP/1.1/2 on TCP and HTTP/3 on UDP</span>
+<span class="cm">// with automatic Alt-Svc header injection</span>
+<span class="kw">if</span> err <span class="op">:=</span> <span class="pkg">app</span>.<span class="fn">Listen</span>(<span class="str">":443"</span>); err <span class="op">!=</span> <span class="kw">nil</span> {
     <span class="pkg">log</span>.<span class="fn">Fatal</span>(err)
 }</pre>
         </div>
       </section>
 
       <section class="doc-section" id="dual">
-        <h2 class="doc-h2">HTTP/1.1 + HTTP/2 + HTTP/3</h2>
-        <p>Run both servers in parallel to support all clients. HTTP/3 adds an <code>Alt-Svc</code> response header so browsers that speak HTTP/1.1 or HTTP/2 can upgrade on subsequent requests.</p>
+        <h2 class="doc-h2">HTTP/1.1 + HTTP/2 Only (Without HTTP/3)</h2>
+        <p>If you don't enable HTTP/3 via <code>gx.WithHTTP3()</code>, <code>Listen()</code> automatically launches just HTTP/1.1 and HTTP/2 on TCP.</p>
 
         <div class="code-wrap">
           <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
           <pre>app <span class="op">:=</span> <span class="pkg">gx</span>.<span class="fn">New</span>(
     <span class="pkg">gx</span>.<span class="fn">WithTLS</span>(<span class="str">"cert.pem"</span>, <span class="str">"key.pem"</span>),
-    <span class="pkg">gx</span>.<span class="fn">WithHTTP3</span>(),
+    <span class="cm">// No WithHTTP3() option - HTTP/3 is not enabled</span>
 )
 
 <span class="cm">// Register routes...</span>
 <span class="pkg">app</span>.<span class="fn">GET</span>(<span class="str">"/"</span>, homeHandler)
 
-<span class="cm">// Start HTTP/1.1 + HTTP/2 in one goroutine</span>
-<span class="kw">go</span> <span class="kw">func</span>() {
-    <span class="kw">if</span> err <span class="op">:=</span> <span class="pkg">app</span>.<span class="fn">ListenWithGracefulShutdown</span>(<span class="str">":443"</span>); err <span class="op">!=</span> <span class="kw">nil</span> {
-        <span class="pkg">log</span>.<span class="fn">Fatal</span>(err)
-    }
-}()
-
-<span class="cm">// Start HTTP/3 (QUIC) on the same port (UDP)</span>
-<span class="kw">if</span> err <span class="op">:=</span> <span class="pkg">app</span>.<span class="fn">ListenH3WithGracefulShutdown</span>(<span class="str">":443"</span>); err <span class="op">!=</span> <span class="kw">nil</span> {
+<span class="cm">// Listen only handles HTTP/1.1 + HTTP/2 on TCP</span>
+<span class="kw">if</span> err <span class="op">:=</span> <span class="pkg">app</span>.<span class="fn">Listen</span>(<span class="str">":443"</span>); err <span class="op">!=</span> <span class="kw">nil</span> {
     <span class="pkg">log</span>.<span class="fn">Fatal</span>(err)
 }</pre>
         </div>
@@ -139,7 +133,7 @@
 
       <section class="doc-section" id="h3-options">
         <h2 class="doc-h2">HTTP/3 Options</h2>
-        <p>Pass <code>core.H3Option</code> values to <code>ListenH3</code> or <code>ListenH3WithGracefulShutdown</code>.</p>
+        <p>Pass <code>core.H3Option</code> values to <code>Listen()</code> to customize HTTP/3 behavior when HTTP/3 is enabled.</p>
 
         <table class="doc-table">
           <thead><tr><th>Option</th><th>Description</th></tr></thead>
@@ -151,7 +145,7 @@
 
         <div class="code-wrap">
           <div class="code-bar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">go</span></div>
-          <pre><span class="pkg">app</span>.<span class="fn">ListenH3WithGracefulShutdown</span>(<span class="str">":443"</span>,
+          <pre><span class="pkg">app</span>.<span class="fn">Listen</span>(<span class="str">":443"</span>,
     <span class="pkg">core</span>.<span class="fn">AltSvcMaxAge</span>(48 <span class="op">*</span> <span class="pkg">time</span>.<span class="ty">Hour</span>),
 )</pre>
         </div>
@@ -168,7 +162,7 @@
     <span class="pkg">gx</span>.<span class="fn">WithHTTP3</span>(),
 )
 
-<span class="pkg">app</span>.<span class="fn">ListenH3WithGracefulShutdown</span>(<span class="str">":8443"</span>)</pre>
+<span class="pkg">app</span>.<span class="fn">ListenH3</span>(<span class="str">":8443"</span>)</pre>
         </div>
 
         <div class="callout warn">
@@ -180,7 +174,8 @@
         <h2 class="doc-h2">Notes</h2>
         <ul class="doc-list">
           <li>HTTP/3 uses UDP while HTTP/1.1 and HTTP/2 use TCP. Both can share port <code>443</code> simultaneously.</li>
-          <li>The <code>Alt-Svc</code> shim automatically adds the header <code>Alt-Svc: h3=":443"; ma=86400</code> (or your custom max-age) to every response so clients discover the QUIC endpoint.</li>
+          <li>When HTTP/3 is enabled, the <code>Alt-Svc</code> shim automatically adds the header <code>Alt-Svc: h3=":443"; ma=86400</code> (or your custom max-age) to every response, so clients discover the QUIC endpoint.</li>
+          <li>A single <code>app.Listen()</code> call handles all protocol negotiation and server setup automatically. No manual goroutine management needed.</li>
           <li>GX handlers, middleware, and plugins work identically under HTTP/3 — no code changes required.</li>
         </ul>
       </section>

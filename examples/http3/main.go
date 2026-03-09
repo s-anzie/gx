@@ -3,13 +3,16 @@ package main
 import (
 	"log"
 
-	"github.com/s-anzie/gx/core"
+	"github.com/s-anzie/gx"
 )
 
 func main() {
-	app := core.New()
+	app := gx.New(
+		gx.WithTLS("./certs/cert.pem", "./certs/key.pem"),
+		gx.WithHTTP3(), // Enable HTTP/3 support
+	)
 
-	app.GET("/", func(c *core.Context) core.Response {
+	app.GET("/", func(c *gx.Context) gx.Response {
 		return c.JSON(map[string]interface{}{
 			"message":  "HTTP/3 server running!",
 			"protocol": c.Proto(),
@@ -17,7 +20,7 @@ func main() {
 		})
 	})
 
-	app.GET("/info", func(c *core.Context) core.Response {
+	app.GET("/info", func(c *gx.Context) gx.Response {
 		return c.JSON(map[string]interface{}{
 			"path":     c.Path(),
 			"method":   c.Method(),
@@ -25,11 +28,9 @@ func main() {
 		})
 	})
 
-	app.WithTLS("./certs/cert.pem", "./certs/key.pem")
-
 	log.Println("HTTP/3 server starting on https://localhost:8443")
-	log.Println("With Alt-Svc bootstrap shim")
+	log.Println("With automatic Alt-Svc bootstrap shim")
 	log.Println("Visit https://localhost:8443")
 
-	log.Fatal(app.ListenH3WithGracefulShutdown(":8443"))
+	log.Fatal(app.Listen(":8443"))
 }

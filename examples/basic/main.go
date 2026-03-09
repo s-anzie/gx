@@ -29,7 +29,7 @@ func main() {
 	api.GET("/products/:id", getProductHandler)
 
 	// Start server with graceful shutdown
-	log.Fatal(app.ListenWithGracefulShutdown(":8080"))
+	log.Fatal(app.Listen(":8080"))
 }
 
 // ── Handlers ─────────────────────────────────────────────────────────────────

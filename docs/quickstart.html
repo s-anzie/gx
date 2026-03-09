@@ -147,8 +147,8 @@ go get github.com/s-anzie/gx@latest</pre>
         <span class="kw">return</span> c.<span class="fn">JSON</span>(map[<span class="ty">string</span>]<span class="kw">any</span>{<span class="str">"message"</span>: <span class="str">"pong"</span>})
     })
 
-    <span class="cm">// ListenWithGracefulShutdown handles SIGTERM/SIGINT automatically</span>
-    app.<span class="fn">ListenWithGracefulShutdown</span>(<span class="str">":8080"</span>)
+    <span class="cm">// Listen handles SIGTERM/SIGINT automatically</span>
+    app.<span class="fn">Listen</span>(<span class="str">":8080"</span>)
 }</pre>
         </div>
 
@@ -178,9 +178,8 @@ curl http://localhost:8080/ping
 
         <div class="callout tip">
           <span class="callout-icon">✅</span>
-          <p><code>ListenWithGracefulShutdown</code> listens for <code>SIGTERM</code> and
-          <code>SIGINT</code> and performs a graceful shutdown (default 10 s timeout).
-          Use <code>app.Listen()</code> for a plain server without signal handling.</p>
+          <p><code>Listen</code> listens for <code>SIGTERM</code> and
+          <code>SIGINT</code> and performs a graceful shutdown (default 10 s timeout)
         </div>
 
         <h3 class="doc-h3">With boot hooks</h3>
@@ -208,7 +207,7 @@ curl http://localhost:8080/ping
     <span class="kw">if</span> err <span class="op">:=</span> app.<span class="fn">Boot</span>(context.<span class="fn">Background</span>()); err <span class="op">!=</span> <span class="kw">nil</span> {
         log.<span class="fn">Fatal</span>(err)
     }
-    app.<span class="fn">ListenWithGracefulShutdown</span>(<span class="str">":8080"</span>)
+    app.<span class="fn">Listen</span>(<span class="str">":8080"</span>)
 }</pre>
         </div>
       </section>
