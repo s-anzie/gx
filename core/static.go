@@ -90,16 +90,41 @@ func (a *App) Static(prefix, dir string, opts ...StaticOption) {
 			c.Writer.Header().Set("Cache-Control", "public, max-age="+itoa(seconds))
 		}
 
-		// Serve — use http.FileServer directly
-		c.Request.URL.Path = p
-		fileServer.ServeHTTP(c.Writer, c.Request)
-		return nil // ServeHTTP writes directly
+		// Create a response wrapper that serves the file
+		return &staticFileResponse{
+			fileServer: fileServer,
+			path:       p,
+			request:    c.Request,
+			writer:     c.Writer,
+		}
 	}
 
 	// Register catch-all under prefix
 	a.GET(prefix+"/*filepath", handler)
-	a.GET(prefix, handler)
 }
+
+// staticFileResponse serves a static file while respecting existing headers
+type staticFileResponse struct {
+	fileServer http.Handler
+	path       string
+	request    *http.Request
+	writer     http.ResponseWriter
+}
+
+func (r *staticFileResponse) Write(w http.ResponseWriter) error {
+	// Temporarily modify the request path for the file server
+	originalPath := r.request.URL.Path
+	r.request.URL.Path = r.path
+	defer func() { r.request.URL.Path = originalPath }()
+
+	// Serve the file - this will write headers and body
+	r.fileServer.ServeHTTP(w, r.request)
+	return nil
+}
+
+func (r *staticFileResponse) Status() int { return 200 }
+func (r *staticFileResponse) Headers() http.Header { return make(http.Header) }
+func (r *staticFileResponse) ContentType() string { return "" }
 
 // StaticFile serves a single file at path.
 //

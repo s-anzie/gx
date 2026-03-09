@@ -94,27 +94,25 @@ func (p *corsPlugin) OnRequest(c *gx.Context, next core.Handler) core.Response {
 		}
 	}
 
-	if !allowed {
-		// If origin is not allowed, continue without CORS headers
-		return next(c.Context)
-	}
+	// Add CORS headers for all requests (preflight and actual requests)
+	if allowed {
+		// Set the Access-Control-Allow-Origin header
+		if len(p.config.Origins) > 0 && p.config.Origins[0] == "*" {
+			c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		} else {
+			c.Writer.Header().Set("Access-Control-Allow-Origin", origin)
+			c.Writer.Header().Set("Vary", "Origin")
+		}
 
-	// Set the Access-Control-Allow-Origin header
-	if len(p.config.Origins) > 0 && p.config.Origins[0] == "*" {
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-	} else {
-		c.Writer.Header().Set("Access-Control-Allow-Origin", origin)
-		c.Writer.Header().Set("Vary", "Origin")
-	}
+		// Set credentials header if enabled
+		if p.config.Credentials {
+			c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+		}
 
-	// Set credentials header if enabled
-	if p.config.Credentials {
-		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
-	}
-
-	// Set expose headers if provided
-	if len(p.config.ExposeHeaders) > 0 {
-		c.Writer.Header().Set("Access-Control-Expose-Headers", strings.Join(p.config.ExposeHeaders, ", "))
+		// Set expose headers if provided
+		if len(p.config.ExposeHeaders) > 0 {
+			c.Writer.Header().Set("Access-Control-Expose-Headers", strings.Join(p.config.ExposeHeaders, ", "))
+		}
 	}
 
 	// Handle preflight requests
