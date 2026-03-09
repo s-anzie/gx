@@ -509,7 +509,8 @@ func AltSvcMaxAge(duration time.Duration) H3Option {
 // startAltSvcShim starts a TCP server that announces HTTP/3 via Alt-Svc header
 // and serves the same application as the HTTP/3 server
 func (a *App) startAltSvcShim(addr string, maxAge time.Duration) {
-	altSvc := fmt.Sprintf(`h3="%s"; ma=%.0f`, addr, maxAge.Seconds())
+	advertisedAuthority := altSvcAuthority(addr)
+	altSvc := fmt.Sprintf(`h3="%s"; ma=%.0f`, advertisedAuthority, maxAge.Seconds())
 
 	// Create a wrapper handler that adds Alt-Svc header to all responses
 	wrapper := func(w http.ResponseWriter, r *http.Request) {
@@ -549,4 +550,20 @@ func (a *App) startAltSvcShim(addr string, maxAge time.Duration) {
 	if err != nil && err != http.ErrServerClosed {
 		log.Printf("Alt-Svc shim error (non-fatal): %v", err)
 	}
+}
+
+// altSvcAuthority returns the authority announced via Alt-Svc.
+// For wildcard listeners (e.g. 0.0.0.0, ::, or empty host), advertise only
+// the port so clients reuse the request host instead of an unroutable bind host.
+func altSvcAuthority(addr string) string {
+	host, port, err := net.SplitHostPort(addr)
+	if err != nil {
+		return addr
+	}
+
+	if host == "" || host == "0.0.0.0" || host == "::" {
+		return "127.0.0.1:" + port
+	}
+
+	return net.JoinHostPort(host, port)
 }
