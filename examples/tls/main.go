@@ -33,5 +33,5 @@ func main() {
 	log.Println("Using self-signed certificate - browser will show security warning")
 	log.Println("Visit https://localhost:8443")
 
-	log.Fatal(app.Listen("localhost", "8443"))
+	log.Fatal(app.Listen(":8443"))
 }

@@ -32,5 +32,5 @@ func main() {
 	log.Println("With automatic Alt-Svc bootstrap shim")
 	log.Println("Visit https://localhost:8443")
 
-	log.Fatal(app.Listen("localhost", "8443"))
+	log.Fatal(app.Listen(":8443"))
 }

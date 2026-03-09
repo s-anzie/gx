@@ -27,7 +27,7 @@ func main() {
 	fmt.Println("Channel example on :8082")
 	fmt.Println("Try: curl http://localhost:8082/stream/time")
 
-	if err := app.Listen("localhost", "8080"); err != nil {
+	if err := app.Listen(":8080"); err != nil {
 		log.Fatal(err)
 	}
 }

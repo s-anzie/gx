@@ -16,7 +16,7 @@ func main() {
 	app.GET("/", indexHandler)
 
 	log.Println("Server starting on :8080")
-	log.Fatal(app.Listen("localhost", "8080"))
+	log.Fatal(app.Listen(":8080"))
 }
 
 func eventsHandler(c *core.Context) core.Response {

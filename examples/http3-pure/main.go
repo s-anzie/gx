@@ -24,7 +24,7 @@ func main() {
 	log.Println("HTTP/3 server (no Alt-Svc shim)")
 	log.Println("Clients must explicitly use HTTP/3")
 
-	log.Fatal(app.Listen("localhost", "8443",
+	log.Fatal(app.Listen(":8443",
 		core.WithoutAltSvcShim(),
 		core.AltSvcMaxAge(12*time.Hour),
 	))

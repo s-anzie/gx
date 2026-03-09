@@ -133,7 +133,7 @@ func main() {
 	fmt.Println("  GET  /api/v1/admin/stats            - Admin stats")
 	fmt.Println("")
 
-	if err := app.Listen("localhost", "8080"); err != nil {
+	if err := app.Listen(":8080"); err != nil {
 		panic(err)
 	}
 }

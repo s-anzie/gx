@@ -53,5 +53,5 @@ func main() {
 	fmt.Println("  # Test without rate limiting:")
 	fmt.Println("  curl http://localhost:8080/status")
 
-	app.Listen("localhost", "8080")
+	app.Listen(":8080")
 }

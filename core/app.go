@@ -230,17 +230,25 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 // Listen starts the server with optional HTTP/3 support.
 // If HTTP/3 is enabled via EnableHTTP3(), it launches HTTP/3 with optional Alt-Svc bootstrap shim.
 // Otherwise, it launches HTTP/1.1 + HTTP/2 server.
-// The host can be empty (defaults to all interfaces), port is required.
-func (a *App) Listen(host, port string, opts ...H3Option) error {
-	addr := net.JoinHostPort(host, port)
+//
+// Examples:
+//   - Listen(":8080") - binds to all interfaces on port 8080 (container-friendly)
+//   - Listen("localhost:8080") - binds to localhost only
+//   - Listen(":8443", WithoutAltSvcShim()) - HTTP/3 without Alt-Svc shim
+func (a *App) Listen(addr string, opts ...ListenOption) error {
+	// Apply configuration options
+	cfg := defaultListenConfig()
+	for _, opt := range opts {
+		opt(cfg)
+	}
 
-	// If HTTP/3 is not explicitly enabled and no options passed, use HTTP/1.1/2
-	if !a.http3Enabled && len(opts) == 0 {
+	// If HTTP/3 is not explicitly enabled, use HTTP/1.1/2
+	if !a.http3Enabled {
 		return a.listenHTTP12(addr)
 	}
 
 	// HTTP/3 is enabled - launch with optional Alt-Svc shim
-	return a.listenH3Internal(addr, opts...)
+	return a.listenH3Internal(addr, cfg)
 }
 
 // listenHTTP12 is the internal method for HTTP/1.1 + HTTP/2 only
@@ -296,12 +304,7 @@ func (a *App) listenHTTP12(addr string) error {
 }
 
 // listenH3Internal is the internal method for HTTP/3 with optional Alt-Svc shim
-func (a *App) listenH3Internal(addr string, opts ...H3Option) error {
-	// Apply configuration options
-	cfg := defaultH3Config()
-	for _, opt := range opts {
-		opt(cfg)
-	}
+func (a *App) listenH3Internal(addr string, cfg *ListenConfig) error {
 
 	// Ensure TLS is configured
 	if a.tlsConfig == nil && (a.certFile == "" || a.keyFile == "") {
@@ -474,18 +477,18 @@ func (a *App) EnableHTTP3() *App {
 
 // ── HTTP/3 Support ───────────────────────────────────────────────────────────
 
-// H3Config holds HTTP/3 configuration options
-type H3Config struct {
+// ListenConfig holds server configuration options
+type ListenConfig struct {
 	altSvcShim   bool
 	altSvcMaxAge time.Duration
 }
 
-// H3Option is a functional option for HTTP/3 configuration
-type H3Option func(*H3Config)
+// ListenOption is a functional option for Listen configuration
+type ListenOption func(*ListenConfig)
 
-// defaultH3Config returns the default HTTP/3 configuration
-func defaultH3Config() *H3Config {
-	return &H3Config{
+// defaultListenConfig returns the default Listen configuration
+func defaultListenConfig() *ListenConfig {
+	return &ListenConfig{
 		altSvcShim:   true,
 		altSvcMaxAge: 24 * time.Hour, // 86400 seconds
 	}
@@ -493,15 +496,15 @@ func defaultH3Config() *H3Config {
 
 // WithoutAltSvcShim disables the Alt-Svc bootstrap shim
 // Use this for internal microservices that don't need HTTP/3 discovery
-func WithoutAltSvcShim() H3Option {
-	return func(cfg *H3Config) {
+func WithoutAltSvcShim() ListenOption {
+	return func(cfg *ListenConfig) {
 		cfg.altSvcShim = false
 	}
 }
 
 // AltSvcMaxAge sets the max-age directive for the Alt-Svc header
-func AltSvcMaxAge(duration time.Duration) H3Option {
-	return func(cfg *H3Config) {
+func AltSvcMaxAge(duration time.Duration) ListenOption {
+	return func(cfg *ListenConfig) {
 		cfg.altSvcMaxAge = duration
 	}
 }
@@ -562,8 +565,7 @@ func altSvcAuthority(addr string) string {
 	}
 
 	if host == "" || host == "0.0.0.0" || host == "::" {
-		return "127.0.0.1:" + port
+		return ":" + port
 	}
-
 	return net.JoinHostPort(host, port)
 }

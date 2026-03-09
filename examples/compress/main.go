@@ -102,7 +102,7 @@ mollitia animi, id est laborum et dolorum fuga.
 	fmt.Println("echo 'Without compression:' && curl -s http://localhost:8084/users | wc -c")
 	fmt.Println("echo 'With gzip:' && curl -s -H 'Accept-Encoding: gzip' http://localhost:8084/users | wc -c")
 
-	if err := app.Listen("localhost", "8080"); err != nil {
+	if err := app.Listen(":8080"); err != nil {
 		log.Fatal(err)
 	}
 }
