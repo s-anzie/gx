@@ -304,6 +304,13 @@ func (app *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	app.App.ServeHTTP(w, r)
 }
 
+// Listen starts the server and ensures plugin middlewares are registered before serving requests.
+// This overrides core.App.Listen() to guarantee that RequestPlugin middlewares are set up.
+func (app *App) Listen(addr string, opts ...core.ListenOption) error {
+	app.ensureMiddlewares()
+	return app.App.Listen(addr, opts...)
+}
+
 // ── Lifecycle Management ─────────────────────────────────────────────────────
 
 // OnBoot registers a hook to be called during application boot
