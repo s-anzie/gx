@@ -1878,19 +1878,24 @@ app.<span class="fn">Contract</span>(<span class="pkg">gx</span>.<span class="ty
       <section id="http3">
         <div class="section-eyebrow">Transports</div>
         <h2>HTTP/2 &amp; HTTP/3</h2>
-        <p>GX supports HTTP/2 automatically when you run with TLS, and HTTP/3 (QUIC) via <code>ListenH3</code>.</p>
+        <p>GX supports HTTP/2 automatically when you run with TLS, and HTTP/3 (QUIC) via the <code>gx.WithHTTP3()</code> option.</p>
 
         <h3>Enabling TLS (HTTP/2 auto-upgrade)</h3>
         <div class="code-wrap">
           <div class="code-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="fname">main.go</span></div>
-          <pre>app.<span class="fn">ListenTLS</span>(<span class="str">":443"</span>, <span class="str">"cert.pem"</span>, <span class="str">"key.pem"</span>)</pre>
+          <pre>app := <span class="pkg">gx</span>.<span class="fn">New</span>(<span class="pkg">gx</span>.<span class="fn">WithTLS</span>(<span class="str">"cert.pem"</span>, <span class="str">"key.pem"</span>))
+app.<span class="fn">Listen</span>(<span class="str">":443"</span>)</pre>
         </div>
 
         <h3>HTTP/3 (QUIC)</h3>
-        <p>Serving over QUIC requires a valid TLS certificate. Call <code>ListenH3</code> instead of <code>Listen</code>:</p>
+        <p>Serving over QUIC requires a valid TLS certificate. Use the <code>gx.WithHTTP3()</code> option:</p>
         <div class="code-wrap">
           <div class="code-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="fname">main.go</span></div>
-          <pre>err := app.<span class="fn">ListenH3</span>(<span class="str">":443"</span>, <span class="str">"cert.pem"</span>, <span class="str">"key.pem"</span>)</pre>
+          <pre>app := <span class="pkg">gx</span>.<span class="fn">New</span>(
+    <span class="pkg">gx</span>.<span class="fn">WithTLS</span>(<span class="str">"cert.pem"</span>, <span class="str">"key.pem"</span>),
+    <span class="pkg">gx</span>.<span class="fn">WithHTTP3</span>(),
+)
+err := app.<span class="fn">Listen</span>(<span class="str">":443"</span>)</pre>
         </div>
 
         <h3>Detecting the protocol in a handler</h3>
